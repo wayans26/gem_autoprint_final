@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class country extends Model
+class countries extends Model
 {
     //
     protected $connection = 'visitor';
