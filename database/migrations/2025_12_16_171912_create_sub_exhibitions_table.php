@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_exhibitions', function (Blueprint $table) {
-            $table->id();
+        Schema::create('tbsubexhibitions', function (Blueprint $table) {
+            $table->string('idsubexhibitions', 50)->primary();
+            $table->string('idexhibitions', 20);
+            $table->foreign('idexhibitions')->references('idexhibitions')->on('tbexhibitions');
+            $table->string('nama');
+            $table->string('path');
             $table->timestamps();
         });
     }

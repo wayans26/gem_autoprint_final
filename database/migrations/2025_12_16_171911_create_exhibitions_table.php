@@ -11,8 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exhibitions', function (Blueprint $table) {
-            $table->id();
+        Schema::create('tbexhibitions', function (Blueprint $table) {
+            $table->string('idexhibitions', 20)->primary();
+            $table->string("name");
+            $table->string("tanggal");
+            $table->string("keterangan");
+            $table->string('path');
+            $table->string('all_banner')->nullable();
+            $table->string('web_own')->nullable();
+            $table->enum('status', ['1', '0'])->default('1');
+            $table->enum('is_show', ['1', '0'])->default('0');
+            $table->string('event_name')->nullable();
+            $table->enum('type', ['REG', 'VIP'])->default('REG');
+            $table->longText('opening_hours')->nullable();
             $table->timestamps();
         });
     }
