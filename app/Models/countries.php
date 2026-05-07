@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class countries extends Model
 {
     //
-    protected $connection = 'visitor';
-    protected $table = 'tbcountries';
-    // public $incrementing = true;
-    protected $primaryKey = 'idcountry';
-    protected $keyType = 'string';
+    protected $connection = 'mysql';
+    protected $table = 'countries';
+    public $incrementing = true;
+    protected $primaryKey = 'id';
+    // protected $keyType = 'string';
     protected $fillable = [
-        'idcountry',
+        'code',
         'country_name',
         'dial_code',
     ];

@@ -7,29 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 class exhibitions extends Model
 {
     //
-    protected $connection = 'visitor';
-    protected $table = 'tbexhibitions';
+    protected $connection = 'mysql';
+    protected $table = 'exhibitions';
     // public $incrementing = true;
-    protected $primaryKey = 'idexhibitions';
+    protected $primaryKey = 'id';
     protected $keyType = 'string';
     protected $fillable = [
-        'idexhibitions',
+        'code',
         'name',
+        'tanggal',
+        'keterangan',
         'path',
         'all_banner',
         'web_own',
         'status',
         'is_show',
-        'tanggal',
-        'keterangan',
         'event_name',
-        'opening_hours',
         'type',
-        'custom_tag',
+        'page_name',
+        'opening_hours',
     ];
 
     public function user_has_exhibitions()
     {
-        return $this->hasMany(user_has_exhibitions::class, 'exhibition_id', 'idexhibitions');
+        return $this->hasMany(user_has_exhibitions::class, 'exhibition_id', 'id');
     }
 }

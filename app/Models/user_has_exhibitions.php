@@ -15,11 +15,10 @@ class user_has_exhibitions extends Model
     protected $fillable = [
         'user_id',
         'exhibition_id',
-        'exhibitions_name'
     ];
 
     public function exhibitions()
     {
-        return $this->belongsTo(exhibitions::class, 'exhibition_id', 'idexhibitions');
+        return $this->belongsTo(exhibitions::class, 'exhibition_id', 'id');
     }
 }

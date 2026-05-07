@@ -15,23 +15,29 @@ class exhibitionsController extends Controller
     //
     function getExhibitions(Request $req)
     {
-        $exhibitions = user::query()->select('username', 'id');
+        $exhibitions = exhibitions::query();
 
         return DataTables::of($exhibitions)
-            ->filterColumn('username', function ($query, $keyword) {
-                $query->where('username', 'like', $keyword . '%');
+            ->filterColumn('code', function ($query, $keyword) {
+                $query->where('code', 'like', $keyword . '%');
+            })
+            ->filterColumn('name', function ($query, $keyword) {
+                $query->where('name', 'like', $keyword . '%');
             })
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $btn = '<button type="button" id="' . $row->id . '" class="btn btn-primary btn-sm btnAdd"><i class="zmdi zmdi-plus"> Sub</i></button> ';
                 return $btn;
             })
-            ->addColumn('exhibitions', function ($row) {
-                $user_exhibitions = user_has_exhibitions::where('user_id', $row->id)->select('id', 'exhibitions_name')->get();
+            ->addColumn('staff', function ($row) {
+                $user_exhibitions = user_has_exhibitions::join('users', 'users.id', '=', 'user_has_exhibitions.user_id')
+                    ->select('users.username', 'user_has_exhibitions.id')
+                    ->where('user_has_exhibitions.exhibition_id', $row->id)
+                    ->get();
 
                 $btn = "";
                 foreach ($user_exhibitions as $key => $value) {
-                    $btn .= '<a href="javascript:void(0)" class="btnExhibitions" id="' . $value->id . '"><span class="badge badge-pill badge-primary m-1">' . $value->exhibitions_name . '</span></a>';
+                    $btn .= '<a href="javascript:void(0)" class="btnExhibitions" id="' . $value->id . '"><span class="badge badge-pill badge-primary m-1">' . $value->username . '</span></a>';
                 }
                 return $btn;
             })

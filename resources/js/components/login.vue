@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-                <router-link style="float: right;" :to="{ name: 'forgot_password' }"> Forgot Password</router-link>
+                <!-- <router-link style="float: right;" :to="{ name: 'forgot_password' }"> Forgot Password</router-link> -->
                 <br>
                 <br>
                 <button type="submit" :disabled="loading" class="

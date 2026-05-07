@@ -9,9 +9,14 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>name</th>
-                            <th>Exhibitions</th>
                             <th>Action</th>
+                            <th>Code</th>
+                            <th>Nama</th>
+                            <th>Web Own</th>
+                            <th>Keterangan</th>
+                            <th>Event Name</th>
+                            <th>Status</th>
+                            <th>Assign Staff</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -92,7 +97,7 @@ export default {
                         "targets": 0
                     }, {
                         "width": "2%",
-                        "targets": 3
+                        "targets": 1
                     }],
                     columns: [{
                         data: 'DT_RowIndex',
@@ -100,17 +105,39 @@ export default {
                         orderable: false,
                         searchable: false
                     }, {
-                        data: 'username',
-                        name: 'username'
-                    },
-                    {
-                        data: 'exhibitions',
-                        name: 'exhibitions',
+                        data: 'action',
+                        name: 'action',
                         orderable: false,
                         searchable: false
                     }, {
-                        data: 'action',
-                        name: 'action',
+                        data: 'code',
+                        name: 'code'
+                    }, {
+                        data: 'name',
+                        name: 'name'
+                    }, {
+                        data: 'web_own',
+                        name: 'web_own',
+                        orderable: false,
+                        searchable: false
+                    }, {
+                        data: 'keterangan',
+                        name: 'keterangan',
+                        orderable: false,
+                        searchable: false
+                    }, {
+                        data: 'event_name',
+                        name: 'event_name',
+                        orderable: false,
+                        searchable: false
+                    }, {
+                        data: 'status',
+                        name: 'status',
+                        orderable: false,
+                        searchable: false
+                    }, {
+                        data: 'staff',
+                        name: 'staff',
                         orderable: false,
                         searchable: false
                     },
@@ -227,7 +254,7 @@ export default {
         this.loading = false;
         setTimeout(() => {
             vm.get_exhibitions();
-            vm.get_list_exhibitions();
+            // vm.get_list_exhibitions();
 
             $("#tableExhibitions").on('click', '.btnAdd', function () {
                 const id = this.id;

@@ -6,16 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class activity_history extends Model
 {
-    protected $connection = 'visitor';
+    //
+    protected $connection = 'mysql';
     protected $table = 'activity_histories';
     public $incrementing = true;
     protected $primaryKey = 'id';
     // protected $keyType = 'string';
     protected $fillable = [
-        'Id',
-        'CheckedInTime',
-        'CheckedInLocation',
-        'CheckedBy',
-        'registration_id',
+        'checkin_time',
+        'user_id',
+        'registration_visitors_id',
     ];
 }

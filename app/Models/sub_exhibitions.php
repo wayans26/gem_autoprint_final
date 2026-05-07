@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class sub_exhibitions extends Model
 {
     //
-    protected $connection = 'visitor';
-    protected $table = 'tbsubexhibitions';
-    // public $incrementing = true;
-    protected $primaryKey = 'idsubexhibitions';
-    protected $keyType = 'string';
+    protected $connection = 'mysql';
+    protected $table = 'sub_exhibitions';
+    public $incrementing = true;
+    protected $primaryKey = 'id';
+    // protected $keyType = 'string';
     protected $fillable = [
-        'idexhibitions',
-        'idsubexhibitions',
+        'exhibitions_id',
         'nama',
         'path',
     ];
