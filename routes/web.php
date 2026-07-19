@@ -69,6 +69,10 @@ use ZanySoft\Zip\Facades\Zip;
 //     return Response::make($file, 200)->header("content-type", "image/jpg");
 // });
 
+// Route::get('/test', function () {
+//     return view('coming_soon');
+// });
+
 Route::get('/{path?}', function (Request $req, ?string $path = null) {
     if ($req->host() == "localhost" || $req->host() == "127.0.0.1") {
         if ($req->has('token')) {
