@@ -14,19 +14,22 @@ return new class extends Migration
         Schema::create('exhibitions', function (Blueprint $table) {
             $table->id('id');
             $table->string('code', 20)->unique();
+            $table->string('banner_file', 64)->nullable();
+            $table->foreign('banner_file')->references('id')->on('files');
+            $table->string('all_banner', 64)->nullable();
+            $table->foreign('all_banner')->references('id')->on('files');
             $table->string("name");
-            $table->string("tanggal");
-            $table->string("keterangan");
-            $table->string('path');
-            $table->string('all_banner')->nullable();
-            $table->string('web_own')->nullable();
+            $table->string("full_name");
+            $table->string("location")->nullable();
+            $table->string('date')->nullable();
+            $table->string("team")->nullable();
+            $table->string("opening_hours")->nullable();
+            $table->string('host')->nullable();
+            $table->string('page')->nullable();
+            $table->string('path')->nullable();
             $table->enum('status', ['1', '0'])->default('1');
-            $table->enum('is_show', ['1', '0'])->default('0');
-            $table->string('event_name')->nullable();
-            $table->enum('type', ['REG', 'VIP', 'CUSTOM'])->default('REG');
-            $table->string('page_name')->nullable();
-            $table->longText('opening_hours')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

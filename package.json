@@ -18,6 +18,7 @@
     "dependencies": {
         "@chenfengyuan/vue-barcode": "^2.0.2",
         "@vuepic/vue-datepicker": "^12.1.0",
+        "@vueup/vue-quill": "^1.2.0",
         "apexcharts": "^5.6.0",
         "chart.js": "^4.5.1",
         "js-file-download": "^0.4.12",

@@ -16,7 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('exhibitions_id');
             $table->foreign('exhibitions_id')->references('id')->on('exhibitions');
             $table->string('nama');
-            $table->string('path');
+            $table->string('file_banner', 64);
+            $table->foreign('file_banner')->references('id')->on('files');
             $table->timestamps();
         });
     }

@@ -2,18 +2,115 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Utils\makeid;
 use App\Http\Utils\responseMessage;
 use App\Models\exhibitions;
+use App\Models\file;
 use App\Models\user;
 use App\Models\user_has_exhibitions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
+use DB;
 
 class exhibitionsController extends Controller
 {
     //
     function getExhibitions(Request $req)
+    {
+        $exhibitions = exhibitions::query();
+
+        return DataTables::of($exhibitions)
+            ->filterColumn('code', function ($query, $keyword) {
+                $query->where('code', 'like', $keyword . '%');
+            })
+            ->filterColumn('name', function ($query, $keyword) {
+                $query->where('name', 'like', $keyword . '%');
+            })
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $btn = '<button type="button" id="' . $row->id . '" class="btn btn-primary btn-sm btnAdd"><i class="zmdi zmdi-plus"> Sub</i></button> ';
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    function addExhibitions(Request $req)
+    {
+        $validate = Validator::make($req->all(), [
+            'code'              => 'required',
+            'name'              => 'required',
+            'full_name'         => 'required',
+            'banner_file'       => 'required|mimes:png,jpg,jprg',
+            'all_banner_file'   => 'required|mimes:png,jpg,jprg',
+            'location'          => 'required',
+            'date'              => 'required',
+            'team'              => 'required',
+            'form'              => 'required',
+            'host'              => 'required',
+            'opening_hours'     => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
+        }
+
+        try {
+            DB::transaction(function () use ($req) {
+                $banner_extension = $req->banner_file->getClientOriginalExtension();
+                $banner_name = "Banner_" . $req->code . $req->name . '.' . makeid::createId(10) . "." . $banner_extension;
+                $banner_path = Storage::disk('local')->putFileAs("Exhibitions", $req->banner_file, $banner_name);
+
+                $all_banner_extension = $req->all_banner_file->getClientOriginalExtension();
+                $all_banner_name = "all_" . $req->code . $req->name . '.' . makeid::createId(10) . "." . $all_banner_extension;
+                $all_banner_path = Storage::disk('local')->putFileAs("Exhibitions", $req->all_banner_file, $all_banner_name);
+
+                $idBanner = makeid::createUuid();
+                $idAllBanner = makeid::createUuid();
+
+                file::create([
+                    'id'    => $idBanner,
+                    'path'  => $banner_path,
+                    'name'  => $banner_name,
+                    'type'  => "image",
+                    'extension' => $banner_extension,
+                ]);
+
+                file::create([
+                    'id'    => $idAllBanner,
+                    'path'  => $all_banner_path,
+                    'name'  => $all_banner_name,
+                    'type'  => "image",
+                    'extension' => $all_banner_extension,
+                ]);
+
+                exhibitions::create([
+                    'code'          => $req->code,
+                    'name'          => $req->name,
+                    'full_name'     => $req->full_name,
+                    'banner_file'   => $idBanner,
+                    'all_banner'    => $idAllBanner,
+                    'location'      => $req->code,
+                    'date'          => $req->date,
+                    'team'          => $req->team,
+                    'page'          => $req->form,
+                    'host'          => $req->host,
+                    'opening_hours' => $req->opening_hours,
+                    'path'          => $req->path,
+                ]);
+            });
+            return responseMessage::responseMessage(1, "Success Add Exhibition", 200);
+        } catch (\Throwable $th) {
+            Storage::disk('local')->delete($banner_path);
+            Storage::disk('local')->delete($all_banner_path);
+            return responseMessage::responseMessage(0, $th->getMessage(), 200);
+            return responseMessage::responseMessage(0, "Error Add Exhibition", 200);
+        }
+    }
+
+    function getExhibitionsUser(Request $req)
     {
         $exhibitions = exhibitions::query();
 
@@ -45,13 +142,13 @@ class exhibitionsController extends Controller
             ->make(true);
     }
 
-    function getListExhibitions(Request $req)
+    function getListExhibitionsUser(Request $req)
     {
         $exhibitions = exhibitions::where('status', 1)->select('idexhibitions', 'name')->get();
         return responseMessage::responseMessageWithData(1, "Success", 200, $exhibitions);
     }
 
-    function assignExhibitionsToUser(Request $req)
+    function assignExhibitionsToUserUser(Request $req)
     {
         $validate = Validator::make($req->all(), [
             'idexhibitions' => 'required',
@@ -80,7 +177,7 @@ class exhibitionsController extends Controller
 
         return responseMessage::responseMessage(1, "Success", 200);
     }
-    function deleteAssignExhibitionsToUser(Request $req)
+    function deleteAssignExhibitionsToUserUser(Request $req)
     {
         $validate = Validator::make($req->all(), [
             'id' => 'required',
@@ -99,7 +196,7 @@ class exhibitionsController extends Controller
         return responseMessage::responseMessage(1, "Success", 200);
     }
 
-    function changeShowStatus(Request $req)
+    function changeShowStatusUser(Request $req)
     {
         $validate = Validator::make($req->all(), [
             'idexhibitions' => 'required',

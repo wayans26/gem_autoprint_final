@@ -98,9 +98,11 @@ Route::prefix($version)->group(function () use ($prefixWeb, $prefixMobile) {
 
             Route::controller(exhibitionsController::class)->group(function () {
                 Route::get('/exhibitions/get', 'getExhibitions')->middleware('permission:exhibitions,view');
-                Route::post('/exhibitions/list/get', 'getListExhibitions')->middleware('permission:exhibitions,view');
-                Route::post('/exhibitions/assign/user/add', 'assignExhibitionsToUser')->middleware('permission:exhibitions,create');
-                Route::post('/exhibitions/assign/user/delete', 'deleteAssignExhibitionsToUser')->middleware('permission:exhibitions,delete');
+                Route::post('/exhibitions/add', 'addExhibitions')->middleware('permission:exhibitions,create');
+                // Route::get('/exhibitions/get', 'getExhibitions')->middleware('permission:exhibitions,view');
+                // Route::post('/exhibitions/list/get', 'getListExhibitions')->middleware('permission:exhibitions,view');
+                // Route::post('/exhibitions/assign/user/add', 'assignExhibitionsToUser')->middleware('permission:exhibitions,create');
+                // Route::post('/exhibitions/assign/user/delete', 'deleteAssignExhibitionsToUser')->middleware('permission:exhibitions,delete');
             });
         });
     });

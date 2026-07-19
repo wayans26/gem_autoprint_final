@@ -51,21 +51,46 @@ use ZanySoft\Zip\Facades\Zip;
 //     ]);
 // });
 
-Route::get('/', function (Request $req) {
-    // dd(Hash::make("admin"));
-    if ($req->has('token')) {
-        $token = personal_token::where('token', $req->token)->first();
-        if (empty($token)) {
-            return redirect()->route('auth', ['any' => 'login']);
-        }
-        $user = user::find($token->iduser);
+// Route::get('/banner/exhibitions/{code}', function (Request $req, $code) {
+//     $exhibition = tbexhibition::find($code);
+//     if (empty($exhibition)) {
+//         return abort(404);
+//     }
 
-        if (empty($user)) {
-            return redirect()->route('auth', ['any' => 'login']);
+//     if ($exhibition->path == null) {
+//         return abort(404);
+//     }
+
+//     if (!Storage::exists($exhibition->path)) {
+//         return abort(404);
+//     }
+
+//     $file = Storage::get($exhibition->path);
+//     return Response::make($file, 200)->header("content-type", "image/jpg");
+// });
+
+Route::get('/{path?}', function (Request $req, ?string $path = null) {
+    if ($req->host() == "localhost" || $req->host() == "127.0.0.1") {
+        if ($req->has('token')) {
+            $token = personal_token::where('token', $req->token)->first();
+            if (empty($token)) {
+                return redirect()->route('auth', ['any' => 'login']);
+            }
+            $user = user::find($token->iduser);
+
+            if (empty($user)) {
+                return redirect()->route('auth', ['any' => 'login']);
+            }
+            return redirect()->route('user', ['any' => 'redirect']);
         }
-        return redirect()->route('user', ['any' => 'redirect']);
+        return redirect()->route('auth', ['any' => 'login']);
     }
-    return redirect()->route('auth', ['any' => 'login']);
+    if ($path) {
+        if (strtolower($path) == "busworld") {
+            return $path;
+        }
+    }
+    return "Register Biasa";
 });
 Route::get('/auth/{any}', function () {
     return view('index_login');

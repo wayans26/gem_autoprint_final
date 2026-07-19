@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class exhibitions extends Model
 {
     //
+    use SoftDeletes;
+
     protected $connection = 'mysql';
     protected $table = 'exhibitions';
     // public $incrementing = true;
@@ -14,18 +17,18 @@ class exhibitions extends Model
     protected $keyType = 'string';
     protected $fillable = [
         'code',
-        'name',
-        'tanggal',
-        'keterangan',
-        'path',
+        'banner_file',
         'all_banner',
-        'web_own',
-        'status',
-        'is_show',
-        'event_name',
-        'type',
-        'page_name',
+        'name',
+        'full_name',
+        'location',
+        'date',
+        'team',
         'opening_hours',
+        'host',
+        'page',
+        'path',
+        'status',
     ];
 
     public function user_has_exhibitions()

@@ -22,6 +22,11 @@ import axios from 'axios';
 import notification from '../Utils/notification.js';
 import breadCrumb from '../components/breadCrumb.vue';
 
+import {
+    QuillEditor
+} from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
 import print from 'vue3-print-nb'
 
 function roleCheck(parent) {
@@ -96,4 +101,5 @@ app.use(print);
 app.component('VueDatePicker', VueDatePicker);
 app.component('v-select', vSelect);
 app.component('breadCrumb', breadCrumb);
+app.component('QuillEditor', QuillEditor);
 app.mount('#app');
