@@ -32,6 +32,11 @@ class exhibitionsController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '<button type="button" id="' . $row->id . '" class="btn btn-primary btn-sm btnAdd"><i class="zmdi zmdi-plus"> Sub</i></button> ';
                 $btn .= '<button type="button" id="' . $row->id . '" class="btn btn-info btn-sm btnEdit"><i class="zmdi zmdi-edit"></i></button> ';
+                if ($row->status == 1) {
+                    $btn .= '<button type="button" id="' . $row->id . '" class="btn btn-danger btn-sm btnDisable"><i class="zmdi zmdi-close"></i></button> ';
+                } else {
+                    $btn .= '<button type="button" id="' . $row->id . '" class="btn btn-success btn-sm btnEnable"><i class="zmdi zmdi-check"></i></button> ';
+                }
                 return $btn;
             })
             ->rawColumns(['action'])
@@ -235,119 +240,25 @@ class exhibitionsController extends Controller
         return responseMessage::responseMessageWithData(1, "Success", 200, $exhibition);
     }
 
-
-
-
-
-
-
-
-
-
-
-    function getExhibitionsUser(Request $req)
-    {
-        $exhibitions = exhibitions::query();
-
-        return DataTables::of($exhibitions)
-            ->filterColumn('code', function ($query, $keyword) {
-                $query->where('code', 'like', $keyword . '%');
-            })
-            ->filterColumn('name', function ($query, $keyword) {
-                $query->where('name', 'like', $keyword . '%');
-            })
-            ->addIndexColumn()
-            ->addColumn('action', function ($row) {
-                $btn = '<button type="button" id="' . $row->id . '" class="btn btn-primary btn-sm btnAdd"><i class="zmdi zmdi-plus"> Sub</i></button> ';
-                return $btn;
-            })
-            ->addColumn('staff', function ($row) {
-                $user_exhibitions = user_has_exhibitions::join('users', 'users.id', '=', 'user_has_exhibitions.user_id')
-                    ->select('users.username', 'user_has_exhibitions.id')
-                    ->where('user_has_exhibitions.exhibition_id', $row->id)
-                    ->get();
-
-                $btn = "";
-                foreach ($user_exhibitions as $key => $value) {
-                    $btn .= '<a href="javascript:void(0)" class="btnExhibitions" id="' . $value->id . '"><span class="badge badge-pill badge-primary m-1">' . $value->username . '</span></a>';
-                }
-                return $btn;
-            })
-            ->rawColumns(['action', 'exhibitions'])
-            ->make(true);
-    }
-
-    function getListExhibitionsUser(Request $req)
-    {
-        $exhibitions = exhibitions::where('status', 1)->select('idexhibitions', 'name')->get();
-        return responseMessage::responseMessageWithData(1, "Success", 200, $exhibitions);
-    }
-
-    function assignExhibitionsToUserUser(Request $req)
+    function changeStatus(Request $req)
     {
         $validate = Validator::make($req->all(), [
-            'idexhibitions' => 'required',
-            'iduser'        => 'required'
+            'id'        => 'required',
+            'status'    => 'required|in:0,1',
         ]);
 
         if ($validate->fails()) {
             return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
         }
 
-        $exhibitions = exhibitions::find($req->idexhibitions);
-        if (empty($exhibitions)) {
-            return responseMessage::responseMessage(0, "Exhibition not found", 200);
-        }
-
-        $user = user::find($req->iduser);
-        if (empty($user)) {
-            return responseMessage::responseMessage(0, "User not found", 200);
-        }
-
-        user_has_exhibitions::create([
-            'exhibition_id'     => $req->idexhibitions,
-            'user_id'           => $req->iduser,
-            'exhibitions_name'  => $exhibitions->name
-        ]);
-
-        return responseMessage::responseMessage(1, "Success", 200);
-    }
-    function deleteAssignExhibitionsToUserUser(Request $req)
-    {
-        $validate = Validator::make($req->all(), [
-            'id' => 'required',
-        ]);
-
-        if ($validate->fails()) {
-            return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
-        }
-
-        $exhibition = user_has_exhibitions::find($req->id);
+        $exhibition = exhibitions::find($req->id);
         if (empty($exhibition)) {
             return responseMessage::responseMessage(0, "Exhibition not found", 200);
         }
-        $exhibition->delete();
+        // dd($req->all());
 
-        return responseMessage::responseMessage(1, "Success", 200);
-    }
-
-    function changeShowStatusUser(Request $req)
-    {
-        $validate = Validator::make($req->all(), [
-            'idexhibitions' => 'required',
-            'cmd'           => 'required|in:1,0'
-        ]);
-
-        if ($validate->fails()) {
-            return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
-        }
-
-        $exhibitions = exhibitions::find($req->idexhibitions);
-        if (empty($exhibitions)) {
-            return responseMessage::responseMessage(0, "Exhibition not found", 200);
-        }
-        $exhibitions->update([
-            'is_show'   => $req->cmd
+        $exhibition->update([
+            'status' => $req->status,
         ]);
 
         return responseMessage::responseMessage(1, "Success", 200);

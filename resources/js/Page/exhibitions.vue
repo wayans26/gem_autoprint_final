@@ -467,6 +467,32 @@ export default {
                 vm.globalLoader.show = false;
             });
         },
+        change_status(id, status) {
+            const vm = this;
+            this.globalLoader.show = true;
+
+            axios.post("/api/v1/web/exhibitions/status/change", {
+                id: id,
+                status: status
+            }, {
+                headers: {
+                    token: localStorage.getItem('token'),
+                }
+            }).then(res => {
+                if (res.data.status == 1) {
+                    swalNotif.success(res.data.message);
+                    vm.refresh_table();
+                } else {
+                    swalNotif.error(res.data.message);
+                }
+            }).catch(res => {
+                swalNotif.error("Error Change Status!");
+
+            }).finally(function () {
+                vm.disabled = false;
+                vm.globalLoader.show = false;
+            });
+        },
     },
     mounted() {
         const vm = this;
@@ -483,17 +509,18 @@ export default {
                 vm.iduser = id;
                 $("#addExhibitionsToUser").modal({ backdrop: 'static', keyboard: false });
             });
-            $("#tableExhibitions").on('click', '.btnExhibitions', function () {
+
+            $("#tableExhibitions").on('click', '.btnDisable', function () {
                 const id = this.id;
                 Swal.fire({
                     icon: "warning",
                     title: "Warning",
                     allowOutsideClick: false,
                     allowEscapeKey: false,
-                    text: "This Action Will Delete Assign Exhibitions!",
+                    text: "This Action Will Be Disable Exhibition!",
                     confirmButtonColor: "#3085d6",
-                    confirmButtonText: "Yes, delete it!",
-                    cancelButtonText: "No, cancel!",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
                     showCancelButton: true,
                     didOpen: () => {
                         Swal.showLoading();
@@ -502,7 +529,31 @@ export default {
                 }).then((result) => {
                     $(".confirm").attr('disabled', 'disabled');
                     if (result.isConfirmed) {
-                        vm.deleteAssignExhibitions(id);
+                        vm.change_status(id, "0");
+                    }
+                });
+            });
+
+            $("#tableExhibitions").on('click', '.btnEnable', function () {
+                const id = this.id;
+                Swal.fire({
+                    icon: "warning",
+                    title: "Warning",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    text: "This Action Will Be Enable Exhibition!",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    showCancelButton: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        setTimeout(() => { Swal.hideLoading() }, 500)
+                    }
+                }).then((result) => {
+                    $(".confirm").attr('disabled', 'disabled');
+                    if (result.isConfirmed) {
+                        vm.change_status(id, "1");
                     }
                 });
             });
