@@ -101,6 +101,83 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalEditExhibitions">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Exhibition</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" @submit="add_exhibition">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="input-1">Code</label>
+                            <input type="text" v-model="code" class="form-control" id="input-1"
+                                placeholder="INAPA 2026">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">NAME</label>
+                            <input type="text" v-model="name" class="form-control" id="input-1" placeholder="INAPA">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">Full Name</label>
+                            <input type="text" v-model="full_name" class="form-control" id="input-1"
+                                placeholder="Full Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">Location</label>
+                            <input type="text" v-model="location" class="form-control" id="input-1"
+                                placeholder="Location">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">Date</label>
+                            <input type="text" v-model="date" class="form-control" id="input-1" placeholder="Date">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">Team</label>
+                            <input type="text" v-model="team" class="form-control" id="input-1" placeholder="Team">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">Template Form</label>
+                            <v-select class="form-control" placeholder="Select Form" :options="listForm" label="label"
+                                :reduce="option => option.value" v-model="page"></v-select>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">Host</label>
+                            <input type="text" v-model="host" class="form-control" id="input-1"
+                                placeholder="inapa.reg-gemindonesia.net">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">Path </label>
+                            <input type="text" v-model="path" class="form-control" id="input-1"
+                                placeholder="Path of Exhibitions like /bushworld -> bushworld">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">Banner</label>
+                            <input type="file" class="form-control" id="input-1" @change="file_banner($event)">
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="input-1">All Banner</label>
+                            <input type="file" class="form-control" id="input-1" @change="all_banner($event)">
+                        </div>
+                        <quill-editor v-model:content="opening_hours" contentType="html" theme="snow"></quill-editor>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal"><i
+                                class="fa fa-times"></i>
+                            Close</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>
+                            Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -127,6 +204,21 @@ export default {
             host: "",
             page: "",
             path: "",
+            update: {
+                id: "",
+                code: "",
+                banner_file: "",
+                all_banner_file: "",
+                name: "",
+                full_name: "SMART AGRI-TECHNOLOGY, AGROCHEMICAL, PALM & SUGAR PLANTATION, AND FOOD MANUFACTURING",
+                location: "JIExpo Kemayoran",
+                date: "28 - 30 July 2026",
+                team: "GEM Indonesia Team",
+                opening_hours: "<p>28 July 2026 : 10.00 am - 6.00 pm</p><p>29 July 2026 : 10.00 am - 6.00 pm</p><p>30 July 2026 : 10.00 am - 4.30 pm</p>",
+                host: "",
+                page: "",
+                path: "",
+            },
             listForm,
         }
     },
