@@ -31,6 +31,7 @@ class exhibitionsController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $btn = '<button type="button" id="' . $row->id . '" class="btn btn-primary btn-sm btnAdd"><i class="zmdi zmdi-plus"> Sub</i></button> ';
+                $btn .= '<button type="button" id="' . $row->id . '" class="btn btn-info btn-sm btnEdit"><i class="zmdi zmdi-edit"></i></button> ';
                 return $btn;
             })
             ->rawColumns(['action'])
@@ -55,6 +56,17 @@ class exhibitionsController extends Controller
 
         if ($validate->fails()) {
             return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
+        }
+
+        $exhibition = exhibitions::where([
+            'host'      => $req->host,
+            'status'    => 1
+        ])->first();
+
+        if (!empty($exhibition)) {
+            if ($exhibition->form != $req->form) {
+                return responseMessage::responseMessage(0, "Active Exhibitions With Different Form Not Allowed", 200);
+            }
         }
 
         try {
@@ -132,6 +144,10 @@ class exhibitionsController extends Controller
         $exhibition = exhibitions::find($req->id);
         if (empty($exhibition)) {
             return responseMessage::responseMessage(0, "Exhibition not found", 200);
+        } else {
+            if ($exhibition->form != $req->form) {
+                return responseMessage::responseMessage(0, "Active Exhibitions With Different Form Not Allowed", 200);
+            }
         }
 
         try {
@@ -185,6 +201,49 @@ class exhibitionsController extends Controller
             return responseMessage::responseMessage(0, $th->getMessage(), 200);
         }
     }
+
+    function getExhibitionById(Request $req)
+    {
+        $validate = Validator::make($req->all(), [
+            'id' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
+        }
+
+        $exhibition = exhibitions::select(
+            'id',
+            'code',
+            'name',
+            'full_name',
+            'location',
+            'date',
+            'team',
+            'opening_hours',
+            'host',
+            'page',
+            'path',
+        )->where('id', $req->id)->first();
+
+
+
+        if (empty($exhibition)) {
+            return responseMessage::responseMessage(0, "Exhibition not found", 200);
+        }
+
+        return responseMessage::responseMessageWithData(1, "Success", 200, $exhibition);
+    }
+
+
+
+
+
+
+
+
+
+
 
     function getExhibitionsUser(Request $req)
     {

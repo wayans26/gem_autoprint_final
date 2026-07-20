@@ -10,6 +10,8 @@ export default defineConfig({
             input: [
                 'resources/js/Master/index.js',
                 'resources/js/Master/index_login.js',
+                // template Page
+                'resources/js/Form/Master/index_reguler.js',
             ],
             refresh: true,
         }),

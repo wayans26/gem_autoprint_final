@@ -94,7 +94,7 @@ Route::get('/{path?}', function (Request $req, ?string $path = null) {
             return $path;
         }
     }
-    return "Register Biasa";
+    return view('Form.index_reguler');
 });
 Route::get('/auth/{any}', function () {
     return view('index_login');

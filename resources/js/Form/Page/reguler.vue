@@ -108,7 +108,7 @@
                                             placeholder="Country" v-model="selectedcountry">
                                             <option value="" selected disabled>==SELECT COUNTRY==</option>
                                             <option v-for="(item, index) in country" :key="index" :value="item">{{ item
-                                                }}
+                                            }}
                                             </option>
                                         </Field>
                                         <ErrorMessage style="color: red;" name="selectedcountry" />
@@ -455,15 +455,12 @@
 </template>
 
 <script>
-import errorMessage from "../General/errorMessage.vue";
-import country from "../../Utils/country.js";
 import dialphone from "../../Utils/dialphone.js";
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 
 export default {
     components: {
-        errorMessage,
         Form,
         Field,
         ErrorMessage
@@ -476,7 +473,7 @@ export default {
             loading: false,
             errors: "",
             dialphone,
-            country,
+            country: [],
             list_exhibitions: [],
             list_sub_exhibitions: [],
             exhibition_id: "",
@@ -876,6 +873,8 @@ export default {
         });
         $("#modalWarning").modal({ backdrop: 'static', keyboard: false });
         $('html, body').animate({ scrollTop: 0 }, 'fast');
+        console.log("MASUK");
+
     }
 };
 </script>
