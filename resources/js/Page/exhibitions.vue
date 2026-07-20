@@ -507,7 +507,7 @@ export default {
             $("#tableExhibitions").on('click', '.btnAdd', function () {
                 const id = this.id;
                 vm.iduser = id;
-                $("#addExhibitionsToUser").modal({ backdrop: 'static', keyboard: false });
+                vm.$router.push({ name: "sub_exibition", params: { code: id } });
             });
 
             $("#tableExhibitions").on('click', '.btnDisable', function () {

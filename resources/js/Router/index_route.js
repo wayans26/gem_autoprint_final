@@ -74,6 +74,14 @@ const routes = [{
         }
     },
     {
+        path: prefix + '/exhibitions/sub/:code',
+        component: () => import('../Page/sub_exhibitions.vue'),
+        name: 'sub_exibition',
+        meta: {
+            parent: "exhibitions",
+        }
+    },
+    {
         path: "/:pathMatch(.*)*",
         name: "notFound",
         component: () => import("../components/notFound.vue"),
