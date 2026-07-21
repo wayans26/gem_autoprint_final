@@ -1,17 +1,18 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h5>Data Sub Exhibition ( {{ code }} ) <button type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#modalTambahSubExibition">Tambah Sub Exhibition</button> </h5>
+            <h5>Data Sub Exhibition <button type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#modalAddSubExhibitions">Tambah Sub Exhibition</button> </h5>
         </div>
         <div class="card-body">
             <div class="table-responsive" id="table_container">
-                <table class="table table-bordered" style="width: 100%" id="tablesubexibition">
+                <table class="table table-bordered" style="width: 100%" id="tableSubExibition">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>code Sub Exibition</th>
-                            <th>Nama</th>
+                            <th>Action</th>
+                            <th>Name</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -20,36 +21,29 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalTambahSubExibition">
+
+
+    <div class="modal fade" id="modalAddSubExhibitions">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Sub Exhibition</h5>
+                    <h5 class="modal-title">Add Exhibition</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" @submit="tambah_sub_exibition">
+                <Form @submit="add_exhibition">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="input-1">Kode Exhibition</label>
-                            <input disabled type="text" v-model="code" class="form-control" id="input-1"
-                                placeholder="Kode Exibition">
-                        </div>
-                        <div class="form-group">
-                            <label for="input-1">Kode Sub Exhibition</label>
-                            <input type="text" v-model="code_sub" class="form-control" id="input-1"
-                                placeholder="Kode Exibition">
-                        </div>
-                        <div class="form-group">
-                            <label for="input-1">Nama Sub Exhibition</label>
-                            <input type="text" v-model="nama" class="form-control" id="input-1"
-                                placeholder="Nama Exibition">
+                            <label for="input-1">Name</label>
+                            <Field name="name" type="text" class="form-control" id="input-1" placeholder="Name"
+                                v-model="name"></Field>
                         </div>
                         <div class="form-group">
                             <label for="input-1">Banner</label>
-                            <input type="file" class="form-control" id="input-1" @change="onFileChange($event)">
+                            <input type="file" class="form-control" id="input-1" @change="file_banner_change($event)">
                         </div>
+                        <br>
 
                     </div>
                     <div class="modal-footer">
@@ -57,7 +51,7 @@
                                 class="fa fa-times"></i>
                             Close</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>
-                            Tambah</button>
+                            Add</button>
                     </div>
                 </form>
             </div>
@@ -66,105 +60,124 @@
 </template>
 
 <script>
+import axios from 'axios';
+import swalNotif from '../Utils/swalNotif.js';
+import Swal from 'sweetalert2';
+import { Form, Field, ErrorMessage } from 'vee-validate';
 export default {
     components: {
-
+        Form,
+        Field,
+        ErrorMessage
     },
     data() {
         return {
             code: this.$route.params.code,
-            code_sub: "",
-            nama: "",
-            file: "",
-            table_sub_exibition: ""
+            name: "",
+            file_banner: "",
+            table_sub_exibition: null
         }
     },
     methods: {
-        onFileChange(e) {
-            this.file = e.target.files[0];
+        file_banner_change(e) {
+            this.file_banner = e.target.files[0];
         },
         get_sub_exibition() {
             const vm = this;
-            this.table_sub_exibition = $("#tablesubexibition").DataTable(
+            this.table_sub_exibition = $("#tableSubExibition").DataTable(
                 {
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "/api/admin/subexibition/get",
+                        url: "/api/v1/web/sub/exhibitions/get",
                         headers: {
                             token: localStorage.getItem('token')
                         },
                         data: {
-                            code: vm.code
+                            id_exhibitions: vm.code
                         }
                     },
                     "columnDefs": [{
                         "width": "2%",
                         "targets": 0
+                    }, {
+                        "width": "2%",
+                        "targets": 1
+                    },
+                    {
+                        "width": "2%",
+                        "targets": 3
                     }],
                     columns: [{
                         data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
                     }, {
-                        data: 'code',
-                        name: 'code'
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
                     },
                     {
-                        data: 'nama',
-                        name: 'nama'
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        orderable: false,
+                        searchable: false
                     }
                     ]
                 }
             );
         },
-
-        tambah_sub_exibition(e) {
-            e.preventDefault();
+        refresh_table() {
             const vm = this;
+            vm.globalLoader.show = true;
+            this.table_sub_exibition.ajax.reload(() => {
+                vm.globalLoader.show = false;
+            });
+        },
+        add_exhibition() {
+            const vm = this;
+            this.globalLoader.show = true;
 
             let frmData = new FormData();
-            frmData.append("code", vm.code);
-            frmData.append("code_sub", vm.code_sub);
-            frmData.append("name", vm.nama);
-            frmData.append("file", vm.file);
+            frmData.append("name", vm.name);
 
-            $.ajax({
-                url: "/api/admin/subexibition/add",
-                type: "post",
+            axios.post("/api/v1/web/exhibitions/add", frmData, {
                 headers: {
                     token: localStorage.getItem('token'),
-                },
-                data: frmData,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    if (data.status === 1) {
-                        vm.$swal({
-                            icon: "success",
-                            title: "Success",
-                            text: data.message
-                        });
-                        vm.table_sub_exibition.ajax.reload();
-                        vm.code_sub = "";
-                        vm.nama = "";
-                        vm.file = "";
-                        $("#modalTambahSubExibition").modal("hide");
-                    }
-                    else {
-                        vm.$swal({
-                            icon: "info",
-                            title: "Information",
-                            text: data.message
-                        });
-                    }
-                },
-                error: function (err) {
+                }
+            }).then(res => {
+                if (res.data.status === 1) {
                     vm.$swal({
-                        icon: "error",
-                        title: "Error",
-                        text: "Terjadi Kesalahan Pada Server",
+                        icon: "success",
+                        title: "Success",
+                        text: res.data.message
+                    });
+                    vm.refresh_table();
+                    vm.init();
+                    $("#modalAddExhibitions").modal("hide");
+                }
+                else {
+                    vm.$swal({
+                        icon: "info",
+                        title: "Information",
+                        text: res.data.message
                     });
                 }
+            }).catch(res => {
+                vm.$swal({
+                    icon: "error",
+                    title: "Error",
+                    text: "Terjadi Kesalahan Pada Server",
+                });
+
+            }).finally(function () {
+                vm.globalLoader.show = false;
             });
         },
     },

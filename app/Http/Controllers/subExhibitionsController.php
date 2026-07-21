@@ -24,15 +24,14 @@ class subExhibitionsController extends Controller
         if ($validate->fails()) {
             return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
         }
-        $subExhibitions = sub_exhibitions::select(
+        $subExhibitions = sub_exhibitions::query()->select(
             'id',
             'name',
             'status'
-        )->where('idexhibitions', $req->id_exhibitions)->query();
+        )->where('exhibitions_id', $req->id_exhibitions);
 
         return DataTables::of($subExhibitions)
             ->addIndexColumn()
-
             ->filterColumn('name', function ($query, $keyword) {
                 $query->where('name', 'like', $keyword . '%');
             })
