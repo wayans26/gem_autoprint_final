@@ -7,6 +7,7 @@ use App\Http\Controllers\menuGroupController;
 use App\Http\Controllers\qzController;
 use App\Http\Controllers\registerController;
 use App\Http\Controllers\roleController;
+use App\Http\Controllers\subExhibitionsController;
 use App\Http\Controllers\userManagerController;
 use App\Http\Controllers\visitorPrint;
 use App\Http\Middleware\adminRole;
@@ -102,6 +103,14 @@ Route::prefix($version)->group(function () use ($prefixWeb, $prefixMobile) {
                 Route::post('/exhibitions/get/id', 'getExhibitionById')->middleware('permission:exhibitions,view');
                 Route::post('/exhibitions/edit', 'editExhibitions')->middleware('permission:exhibitions,update');
                 Route::post('/exhibitions/status/change', 'changeStatus')->middleware('permission:exhibitions,update');
+            });
+
+            Route::controller(subExhibitionsController::class)->group(function () {
+                Route::get('/sub/exhibitions/get', 'getSubExhibitions')->middleware('permission:exhibitions,view');
+                Route::post('/sub/exhibitions/add', 'addSubExhibition')->middleware('permission:exhibitions,create');
+                Route::post('/sub/exhibitions/edit', 'editSubExhibition')->middleware('permission:exhibitions,update');
+                Route::post('/sub/exhibitions/status/change', 'changeStatus')->middleware('permission:exhibitions,update');
+                Route::post('/sub/exhibitions/get/id', 'getSubExhibitionById')->middleware('permission:exhibitions,view');
             });
         });
     });

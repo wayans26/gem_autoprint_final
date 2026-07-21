@@ -14,7 +14,8 @@ class sub_exhibitions extends Model
     // protected $keyType = 'string';
     protected $fillable = [
         'exhibitions_id',
-        'nama',
-        'path',
+        'name',
+        'file_banner',
+        'status',
     ];
 }
