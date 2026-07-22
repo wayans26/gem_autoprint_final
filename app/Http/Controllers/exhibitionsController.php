@@ -6,6 +6,7 @@ use App\Http\Utils\makeid;
 use App\Http\Utils\responseMessage;
 use App\Models\exhibitions;
 use App\Models\file;
+use App\Models\sub_exhibitions;
 use App\Models\user;
 use App\Models\user_has_exhibitions;
 use Illuminate\Http\Request;
@@ -258,5 +259,35 @@ class exhibitionsController extends Controller
         ]);
 
         return responseMessage::responseMessage(1, "Success", 200);
+    }
+
+    function getRegistrationExhibition(Request $req)
+    {
+        $exhibition = exhibitions::where([
+            'status' => 1,
+            'host'   => $req->host()
+        ])
+            ->when($req->has('path'), function ($query) use ($req) {
+                $query->where('path', $req->path);
+            })->get();
+
+        return responseMessage::responseMessageWithData(1, "Success", 200, $exhibition);
+    }
+
+    function getRegistrationSubExhibition(Request $req)
+    {
+        $validate = Validator::make($req->all(), [
+            'id' => 'required',
+        ]);
+        if ($validate->fails()) {
+            return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
+        }
+
+        $sub_exhibition = sub_exhibitions::where([
+            'status'            => 1,
+            'exhibitions_id'    => $req->id
+        ])->get();
+
+        return responseMessage::responseMessageWithData(1, "Success", 200, $sub_exhibition);
     }
 }

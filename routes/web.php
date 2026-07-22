@@ -6,6 +6,7 @@ use App\Http\Controllers\reportController;
 use App\Http\Utils\makeid;
 use App\Mail\reset_password_mail;
 use App\Models\exhibitions;
+use App\Models\file as ModelsFile;
 use App\Models\license_permit;
 use App\Models\personal_token;
 use App\Models\report_file;
@@ -52,23 +53,23 @@ use ZanySoft\Zip\Facades\Zip;
 //     ]);
 // });
 
-// Route::get('/banner/exhibitions/{code}', function (Request $req, $code) {
-//     $exhibition = tbexhibition::find($code);
-//     if (empty($exhibition)) {
-//         return abort(404);
-//     }
+Route::get('/registration/banner/exhibitions/{id}', function (Request $req, $id) {
+    $file = ModelsFile::find($id);
+    if (empty($file)) {
+        return abort(404);
+    }
 
-//     if ($exhibition->path == null) {
-//         return abort(404);
-//     }
+    if ($file->path == null) {
+        return abort(404);
+    }
 
-//     if (!Storage::exists($exhibition->path)) {
-//         return abort(404);
-//     }
+    if (!Storage::exists($file->path)) {
+        return abort(404);
+    }
 
-//     $file = Storage::get($exhibition->path);
-//     return Response::make($file, 200)->header("content-type", "image/jpg");
-// });
+    $banner = Storage::get($file->path);
+    return Response::make($banner, 200)->header("content-type", "image/jpg");
+});
 
 // Route::get('/test', function () {
 //     return view('coming_soon');

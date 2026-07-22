@@ -39,6 +39,12 @@ Route::prefix($version)->group(function () use ($prefixWeb, $prefixMobile) {
             Route::post('/auth/reset/password/change', 'changePassword');
         });
 
+        //Get Data Exhibition for Visitor
+        Route::controller(exhibitionsController::class)->group(function () {
+            Route::get('/registration/exhibition/get', 'getRegistrationExhibition');
+            Route::post('/registration/sub/exhibition/get', 'getRegistrationSubExhibition');
+        });
+
         Route::middleware(tokenCheck::class)->group(function () {
             // Role Check
             Route::controller(loginController::class)->group(function () {
