@@ -120,8 +120,6 @@ class exhibitionsController extends Controller
             });
             return responseMessage::responseMessage(1, "Success Add Exhibition", 200);
         } catch (\Throwable $th) {
-            Storage::disk('local')->delete($banner_path);
-            Storage::disk('local')->delete($all_banner_path);
             return responseMessage::responseMessage(0, $th->getMessage(), 200);
         }
     }
@@ -136,7 +134,7 @@ class exhibitionsController extends Controller
             'location'          => 'required',
             'date'              => 'required',
             'team'              => 'required',
-            'form'              => 'required',
+            'form'              => 'required|in:reguler,vip,busworld',
             'host'              => 'required',
             'opening_hours'     => 'required',
             'id'                => 'required',
@@ -201,8 +199,6 @@ class exhibitionsController extends Controller
             });
             return responseMessage::responseMessage(1, "Success Edit Exhibition", 200);
         } catch (\Throwable $th) {
-            Storage::disk('local')->delete($banner_path);
-            Storage::disk('local')->delete($all_banner_path);
             return responseMessage::responseMessage(0, $th->getMessage(), 200);
         }
     }

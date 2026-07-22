@@ -5,6 +5,7 @@ use App\Http\Controllers\imageController;
 use App\Http\Controllers\reportController;
 use App\Http\Utils\makeid;
 use App\Mail\reset_password_mail;
+use App\Models\exhibitions;
 use App\Models\license_permit;
 use App\Models\personal_token;
 use App\Models\report_file;
@@ -89,12 +90,29 @@ Route::get('/{path?}', function (Request $req, ?string $path = null) {
         }
         return redirect()->route('auth', ['any' => 'login']);
     }
-    if ($path) {
-        if (strtolower($path) == "busworld") {
-            return $path;
-        }
+    $exhibition = exhibitions::where([
+        'status'    => 1,
+        'host'      => $req->host()
+    ])->first();
+
+    if (empty($exhibition)) {
+        return view('coming_soon');
     }
-    return view('Form.index_reguler');
+    if ($path) {
+        $custom_exhibition = exhibitions::where([
+            'status'    => 1,
+            'host'      => $req->host(),
+            'path'      => $path
+        ])->first();
+
+        if (empty($custom_exhibition)) {
+            return view('coming_soon');
+        }
+
+        return view('Form.index_' . $custom_exhibition->page);
+    }
+    // every page must start wirh index_
+    return view('Form.index_' . $exhibition->page);
 });
 Route::get('/auth/{any}', function () {
     return view('index_login');
