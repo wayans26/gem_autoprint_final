@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Utils\makeid;
 use App\Http\Utils\responseMessage;
+use App\Models\exhibitions;
 use App\Models\file;
 use App\Models\sub_exhibitions;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class subExhibitionsController extends Controller
     function addSubExhibition(Request $req)
     {
         $validate = Validator::make($req->all(), [
-            'id_exhibitions'    => 'required',
+            'id_exhibition'     => 'required',
             'name'              => 'required',
             'file_banner'       => 'required|mimes:png,jpg,jpeg',
         ]);
@@ -59,7 +60,7 @@ class subExhibitionsController extends Controller
             return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
         }
 
-        $exhibition = exhibitions::find($req->id_exhibitions);
+        $exhibition = exhibitions::find($req->id_exhibition);
         if (empty($exhibition)) {
             return responseMessage::responseMessage(0, "Exhibition not found", 200);
         }
@@ -81,9 +82,9 @@ class subExhibitionsController extends Controller
                 ]);
 
                 sub_exhibitions::create([
-                    'idexhibitions' => $exhibition->id,
-                    'name'          => $req->name,
-                    'banner'        => $id_banner,
+                    'exhibitions_id'    => $exhibition->id,
+                    'name'              => $req->name,
+                    'file_banner'       => $id_banner,
                 ]);
             });
             return responseMessage::responseMessage(1, "Success", 200);

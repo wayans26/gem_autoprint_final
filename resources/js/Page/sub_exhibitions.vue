@@ -27,12 +27,12 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Exhibition</h5>
+                    <h5 class="modal-title">Add Sub Exhibition</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <Form @submit="add_exhibition">
+                <Form @submit="add_sub_exhibition">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="input-1">Name</label>
@@ -42,6 +42,42 @@
                         <div class="form-group">
                             <label for="input-1">Banner</label>
                             <input type="file" class="form-control" id="input-1" @change="file_banner_change($event)">
+                        </div>
+                        <br>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal"><i
+                                class="fa fa-times"></i>
+                            Close</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>
+                            Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEditSubExhibitions">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Sub Exhibition</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <Form @submit="edit_sub_exhibition">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="input-1">Name</label>
+                            <Field name="update.name" type="text" class="form-control" id="input-1" placeholder="Name"
+                                v-model="update.name"></Field>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">Banner</label>
+                            <input type="file" class="form-control" id="input-1"
+                                @change="update_file_banner_change($event)">
                         </div>
                         <br>
 
@@ -75,12 +111,20 @@ export default {
             code: this.$route.params.code,
             name: "",
             file_banner: "",
-            table_sub_exibition: null
+            table_sub_exibition: null,
+            update: {
+                name: "",
+                file_banner: "",
+                id: ""
+            }
         }
     },
     methods: {
         file_banner_change(e) {
             this.file_banner = e.target.files[0];
+        },
+        update_file_banner_change(e) {
+            this.update.file_banner = e.target.files[0];
         },
         get_sub_exibition() {
             const vm = this;
@@ -140,14 +184,21 @@ export default {
                 vm.globalLoader.show = false;
             });
         },
-        add_exhibition() {
+        init() {
+            this.name = "";
+            this.file_banner = null;
+            this.update.file_banner = null;
+        },
+        add_sub_exhibition() {
             const vm = this;
             this.globalLoader.show = true;
 
             let frmData = new FormData();
             frmData.append("name", vm.name);
+            frmData.append("file_banner", vm.file_banner);
+            frmData.append("id_exhibition", vm.code);
 
-            axios.post("/api/v1/web/exhibitions/add", frmData, {
+            axios.post("/api/v1/web/sub/exhibitions/add", frmData, {
                 headers: {
                     token: localStorage.getItem('token'),
                 }
@@ -160,7 +211,122 @@ export default {
                     });
                     vm.refresh_table();
                     vm.init();
-                    $("#modalAddExhibitions").modal("hide");
+                    $("#modalAddSubExhibitions").modal("hide");
+                }
+                else {
+                    vm.$swal({
+                        icon: "info",
+                        title: "Information",
+                        text: res.data.message
+                    });
+                }
+            }).catch(res => {
+                vm.$swal({
+                    icon: "error",
+                    title: "Error",
+                    text: "Terjadi Kesalahan Pada Server",
+                });
+
+            }).finally(function () {
+                vm.globalLoader.show = false;
+            });
+        },
+        edit_sub_exhibition() {
+            const vm = this;
+            this.globalLoader.show = true;
+
+            let frmData = new FormData();
+            frmData.append("name", vm.update.name);
+            frmData.append("file_banner", vm.update.file_banner);
+            frmData.append("id", vm.update.id);
+
+            axios.post("/api/v1/web/sub/exhibitions/edit", frmData, {
+                headers: {
+                    token: localStorage.getItem('token'),
+                }
+            }).then(res => {
+                if (res.data.status === 1) {
+                    vm.$swal({
+                        icon: "success",
+                        title: "Success",
+                        text: res.data.message
+                    });
+                    vm.refresh_table();
+                    vm.init();
+                    $("#modalEditSubExhibitions").modal("hide");
+                }
+                else {
+                    vm.$swal({
+                        icon: "info",
+                        title: "Information",
+                        text: res.data.message
+                    });
+                }
+            }).catch(res => {
+                vm.$swal({
+                    icon: "error",
+                    title: "Error",
+                    text: "Terjadi Kesalahan Pada Server",
+                });
+
+            }).finally(function () {
+                vm.globalLoader.show = false;
+            });
+        },
+        get_sub_exhibition_byid(id) {
+            const vm = this;
+            this.globalLoader.show = true;
+
+            axios.post("/api/v1/web/sub/exhibitions/get/id", {
+                id: id
+            }, {
+                headers: {
+                    token: localStorage.getItem('token'),
+                }
+            }).then(res => {
+                if (res.data.status === 1) {
+                    vm.update.id = res.data.data.id;
+                    vm.update.name = res.data.data.name;
+
+                    $("#modalEditSubExhibitions").modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                }
+                else {
+                    vm.$swal({
+                        icon: "info",
+                        title: "Information",
+                        text: res.data.message
+                    });
+                }
+            }).catch(res => {
+                vm.$swal({
+                    icon: "error",
+                    title: "Error",
+                    text: "Terjadi Kesalahan Pada Server",
+                });
+
+            }).finally(function () {
+                vm.globalLoader.show = false;
+            });
+        },
+        change_status(id, status) {
+            const vm = this;
+            this.globalLoader.show = true;
+
+            axios.post("/api/v1/web/sub/exhibitions/status/change", {
+                id: id,
+                status: status
+            }, {
+                headers: {
+                    token: localStorage.getItem('token'),
+                }
+            }).then(res => {
+                if (res.data.status === 1) {
+                    vm.refresh_table();
+                    swalNotif.success(res.data.message);
                 }
                 else {
                     vm.$swal({
@@ -182,7 +348,65 @@ export default {
         },
     },
     mounted() {
-        this.get_sub_exibition();
+        const vm = this;
+        this.loading = false;
+        setTimeout(() => {
+            vm.get_sub_exibition();
+
+            $("#tableSubExibition").on('click', '.btnEdit', function () {
+                const id = this.id;
+                vm.get_sub_exhibition_byid(id);
+            });
+
+            $("#tableSubExibition").on('click', '.btnDisable', function () {
+                const id = this.id;
+                Swal.fire({
+                    icon: "warning",
+                    title: "Warning",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    text: "This Action Will Be Disable Exhibition!",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    showCancelButton: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        setTimeout(() => { Swal.hideLoading() }, 500)
+                    }
+                }).then((result) => {
+                    $(".confirm").attr('disabled', 'disabled');
+                    if (result.isConfirmed) {
+                        vm.change_status(id, "0");
+                    }
+                });
+            });
+
+            $("#tableSubExibition").on('click', '.btnEnable', function () {
+                const id = this.id;
+                Swal.fire({
+                    icon: "warning",
+                    title: "Warning",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    text: "This Action Will Be Enable Exhibition!",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    showCancelButton: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                        setTimeout(() => { Swal.hideLoading() }, 500)
+                    }
+                }).then((result) => {
+                    $(".confirm").attr('disabled', 'disabled');
+                    if (result.isConfirmed) {
+                        vm.change_status(id, "1");
+                    }
+                });
+            });
+
+        }, 1);
 
     }
 }
