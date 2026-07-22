@@ -5,10 +5,9 @@
         </div>
         <div class="card mx-auto" style="max-width: 80%;">
             <img v-if="!exhibition_id" class="card-img-top"
-                :src="'https://gateway.reg-gemindonesia.net/banner/exhibitions/all/' + temp_id_exhibition"
-                style="max-width: 100%;" alt="" srcset="">
-            <img v-else class="card-img-top"
-                :src="'https://gateway.reg-gemindonesia.net/banner/exhibitions/' + exhibition_id"
+                :src="'/registration/banner/exhibitions/' + temp_id_exhibition" style="max-width: 100%;" alt=""
+                srcset="">
+            <img v-else class="card-img-top" :src="'/registration/banner/exhibitions/' + exhibition_id"
                 style="max-width: 100%;" alt="" srcset="">
             <div class="card-body">
                 <Form :validation-schema="validate_role" @submit="register">
@@ -108,7 +107,7 @@
                                             placeholder="Country" v-model="selectedcountry">
                                             <option value="" selected disabled>==SELECT COUNTRY==</option>
                                             <option v-for="(item, index) in country" :key="index" :value="item">{{ item
-                                            }}
+                                                }}
                                             </option>
                                         </Field>
                                         <ErrorMessage style="color: red;" name="selectedcountry" />
