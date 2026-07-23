@@ -8,6 +8,8 @@ import {
 } from 'vue-router';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import vSelect from 'vue-select'
+import "vue-select/dist/vue-select.css";
 
 
 const routes = [{
@@ -30,4 +32,5 @@ router.beforeEach((to, from, next) => {
 const app = createApp(App);
 app.use(router);
 app.use(VueSweetalert2);
+app.component('v-select', vSelect);
 app.mount('#app');

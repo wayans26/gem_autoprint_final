@@ -170,7 +170,7 @@ class subExhibitionsController extends Controller
         $sub_exhibition = sub_exhibitions::select(
             'id',
             'name',
-            'status'
+            'file_banner'
         )->where('id', $req->id)->first();
 
         if (empty($sub_exhibition)) {

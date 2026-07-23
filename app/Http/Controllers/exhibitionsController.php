@@ -70,7 +70,7 @@ class exhibitionsController extends Controller
         ])->first();
 
         if (!empty($exhibition)) {
-            if ($exhibition->form != $req->form) {
+            if ($exhibition->page != $req->form) {
                 return responseMessage::responseMessage(0, "Active Exhibitions With Different Form Not Allowed", 200);
             }
         }
@@ -149,7 +149,7 @@ class exhibitionsController extends Controller
         if (empty($exhibition)) {
             return responseMessage::responseMessage(0, "Exhibition not found", 200);
         } else {
-            if ($exhibition->form != $req->form) {
+            if ($exhibition->page != $req->form) {
                 return responseMessage::responseMessage(0, "Active Exhibitions With Different Form Not Allowed", 200);
             }
         }
@@ -263,7 +263,11 @@ class exhibitionsController extends Controller
 
     function getRegistrationExhibition(Request $req)
     {
-        $exhibition = exhibitions::where([
+        $exhibition_list = exhibitions::select(
+            'id',
+            'name',
+            'banner_file',
+        )->where([
             'status' => 1,
             'host'   => $req->host()
         ])
@@ -271,7 +275,27 @@ class exhibitionsController extends Controller
                 $query->where('path', $req->path);
             })->get();
 
-        return responseMessage::responseMessageWithData(1, "Success", 200, $exhibition);
+        $exhibition_detail = exhibitions::select(
+            'id',
+            'all_banner',
+            'banner_file',
+            'date',
+            'full_name',
+            'name',
+            'location',
+            'team',
+        )->where([
+            'status' => 1,
+            'host'   => $req->host()
+        ])
+            ->when($req->has('path'), function ($query) use ($req) {
+                $query->where('path', $req->path);
+            })->first();
+
+        return responseMessage::responseMessageWithData(1, "Success", 200, array(
+            'exhibition_list'   => $exhibition_list,
+            'exhibition_detail' => $exhibition_detail
+        ));
     }
 
     function getRegistrationSubExhibition(Request $req)
