@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\countryController;
 use App\Http\Controllers\exhibitionsController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\menuEditorController;
@@ -43,6 +44,10 @@ Route::prefix($version)->group(function () use ($prefixWeb, $prefixMobile) {
         Route::controller(exhibitionsController::class)->group(function () {
             Route::get('/registration/exhibition/get', 'getRegistrationExhibition');
             Route::post('/registration/sub/exhibition/get', 'getRegistrationSubExhibition');
+        });
+
+        Route::controller(countryController::class)->group(function () {
+            Route::get('/registration/country/get', 'getCountry');
         });
 
         Route::middleware(tokenCheck::class)->group(function () {
