@@ -8,9 +8,7 @@ use App\Http\Utils\responseMessage;
 use App\Http\Utils\sendEmail;
 use App\Models\activity_history;
 use App\Models\countries;
-use App\Models\country;
 use App\Models\exhibitions;
-use App\Models\registration;
 use App\Models\registration_visitor;
 use App\Models\sub_exhibitions;
 use App\Models\user_has_exhibitions;
@@ -24,9 +22,10 @@ class registerController extends Controller
     //
     function getRegisterData(Request $req)
     {
-        $country = country::select('idcountry', 'country_name')->get();
-        $userExhibitions = user_has_exhibitions::where('user_id', $req->users->id)->pluck('exhibition_id')->toArray();
-        $exhibitions = exhibitions::whereIn('idexhibitions', $userExhibitions)->select('idexhibitions', 'name')->get();
+        $country = countries::select('id', 'country_name')->get();
+        $exhibitions = exhibitions::join('user_has_exhibitions', 'user_has_exhibitions.exhibitions_id', '=', 'exhibitions.id')
+            ->where('user_has_exhibitions.user_id', $req->users->id)
+            ->select('exhibitions.id', 'exhibitions.name')->get();
 
         return responseMessage::responseMessageWithData(1, "Success", 200, array(
             'country'       => $country,
@@ -44,7 +43,7 @@ class registerController extends Controller
             return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
         }
 
-        $subExhibitions = sub_exhibitions::where('idexhibitions', $req->idexhibitions)->get();
+        $subExhibitions = sub_exhibitions::where('exhibitions_id', $req->idexhibitions)->get();
         return responseMessage::responseMessageWithData(1, "Success", 200, $subExhibitions);
     }
 
@@ -73,17 +72,17 @@ class registerController extends Controller
             return responseMessage::responseMessage(0, "Sub Exhibition not found", 200);
         }
 
-        if (registration::where([
-            'SubExhibition' => $sub_exhibitions->idsubexhibitions,
-            'Email'         => $req->email
+        if (registration_visitor::where([
+            'sub_exhibitions_id'    => $sub_exhibitions->id,
+            'email'                 => $req->email
         ])->exists()) {
             return responseMessage::responseMessage(0, "Email already registered", 200);
         }
-        $barcode = $exhibition->type . $exhibition->idexhibitions . "-" . makeid::createId(6);
+        $barcode = $exhibition->id . "-" . $sub_exhibitions->id  . "-" .  Carbon::now()->format('dm') . "-" . makeid::createId(6);
 
 
 
-        $registrasi = registration::create([
+        $registrasi = registration_visitor::create([
             'Exhibition'                            => $exhibition->idexhibitions,
             'NameTitle'                             => 0,
             'Name'                                  => $req->name,
@@ -119,7 +118,7 @@ class registerController extends Controller
             'registration_id' => $registerId,
         ]);
 
-        sendEmail::sendEmailRegistration($req, $barcode, $exhibition, $sub_exhibitions);
+        sendEmail::sendEmailRegistration($registrasi->id, $req);
 
         $data_print = generatePrint::PDFPPLB($req->name, $req->title, $req->company, $barcode);
 

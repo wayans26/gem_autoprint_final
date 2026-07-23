@@ -362,7 +362,7 @@ export default {
                     }
                     vm.list_country = res.data.data.country.map(item => ({
                         label: item.country_name,
-                        value: item.idcountry
+                        value: item.id
                     }));
                     vm.list_exhibitions = res.data.data.exhibitions.map(item => ({
                         label: item.name,
