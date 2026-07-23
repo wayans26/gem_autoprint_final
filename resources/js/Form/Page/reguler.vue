@@ -90,6 +90,8 @@
                                     <v-select placeholder="Select a Country" :options="form_data.list_country"
                                         label="label" :reduce="option => option.value" v-model="form.country"
                                         :clearable="false"></v-select>
+                                    <span role="alert" style="color: red;"
+                                        v-show="!String(this.form.country ?? '').trim()">Country Can't Be Empty!</span>
                                 </div>
                             </div>
                         </div>
@@ -119,6 +121,9 @@
                                     <v-select placeholder="Select a Country" :options="form_data.list_country"
                                         label="label_code" :reduce="option => option.value" v-model="form.dial_code"
                                         :clearable="false"></v-select>
+                                    <span role="alert" style="color: red;"
+                                        v-show="!String(this.form.dial_code ?? '').trim()">Mobile Phone Dial Code Can't
+                                        Be Empty!</span>
                                 </div>
                                 <div class="col-lg-9">
                                     <div class="position-relative ">
@@ -153,6 +158,9 @@
                                     <v-select placeholder="Select a Job Function" :options="form_data.list_job_function"
                                         label="label" :reduce="option => option.value" v-model="form.job_function"
                                         :clearable="false"></v-select>
+                                    <span role="alert" style="color: red;"
+                                        v-show="!String(this.form.job_function ?? '').trim()">Job Function Can't Be
+                                        Empty!</span>
                                 </div>
                             </div>
                             <div class="col-lg-6" v-if="form.job_function === 'Other'">
@@ -161,7 +169,9 @@
                                     <div class="position-relative ">
                                         <Field name="other_job_function" class="form-control"
                                             placeholder="Other Job Function *" v-model="form.other_job_function" />
-                                        <ErrorMessage style="color: red;" name="other_job_function" />
+                                        <span role="alert" style="color: red;"
+                                            v-show="!String(this.form.other_job_function ?? '').trim()">Other Job
+                                            Function Can't Be Empty!</span>
                                     </div>
                                 </div>
                             </div>
@@ -174,6 +184,9 @@
                                         :options="form_data.list_purpose_visit" label="label"
                                         :reduce="option => option.value" v-model="form.purpose_visit"
                                         :clearable="false"></v-select>
+                                    <span role="alert" style="color: red;"
+                                        v-show="!String(this.form.purpose_visit ?? '').trim()">Purpose Visit Can't Be
+                                        Empty!</span>
                                 </div>
                             </div>
                             <div class="col-lg-6" v-if="form.purpose_visit === 'Other'">
@@ -182,8 +195,9 @@
                                     <div class="position-relative ">
                                         <Field name="other_purpose_visit" class="form-control"
                                             placeholder="*Other Purpose of Visit" v-model="form.other_purpose_visit" />
-                                        <ErrorMessage style="color: red;" name="other_purpose_visit" />
-
+                                        <span role="alert" style="color: red;"
+                                            v-show="!String(this.form.other_purpose_visit ?? '').trim()">Other Purpose
+                                            Visit Can't Be Empty!</span>
                                     </div>
                                 </div>
                             </div>
@@ -196,6 +210,9 @@
                                         :options="form_data.list_purchasing_role" label="label"
                                         :reduce="option => option.value" v-model="form.purchasing_role"
                                         :clearable="false"></v-select>
+                                    <span role="alert" style="color: red;"
+                                        v-show="!String(this.form.purchasing_role ?? '').trim()">Purchasing Role Can't
+                                        Be Empty!</span>
                                 </div>
                             </div>
                             <div class="col-lg-6" v-if="form.purchasing_role === 'Other'">
@@ -205,7 +222,9 @@
                                         <Field name="other_purchasing_role" class="form-control"
                                             placeholder="*Other Purchasing Roles"
                                             v-model="form.other_purchasing_role" />
-                                        <ErrorMessage style="color: red;" name="other_purchasing_role" />
+                                        <span role="alert" style="color: red;"
+                                            v-show="!String(this.form.other_purchasing_role ?? '').trim()">Other
+                                            Purchasing Role Can't Be Empty!</span>
                                     </div>
                                 </div>
                             </div>
@@ -218,6 +237,9 @@
                                         :options="form_data.list_event_find" label="label"
                                         :reduce="option => option.value" v-model="form.event_find"
                                         :clearable="false"></v-select>
+                                    <span role="alert" style="color: red;"
+                                        v-show="!String(this.form.event_find ?? '').trim()">Event Find Can't Be
+                                        Empty!</span>
                                 </div>
                             </div>
                             <div class="col-lg-6" v-if="form.event_find === 'Other'">
@@ -227,7 +249,9 @@
                                         <Field name="other_event_find" class="form-control"
                                             placeholder="*How did you find out about this event?"
                                             v-model="form.other_event_find" />
-                                        <ErrorMessage style="color: red;" name="other_event_find" />
+                                        <span role="alert" style="color: red;"
+                                            v-show="!String(this.form.other_event_find ?? '').trim()">Other Event Find
+                                            Can't Be Empty!</span>
                                     </div>
                                 </div>
                             </div>
@@ -598,6 +622,7 @@ export default {
         register() {
             const vm = this;
             if (!this.validate_select()) {
+                swalNotif.info("Pelase Fill All Required Field!");
                 return;
             }
             console.log("REGISTER");
@@ -704,50 +729,40 @@ export default {
                 return false;
             }
             if (!String(this.form.country ?? '').trim()) {
-                swalNotif.info("Country Can't Be Empty!");
                 return false;
             }
             if (!String(this.form.dial_code ?? '').trim()) {
-                swalNotif.info("Mobile Phone Dial Code Can't Be Empty!");
                 return false;
             }
             if (!String(this.form.job_function ?? '').trim()) {
-                swalNotif.info("Job Function Can't Be Empty!");
                 return false;
             }
             if (this.form.job_function === 'Other') {
                 if (!String(this.form.other_job_function ?? '').trim()) {
-                    swalNotif.info("Other Job Function Can't Be Empty!");
                     return false;
                 }
             }
             if (!String(this.form.purpose_visit ?? '').trim()) {
-                swalNotif.info("Purpose Visit Can't Be Empty!");
                 return false;
             }
             if (this.form.purpose_visit === 'Other') {
                 if (!String(this.form.other_purpose_visit ?? '').trim()) {
-                    swalNotif.info("Other Purpose Visit Can't Be Empty!");
                     return false;
                 }
             }
             if (!String(this.form.purchasing_role ?? '').trim()) {
-                swalNotif.info("Purchasing Role Can't Be Empty!");
                 return false;
             }
             if (this.form.purchasing_role === 'Other') {
                 if (!String(this.form.other_purchasing_role ?? '').trim()) {
-                    swalNotif.info("Other Purchasing Role Can't Be Empty!");
                     return false;
                 }
             }
             if (!String(this.form.event_find ?? '').trim()) {
-                swalNotif.info("Event Find Can't Be Empty!");
                 return false;
             }
             if (this.form.event_find === 'Other') {
                 if (!String(this.form.other_event_find ?? '').trim()) {
-                    swalNotif.info("Other Event Find Can't Be Empty!");
                     return false;
                 }
             }
