@@ -26,6 +26,9 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use ZanySoft\Zip\Facades\Zip;
 
 
+// every add template, must add blade, index vue, vue page, add list in list form, add mail page
+
+
 // Route::get('/test', function () {
 //     // $barcodeSvg = (new TypeCode128())->getBarcode("YANAAAA");
 //     // $renderer = new SvgRenderer();

@@ -639,24 +639,24 @@ export default {
                 city: this.form.city,
                 country: this.form.country,
                 telephone: this.form.telepon,
+                dial_code: this.form.dial_code,
                 mobile_phone: this.form.mobile_phone,
                 fax: this.form.fax,
                 email: this.form.email,
                 business_type: this.form.type_of_business,
                 job_function: this.form.job_function,
-                job_function_other: this.form.job_function_other,
-                visit_purpose: this.form.visit_purpose,
-                visit_purpose_other: this.form.visit_purpose_other,
+                job_function_other: this.form.other_job_function,
+                visit_purpose: this.form.purpose_visit,
+                visit_purpose_other: this.form.other_purpose_visit,
                 purchasing_role: this.form.purchasing_role,
-                purchasing_role_other: this.form.purchasing_role_other,
+                purchasing_role_other: this.form.other_purchasing_role,
                 event_find: this.form.event_find,
-                event_find_other: this.form.event_find_other,
+                event_find_other: this.form.other_event_find,
                 is_received_invitation_next: this.form.is_received_invitation_next,
                 is_received_invitation_next_address_same: this.form.is_received_invitation_next_same_address,
                 received_invitation_next_address: this.form.recived_invitation_address,
             }).then(res => {
                 if (res.data.status == 1) {
-                    swalNotif.success(res.data.message);
                     $("#modalInfo").modal({ backdrop: 'static', keyboard: false });
                 }
                 else {

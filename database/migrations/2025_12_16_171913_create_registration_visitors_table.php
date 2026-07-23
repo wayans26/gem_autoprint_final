@@ -28,13 +28,13 @@ return new class extends Migration
             $table->string('fax')->nullable();
             $table->string('email')->nullable();
             $table->string('business_type');
-            $table->integer('job_function')->nullable();
+            $table->string('job_function')->nullable();
             $table->longText('job_function_other')->nullable();
-            $table->integer('visit_purpose')->nullable();
+            $table->string('visit_purpose')->nullable();
             $table->longText('visit_purpose_other')->nullable();
-            $table->integer('purchasing_role')->nullable();
+            $table->string('purchasing_role')->nullable();
             $table->longText('purchasing_role_other')->nullable();
-            $table->integer('event_find')->nullable();
+            $table->string('event_find')->nullable();
             $table->longText('event_find_other')->nullable();
             $table->boolean('is_received_invitation_next')->nullable();
             $table->boolean('is_received_invitation_next_address_same')->nullable();

@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\exhibitions;
+use App\Models\registration_visitor;
 use App\Models\sub_exhibitions;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,29 +19,40 @@ class email_registration extends Mailable
     /**
      * Create a new message instance.
      */
-    public $data;
-    public function __construct($data)
+    public $registration_id;
+    public $url;
+    public function __construct($registration_id, $url)
     {
         //
-        $this->data = $data;
+        $this->registration_id = $registration_id;
+        $this->url = $url;
     }
 
     public function build()
     {
-        $exhibition = exhibitions::find($this->data['idexhibitions']);
-        $subExhibitions = sub_exhibitions::find($this->data['idsubexhibitions']);
-        if ($this->data['type'] == 'busworld') {
-            return $this->subject($this->data['subject'])
-                ->from($this->data['from'], $this->data['from_name'])
-                ->view('Email.emilBusworld', [
-                    'data'              => $this->data,
-                ]);
-        }
+        $registration_data = registration_visitor::join('sub_exhibitions', 'sub_exhibitions.id', '=', 'registration_visitors.sub_exhibitions_id')
+            ->join('exhibitions', 'exhibitions.id', '=', 'sub_exhibitions.exhibitions_id')
+            ->select(
+                'exhibitions.full_name',
+                'exhibitions.page',
+                'exhibitions.banner_file',
+                'exhibitions.opening_hours',
+                'exhibitions.team',
+                'exhibitions.date',
+                'registration_visitors.name',
+                'registration_visitors.company',
+                'registration_visitors.job_title',
+                'registration_visitors.city',
+                'registration_visitors.country',
+                'registration_visitors.email',
+            )
+            ->where('registration_visitors.id', $this->registration_id)->first();
 
-        return $this->subject($this->data['subject'])
-            ->from($this->data['from'], $this->data['from_name'])
-            ->view('Email.emailUndangan', [
-                'data'              => $this->data,
+        return $this->subject($registration_data->full_name . "(" . $registration_data->date . ")")
+            ->from("no.reply@reg-gemindonesia.net", "GEM Indonesia")
+            ->view('Email.' . $registration_data->page, [
+                'data'              => $registration_data,
+                'url'               => $this->url
             ]);
     }
 }

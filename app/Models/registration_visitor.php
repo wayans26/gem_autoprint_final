@@ -9,9 +9,9 @@ class registration_visitor extends Model
     //
     protected $connection = 'mysql';
     protected $table = 'registration_visitors';
-    public $incrementing = false;
+    // public $incrementing = false;
     protected $primaryKey = 'id';
-    // protected $keyType = 'integer';
+    protected $keyType = 'integer';
     protected $fillable = [
         'sub_exhibitions_id',
         'barcode',
