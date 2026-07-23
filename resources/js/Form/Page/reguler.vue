@@ -19,8 +19,8 @@
                         <v-select placeholder="Select a Sub Exhibition" :options="list_sub_exhibitions" label="label"
                             :reduce="option => option.value" v-model="sub_exhibition_id" :clearable="false"></v-select>
                     </div>
-                    <!-- <div v-show="sub_exhibition_id"> -->
-                    <div>
+                    <div v-show="sub_exhibition_id">
+                        <!-- <div> -->
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -28,6 +28,8 @@
                                     <v-select placeholder="Select a Title" :options="form_data.title" label="label"
                                         :reduce="option => option.value" v-model="form.title"
                                         :clearable="false"></v-select>
+                                    <span role="alert" style="color: red;"
+                                        v-show="!String(this.form.title ?? '').trim()">Title Can't Be Empty!</span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -274,7 +276,7 @@
                         <ErrorMessage style="color: red;" name="IsReceivedInvitationNext" />
                     </div>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer" v-show="sub_exhibition_id">
                     <h5>Press continue to complete registration</h5>
                     <p>If you are ready to complete registration, please click the continue button below.</p>
                     <button type="submit" :disabled="loading" class="
@@ -699,57 +701,56 @@ export default {
         },
         validate_select() {
             if (!String(this.form.title ?? '').trim()) {
-                swalNotif.info("Title Can't Be Empty!");
                 return false;
             }
-            // if (!this.form.country?.trim()) {
-            //     swalNotif.info("Country Can't Be Empty!");
-            //     return false;
-            // }
-            // if (!this.form.dial_code?.trim()) {
-            //     swalNotif.info("Mobile Phone Dial Code Can't Be Empty!");
-            //     return false;
-            // }
-            // if (!this.form.job_function?.trim()) {
-            //     swalNotif.info("Job Function Can't Be Empty!");
-            //     return false;
-            // }
-            // if (this.form.job_function === 'Other') {
-            //     if (!this.form.other_job_function?.trim()) {
-            //         swalNotif.info("Other Job Function Can't Be Empty!");
-            //         return false;
-            //     }
-            // }
-            // if (!this.form.purpose_visit?.trim()) {
-            //     swalNotif.info("Purpose Visit Can't Be Empty!");
-            //     return false;
-            // }
-            // if (this.form.purpose_visit === 'Other') {
-            //     if (!this.form.other_purpose_visit?.trim()) {
-            //         swalNotif.info("Other Purpose Visit Can't Be Empty!");
-            //         return false;
-            //     }
-            // }
-            // if (!this.form.purchasing_role?.trim()) {
-            //     swalNotif.info("Purchasing Role Can't Be Empty!");
-            //     return false;
-            // }
-            // if (this.form.purchasing_role === 'Other') {
-            //     if (!this.form.other_purchasing_role?.trim()) {
-            //         swalNotif.info("Other Purchasing Role Can't Be Empty!");
-            //         return false;
-            //     }
-            // }
-            // if (!this.form.event_find?.trim()) {
-            //     swalNotif.info("Event Find Can't Be Empty!");
-            //     return false;
-            // }
-            // if (this.form.event_find === 'Other') {
-            //     if (!this.form.other_event_find?.trim()) {
-            //         swalNotif.info("Other Event Find Can't Be Empty!");
-            //         return false;
-            //     }
-            // }
+            if (!String(this.form.country ?? '').trim()) {
+                swalNotif.info("Country Can't Be Empty!");
+                return false;
+            }
+            if (!String(this.form.dial_code ?? '').trim()) {
+                swalNotif.info("Mobile Phone Dial Code Can't Be Empty!");
+                return false;
+            }
+            if (!String(this.form.job_function ?? '').trim()) {
+                swalNotif.info("Job Function Can't Be Empty!");
+                return false;
+            }
+            if (this.form.job_function === 'Other') {
+                if (!String(this.form.other_job_function ?? '').trim()) {
+                    swalNotif.info("Other Job Function Can't Be Empty!");
+                    return false;
+                }
+            }
+            if (!String(this.form.purpose_visit ?? '').trim()) {
+                swalNotif.info("Purpose Visit Can't Be Empty!");
+                return false;
+            }
+            if (this.form.purpose_visit === 'Other') {
+                if (!String(this.form.other_purpose_visit ?? '').trim()) {
+                    swalNotif.info("Other Purpose Visit Can't Be Empty!");
+                    return false;
+                }
+            }
+            if (!String(this.form.purchasing_role ?? '').trim()) {
+                swalNotif.info("Purchasing Role Can't Be Empty!");
+                return false;
+            }
+            if (this.form.purchasing_role === 'Other') {
+                if (!String(this.form.other_purchasing_role ?? '').trim()) {
+                    swalNotif.info("Other Purchasing Role Can't Be Empty!");
+                    return false;
+                }
+            }
+            if (!String(this.form.event_find ?? '').trim()) {
+                swalNotif.info("Event Find Can't Be Empty!");
+                return false;
+            }
+            if (this.form.event_find === 'Other') {
+                if (!String(this.form.other_event_find ?? '').trim()) {
+                    swalNotif.info("Other Event Find Can't Be Empty!");
+                    return false;
+                }
+            }
             return true;
         }
     },
