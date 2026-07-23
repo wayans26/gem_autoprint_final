@@ -46,6 +46,10 @@ Route::prefix($version)->group(function () use ($prefixWeb, $prefixMobile) {
             Route::post('/registration/sub/exhibition/get', 'getRegistrationSubExhibition');
         });
 
+        Route::controller(registerController::class)->group(function () {
+            Route::post('/registration/visitor', 'registrationVisitor');
+        });
+
         Route::controller(countryController::class)->group(function () {
             Route::get('/registration/country/get', 'getCountry');
         });

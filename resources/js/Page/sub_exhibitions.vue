@@ -5,6 +5,9 @@
                     data-target="#modalAddSubExhibitions">Tambah Sub Exhibition</button> </h5>
         </div>
         <div class="card-body">
+            <router-link :to="{ name: 'exhibitions' }" class="btn btn-info"><i class="fa fa-arrow-left"></i>
+                Back</router-link>
+            <br><br>
             <div class="table-responsive" id="table_container">
                 <table class="table table-bordered" style="width: 100%" id="tableSubExibition">
                     <thead>

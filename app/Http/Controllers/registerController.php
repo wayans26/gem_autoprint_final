@@ -136,4 +136,52 @@ class registerController extends Controller
 
         return responseMessage::responseMessageWithData(1, "Success", 200, $data_print);
     }
+
+    function registrationVisitor(Request $req)
+    {
+        $validate = Validator::make($req->all(), [
+            'exhibition_id'                             => 'required',
+            'sub_exhibition_id'                         => 'required',
+            'name_title'                                => 'required',
+            'name'                                      => 'required',
+            'company'                                   => 'required',
+            'job_title'                                 => 'required',
+            'address'                                   => 'required',
+            'city'                                      => 'required',
+            'country'                                   => 'required',
+            'telephone'                                 => 'required',
+            'mobile_phone'                              => 'required',
+            'fax'                                       => 'required',
+            'email'                                     => 'required',
+            'business_type'                             => 'required',
+            'job_function'                              => 'required',
+            'job_function_other'                        => 'required',
+            'visit_purpose'                             => 'required',
+            'visit_purpose_other'                       => 'required',
+            'purchasing_role'                           => 'required',
+            'purchasing_role_other'                     => 'required',
+            'event_find'                                => 'required',
+            'event_find_other'                          => 'required',
+            'is_received_invitation_next'               => 'required',
+            'is_received_invitation_next_address_same'  => 'required',
+            'received_invitation_next_address'          => 'required',
+            'first_name'                                => 'required',
+            'last_name'                                 => 'required',
+            'company_type'                              => 'required',
+            'company_type_other'                        => 'required',
+            'line_of_business'                          => 'required',
+            'is_receive_news_letter'                    => 'required',
+            'is_agree_policy'                           => 'required',
+            'job_level'                                 => 'required',
+            'job_level_other'                           => 'required',
+            'departement'                               => 'required',
+            'departement_other'                         => 'required',
+            'website'                                   => 'required',
+            'HowKnow'                                   => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
+        }
+    }
 }

@@ -625,7 +625,52 @@ export default {
                 swalNotif.info("Pelase Fill All Required Field!");
                 return;
             }
-            console.log("REGISTER");
+
+            this.loading = true;
+
+            axios.post("/api/v1/web/registration/visitor", {
+                exhibition_id: this.exhibition_id,
+                sub_exhibition_id: this.sub_exhibition_id,
+                name_title: this.form.title,
+                name: this.form.name,
+                company: this.form.company,
+                job_title: this.form.job_title,
+                address: this.form.address,
+                city: this.form.city,
+                country: this.form.country,
+                telephone: this.form.telepon,
+                mobile_phone: this.form.mobile_phone,
+                fax: this.form.fax,
+                email: this.form.email,
+                business_type: this.form.type_of_business,
+                job_function: this.form.job_function,
+                job_function_other: this.form.job_function_other,
+                visit_purpose: this.form.visit_purpose,
+                visit_purpose_other: this.form.visit_purpose_other,
+                purchasing_role: this.form.purchasing_role,
+                purchasing_role_other: this.form.purchasing_role_other,
+                event_find: this.form.event_find,
+                event_find_other: this.form.event_find_other,
+                is_received_invitation_next: this.form.is_received_invitation_next,
+                is_received_invitation_next_address_same: this.form.is_received_invitation_next_same_address,
+                received_invitation_next_address: this.form.recived_invitation_address,
+            }).then(res => {
+                if (res.data.status == 1) {
+                    swalNotif.success(res.data.message);
+                    $("#modalInfo").modal({ backdrop: 'static', keyboard: false });
+                }
+                else {
+                    swalNotif.info(res.data.message);
+                }
+            }).catch(res => {
+                vm.$swal({
+                    icon: "error",
+                    title: "Error",
+                    text: "Registration Failed",
+                });
+            }).finally(() => {
+                this.loading = false;
+            });
 
         },
         get_exhibitions() {
