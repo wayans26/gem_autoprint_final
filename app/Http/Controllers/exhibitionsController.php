@@ -75,6 +75,10 @@ class exhibitionsController extends Controller
             }
         }
 
+        if (exhibitions::where('code', $req->code)->exists()) {
+            return responseMessage::responseMessage(0, "Exhibition Code Already Exists", 200);
+        }
+
         try {
             DB::transaction(function () use ($req) {
                 $banner_extension = $req->banner_file->getClientOriginalExtension();
@@ -151,6 +155,12 @@ class exhibitionsController extends Controller
         } else {
             if ($exhibition->page != $req->form) {
                 return responseMessage::responseMessage(0, "Active Exhibitions With Different Form Not Allowed", 200);
+            }
+
+            if ($exhibition->code !== $req->code) {
+                if (exhibitions::where('code', $req->code)->exists()) {
+                    return responseMessage::responseMessage(0, "Exhibition Code Already Exists", 200);
+                }
             }
         }
 

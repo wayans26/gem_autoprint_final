@@ -23,6 +23,7 @@ class registerController extends Controller
     function getRegisterData(Request $req)
     {
         $country = countries::select('id', 'country_name')->get();
+
         $exhibitions = exhibitions::join('user_has_exhibitions', 'user_has_exhibitions.exhibitions_id', '=', 'exhibitions.id')
             ->where('user_has_exhibitions.user_id', $req->users->id)
             ->select('exhibitions.id', 'exhibitions.name')->get();

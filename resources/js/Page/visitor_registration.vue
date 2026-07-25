@@ -111,8 +111,10 @@ export default {
 
             // Printer
             status: "Printer Not Connected",
-            printer_name: localStorage.getItem("printer_name"),
-            connected: false,
+            // printer_name: localStorage.getItem("printer_name"),
+            printer_name: "AA",
+            // connected: false,
+            connected: true,
             connecting: false,
             showLaunchHint: false,
             cfg: null,
@@ -460,18 +462,18 @@ export default {
 
     },
     mounted() {
+        const vm = this;
         this.setupQzSecureOnce();
         if (qz.websocket.isActive()) {
             this.connected = true;
             this.connecting = false;
             this.status = "Printer Connected";
         }
-        const vm = this;
-        if (this.printer_name) {
-            setTimeout(() => {
-                this.connectQzTray();
-            }, 1000);
-        }
+        // if (this.printer_name) {
+        //     setTimeout(() => {
+        //         this.connectQzTray();
+        //     }, 1000);
+        // }
         this.loading = false;
         this.getRegisterData();
     },

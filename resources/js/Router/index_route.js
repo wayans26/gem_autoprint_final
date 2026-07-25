@@ -82,6 +82,14 @@ const routes = [{
         }
     },
     {
+        path: prefix + '/exhibitions/assign/',
+        component: () => import('../Page/user_exhibition.vue'),
+        name: 'user_exhibition',
+        meta: {
+            parent: "exhibitions",
+        }
+    },
+    {
         path: "/:pathMatch(.*)*",
         name: "notFound",
         component: () => import("../components/notFound.vue"),

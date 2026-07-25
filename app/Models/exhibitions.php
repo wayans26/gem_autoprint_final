@@ -33,6 +33,11 @@ class exhibitions extends Model
 
     public function user_has_exhibitions()
     {
-        return $this->hasMany(user_has_exhibitions::class, 'exhibition_id', 'id');
+        return $this->hasMany(user_has_exhibitions::class, 'exhibitions_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsToMany(user::class, 'user_has_exhibitions', 'exhibition_id', 'user_id')->withPivot('id');
     }
 }

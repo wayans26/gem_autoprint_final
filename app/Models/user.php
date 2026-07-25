@@ -28,4 +28,14 @@ class user extends Model
     protected $hidden = [
         'password',
     ];
+
+    public function userExhibitions()
+    {
+        return $this->hasMany(user_has_exhibitions::class, 'user_id', 'id');
+    }
+
+    public function exhibitions()
+    {
+        return $this->belongsToMany(exhibitions::class, 'user_has_exhibitions', 'user_id', 'exhibitions_id')->withPivot('id');
+    }
 }

@@ -14,11 +14,18 @@ class user_has_exhibitions extends Model
     // protected $keyType = 'string';
     protected $fillable = [
         'user_id',
-        'exhibition_id',
+        'exhibitions_id',
     ];
 
     public function exhibitions()
     {
-        return $this->belongsTo(exhibitions::class, 'exhibition_id', 'id');
+        return $this->belongsTo(exhibitions::class, 'exhibitions_id', 'id');
+    }
+
+    public function user()
+    {
+
+
+        return $this->belongsTo(user::class, 'user_id', 'id');
     }
 }

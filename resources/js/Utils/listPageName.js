@@ -30,6 +30,10 @@ const pageName = [{
         label: "Printer Settings",
         value: "printer_setting"
     },
+    {
+        label: "User Exhibition",
+        value: "user_exhibition"
+    },
 ];
 
 export default pageName;
