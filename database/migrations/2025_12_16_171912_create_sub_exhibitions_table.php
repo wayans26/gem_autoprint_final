@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id('id');
             $table->unsignedBigInteger('exhibitions_id');
             $table->foreign('exhibitions_id')->references('id')->on('exhibitions');
+            $table->string('code')->nullable();
             $table->string('name');
-            $table->string('file_banner', 64);
+            $table->string('file_banner', 64)->nullable();
             $table->foreign('file_banner')->references('id')->on('files');
             $table->enum('status', ['1', '0'])->default('1');
             $table->timestamps();

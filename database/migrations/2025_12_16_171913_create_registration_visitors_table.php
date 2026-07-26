@@ -24,10 +24,10 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->string('telephone')->nullable();
-            $table->string('mobile_phone');
+            $table->string('mobile_phone')->nullable();
             $table->string('fax')->nullable();
             $table->string('email')->nullable();
-            $table->string('business_type');
+            $table->string('business_type')->nullable();
             $table->string('job_function')->nullable();
             $table->longText('job_function_other')->nullable();
             $table->string('visit_purpose')->nullable();

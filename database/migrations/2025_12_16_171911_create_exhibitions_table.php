@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('exhibitions', function (Blueprint $table) {
             $table->id('id');
-            $table->string('code', 20)->unique();
+            $table->string('code')->unique();
             $table->string('banner_file', 64)->nullable();
             $table->foreign('banner_file')->references('id')->on('files');
             $table->string('all_banner', 64)->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string("location")->nullable();
             $table->string('date')->nullable();
             $table->string("team")->nullable();
-            $table->string("opening_hours")->nullable();
+            $table->longText("opening_hours")->nullable();
             $table->string('host')->nullable();
             $table->string('type');
             $table->string('page')->nullable();
