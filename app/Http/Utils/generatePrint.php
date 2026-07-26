@@ -2,6 +2,7 @@
 
 namespace App\Http\Utils;
 
+use App\Models\barcode_config;
 use App\Models\registration_visitor;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
@@ -94,17 +95,18 @@ class generatePrint
     public static function PDFPPLB($registration_id) //$name, $title, $company, $barcode
     {
         $registration = registration_visitor::find($registration_id);
+        $barcode_config = barcode_config::select('config_name', 'config_value')->get()->keyBy('config_name');
         // $barcodeSvg = (new TypeCode128())->getBarcode($barcode);
         // $renderer = new SvgRenderer();
         // $renderer->setSvgType($renderer::TYPE_SVG_INLINE);
         // $barcodeSvgRendered = $renderer->render($barcodeSvg, 360, 70);
         $qrcode = QrCode::format('png')
-            ->size(220)
-            ->margin(1)
-            ->errorCorrection('H')
+            ->size((int)$barcode_config->qr_size->config_value) //220
+            ->margin((int)$barcode_config->qr_margin->config_value) //1
+            ->errorCorrection($barcode_config->error_correction->config_value) //H
             ->generate($registration->barcode);
-        $widthMM = 104.1;
-        $heightMM = 76.2;
+        $widthMM = (float)$barcode_config->paper_width->config_value; //104.1
+        $heightMM = (float)$barcode_config->paper_height->config_value; //76.2
         $urlQr = "data:image/png;base64," . base64_encode($qrcode);
         // dd($urlQr);
         $pdf = Pdf::loadView('Print.barcode', [
@@ -112,6 +114,7 @@ class generatePrint
             'job'   => Str::upper($registration->job_title),
             'company' => Str::upper($registration->ncompanyame),
             'barcodeSvg' => "data:image/png;base64," . base64_encode($qrcode),
+            'barcode_config'    => $barcode_config
         ])->setPaper([
             0,
             0,

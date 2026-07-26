@@ -34,6 +34,10 @@ const pageName = [{
         label: "User Exhibition",
         value: "user_exhibition"
     },
+    {
+        label: "Barcode Config",
+        value: "barcode_config"
+    },
 ];
 
 export default pageName;

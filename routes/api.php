@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\barcodeConfigController;
 use App\Http\Controllers\countryController;
 use App\Http\Controllers\exhibitionsController;
 use App\Http\Controllers\loginController;
@@ -134,6 +135,11 @@ Route::prefix($version)->group(function () use ($prefixWeb, $prefixMobile) {
                 Route::post('/exhibition/user/list', 'getExhibitions')->middleware('permission:user_exhibition,view');
                 Route::post('/exhibition/user/assign', 'assignExhibitionsToUser')->middleware('permission:user_exhibition,create');
                 Route::post('/exhibition/user/delete', 'deleteAssignExhibitionsToUser')->middleware('permission:user_exhibition,delete');
+            });
+
+            Route::controller(barcodeConfigController::class)->group(function () {
+                Route::post('/barcode/config/get', 'getBarcodeConfig')->middleware('permission:barcode_config,view');
+                Route::post('/barcode/config/save', 'saveConfig')->middleware('permission:barcode_config,create');
             });
         });
     });

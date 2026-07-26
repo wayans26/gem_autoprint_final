@@ -78,7 +78,7 @@ const routes = [{
         component: () => import('../Page/sub_exhibitions.vue'),
         name: 'sub_exibition',
         meta: {
-            parent: "exhibitions",
+            parent: "sub_exibition",
         }
     },
     {
@@ -86,7 +86,15 @@ const routes = [{
         component: () => import('../Page/user_exhibition.vue'),
         name: 'user_exhibition',
         meta: {
-            parent: "exhibitions",
+            parent: "user_exhibition",
+        }
+    },
+    {
+        path: prefix + '/barcode/config/',
+        component: () => import('../Page/barcode_config.vue'),
+        name: 'barcode_config',
+        meta: {
+            parent: "barcode_config",
         }
     },
     {

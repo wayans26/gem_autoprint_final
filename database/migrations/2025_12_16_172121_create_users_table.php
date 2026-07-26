@@ -78,7 +78,9 @@ return new class extends Migration
                 'id'        => $id_menu,
                 'name'      => $value['name'],
                 'order_no'  => $value['order_no'],
-                'icon'      => $value['icon']
+                'icon'      => $value['icon'],
+                'created_at'    => Carbon::now(),
+                'updated_at'    => Carbon::now(),
             ]);
             foreach ($value['sub'] as $key_sub => $value_sub) {
                 array_push($sub_menu_insert, [
@@ -86,7 +88,9 @@ return new class extends Migration
                     'name'          => $value_sub['name'],
                     'page_name'     => $value_sub['page_name'],
                     'order_no'      => $value_sub['order_no'],
-                    'menu_group_id' => $id_menu
+                    'menu_group_id' => $id_menu,
+                    'created_at'    => Carbon::now(),
+                    'updated_at'    => Carbon::now(),
                 ]);
             }
         }

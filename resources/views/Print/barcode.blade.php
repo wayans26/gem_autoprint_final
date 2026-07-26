@@ -29,10 +29,10 @@
         /* Area aman agar tidak terpotong */
         .safe-area {
             position: absolute;
-            top: 16mm;
-            right: 4mm;
-            bottom: 16mm;
-            left: 4mm;
+            top: {{ (float) ($barcode_config->safe_area_top->config_value ?? 16) }}mm;
+            right: {{ (float) ($barcode_config->safe_area_right->config_value ?? 4) }}mm;
+            bottom: {{ (float) ($barcode_config->safe_area_bottom->config_value ?? 16) }}mm;
+            left: {{ (float) ($barcode_config->safe_area_left->config_value ?? 4) }}mm;
         }
 
         /*
@@ -99,7 +99,8 @@
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 31mm;
+            bottom: {{ (float) ($barcode_config->qr_position_bottom->config_value ?? 31) }}mm;
+            /* 31 mm atas safe area */
             text-align: center;
         }
 
