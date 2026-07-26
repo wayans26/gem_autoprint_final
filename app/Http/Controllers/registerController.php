@@ -25,7 +25,10 @@ class registerController extends Controller
         $country = countries::select('id', 'country_name')->get();
 
         $exhibitions = exhibitions::join('user_has_exhibitions', 'user_has_exhibitions.exhibitions_id', '=', 'exhibitions.id')
-            ->where('user_has_exhibitions.user_id', $req->users->id)
+            ->where([
+                'user_has_exhibitions.user_id'  => $req->users->id,
+                'exhibitions.status'            => 1
+            ])
             ->select('exhibitions.id', 'exhibitions.name')->get();
 
         return responseMessage::responseMessageWithData(1, "Success", 200, array(
@@ -37,22 +40,22 @@ class registerController extends Controller
     function getSubExhibitions(Request $req)
     {
         $validate = Validator::make($req->all(), [
-            'idexhibitions' => 'required'
+            'exhibition_id' => 'required'
         ]);
 
         if ($validate->fails()) {
             return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
         }
 
-        $subExhibitions = sub_exhibitions::where('exhibitions_id', $req->idexhibitions)->get();
+        $subExhibitions = sub_exhibitions::where('exhibitions_id', $req->exhibition_id)->get();
         return responseMessage::responseMessageWithData(1, "Success", 200, $subExhibitions);
     }
 
     function registrasi(Request $req)
     {
         $validate = Validator::make($req->all(), [
-            'exhibitions'       => 'required',
-            'sub_exhibitions'   => 'required',
+            'exhibition_id'     => 'required',
+            'sub_exhibition_id' => 'required',
             'name'              => 'required',
             'title'             => 'required',
             'company'           => 'required',
@@ -64,59 +67,66 @@ class registerController extends Controller
             return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
         }
 
-        $exhibition = exhibitions::find($req->exhibitions);
+        $exhibition = exhibitions::find($req->exhibition_id);
         if (empty($exhibition)) {
             return responseMessage::responseMessage(0, "Exhibition not found", 200);
         }
-        $sub_exhibitions = sub_exhibitions::find($req->sub_exhibitions);
+        $sub_exhibitions = sub_exhibitions::find($req->sub_exhibition_id);
         if (empty($sub_exhibitions)) {
             return responseMessage::responseMessage(0, "Sub Exhibition not found", 200);
         }
 
+        $country = countries::find($req->country);
+        if (empty($country)) {
+            return responseMessage::responseMessage(0, "Country not found", 200);
+        }
+
         if (registration_visitor::where([
+            'email'                 => $req->email,
             'sub_exhibitions_id'    => $sub_exhibitions->id,
-            'email'                 => $req->email
         ])->exists()) {
-            return responseMessage::responseMessage(0, "Email already registered", 200);
+            return responseMessage::responseMessage(0, "Your Email Has Been Registered", 200);
         }
         $barcode = $exhibition->id . "-" . $sub_exhibitions->id  . "-" .  Carbon::now()->format('dm') . "-" . makeid::createId(6);
 
 
-
-        $registrasi = registration_visitor::create([
-            'Exhibition'                            => $exhibition->idexhibitions,
-            'NameTitle'                             => 0,
-            'Name'                                  => $req->name,
-            'Company'                               => $req->company,
-            'JobTitle'                              => $req->title,
-            'Address'                               => "",
-            'State'                                 => "",
-            'Country'                               => $req->country,
-            'MobilePhone'                           => $req->phone,
-            'Email'                                 => $req->email,
-            'JobFunction'                           => "0",
-            'VisitPurpose'                          => "0",
-            'PurchasingRole'                        => "0",
-            'EventFind'                             => "0",
-            'IsReceivedInvitationNext'              => "0",
-            'IsReceivedInvitationNextAddressSame'   => "0",
-            'Barcode'                               => $barcode,
-            'IsPrinted'                             => "1",
-            'SubExhibition'                         => $sub_exhibitions->idsubexhibitions,
-            'SubExhibitionName'                     => $sub_exhibitions->nama,
-            'RegisterDate'                          => Carbon::now()->format("Y-m-d H:i:s")
-        ]);
-
         $checkinLocation = "AP";
         $checkinTime = Carbon::now();
-        $checkinBy = $req->users->full_name;
+        $checkinBy = $req->users->id;
+
+
+        $visitor_registrasi = registration_visitor::create([
+            'sub_exhibitions_id'                        => $sub_exhibitions->id,
+            'name_title'                                => "none",
+            'name'                                      => $req->name,
+            'company'                                   => $req->company,
+            'job_title'                                 => $req->title,
+            'address'                                   => "none",
+            'state'                                     => "none",
+            'country'                                   => $country->country_name,
+            'mobile_phone'                              => $req->phone,
+            'email'                                     => $req->email,
+            'job_function'                              => "none",
+            'visit_purpose'                             => "none",
+            'purchasing_role'                           => "none",
+            'event_find'                                => "none",
+            'is_received_invitation_next'               => "0",
+            'is_received_invitation_next_address_same'  => "1",
+            'barcode'                                   => $barcode,
+            'is_printed'                                => '1',
+            'register_date'                             => $checkinTime,
+            'last_checkin_time'                         => $checkinTime,
+            'last_checkin_location'                     => $checkinLocation,
+        ]);
+
+
         $registerId = $registrasi->id;
 
         activity_history::create([
-            'CheckedInTime' => $checkinTime,
-            'CheckedInLocation' => $checkinLocation,
-            'CheckedBy' => $checkinBy,
-            'registration_id' => $registerId,
+            'checkin_time' => $checkinTime,
+            'checkin_location' => $checkinLocation,
+            'user_id' => $checkinBy,
+            'registration_visitors_id' => $visitor_registrasi->id,
         ]);
 
         sendEmail::sendEmailRegistration($registrasi->id, $req);
@@ -199,12 +209,12 @@ class registerController extends Controller
         }
 
         //check 1 user can regis 1 sub
-        // if (registration_visitor::where([
-        //     'email'                 => $req->email,
-        //     'sub_exhibitions_id'    => $sub_exhibitions->id,
-        // ])->exists()) {
-        //     return responseMessage::responseMessage(0, "Your Email Has Been Registered", 200);
-        // }
+        if (registration_visitor::where([
+            'email'                 => $req->email,
+            'sub_exhibitions_id'    => $sub_exhibitions->id,
+        ])->exists()) {
+            return responseMessage::responseMessage(0, "Your Email Has Been Registered", 200);
+        }
 
         // check 1 user can regis to 1 host
         // if(registration_visitor::join('sub_exhibitions', 'sub_exhibitions.idsubexhibitions', '=', 'registration_visitors.sub_exhibitions_id')

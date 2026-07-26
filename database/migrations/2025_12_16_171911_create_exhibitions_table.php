@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string("team")->nullable();
             $table->string("opening_hours")->nullable();
             $table->string('host')->nullable();
+            $table->string('type');
             $table->string('page')->nullable();
             $table->string('path')->nullable();
             $table->enum('status', ['1', '0'])->default('1');

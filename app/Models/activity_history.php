@@ -14,6 +14,7 @@ class activity_history extends Model
     // protected $keyType = 'string';
     protected $fillable = [
         'checkin_time',
+        'checkin_location',
         'user_id',
         'registration_visitors_id',
     ];

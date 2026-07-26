@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('activity_histories', function (Blueprint $table) {
             $table->id('id');
             $table->dateTime('checkin_time');
+            $table->string('checkin_location');
             $table->string('user_id', 16);
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('registration_visitors_id');

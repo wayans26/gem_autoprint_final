@@ -102,7 +102,7 @@ export default {
             company: "",
             email: "",
             phone: "",
-            country: "ID",
+            country: 99,
             exhibitions: "",
             sub_exhibitions: "",
             list_exhibitions: [],
@@ -111,10 +111,10 @@ export default {
 
             // Printer
             status: "Printer Not Connected",
-            // printer_name: localStorage.getItem("printer_name"),
-            printer_name: "AA",
-            // connected: false,
-            connected: true,
+            printer_name: localStorage.getItem("printer_name"),
+            // printer_name: "AA",
+            connected: false,
+            // connected: true,
             connecting: false,
             showLaunchHint: false,
             cfg: null,
@@ -368,9 +368,9 @@ export default {
                     }));
                     vm.list_exhibitions = res.data.data.exhibitions.map(item => ({
                         label: item.name,
-                        value: item.idexhibitions
+                        value: item.id
                     }));
-                    vm.exhibitions = res.data.data.exhibitions[0].idexhibitions;
+                    vm.exhibitions = res.data.data.exhibitions[0].id;
                     vm.getSubExhibitions();
                 } else {
                     swalNotif.error(res.data.message);
@@ -383,22 +383,28 @@ export default {
         },
         getSubExhibitions() {
             this.globalLoader.show = true;
+            this.sub_exhibitions = "";
             const vm = this;
             axios.post("/api/v1/web/register/sub/exhibitions/get", {
-                idexhibitions: vm.exhibitions
+                exhibition_id: vm.exhibitions
             }, {
                 headers: {
                     token: localStorage.getItem('token'),
                 }
             }).then(res => {
                 if (res.data.status == 1) {
+                    if (res.data.data.length == 0) {
+                        swalNotif.info("Sub Exhibitions Not Found, Please Contact Admin!");
+                        vm.list_sub_exhibitions = [];
+                        return;
+                    }
                     vm.list_sub_exhibitions = res.data.data.map(item => ({
-                        label: item.nama,
-                        value: item.idsubexhibitions
+                        label: item.name,
+                        value: item.id
                     }));
-                    vm.sub_exhibitions = res.data.data[0].idsubexhibitions;
+                    vm.sub_exhibitions = res.data.data[0].id;
                 } else {
-                    swalNotif.error(res.data.message);
+                    swalNotif.info(res.data.message);
                 }
             }).catch(res => {
                 swalNotif.error("Error Get Data!");
@@ -410,8 +416,8 @@ export default {
             this.globalLoader.show = true;
             const vm = this;
             axios.post("/api/v1/web/register/add", {
-                exhibitions: vm.exhibitions,
-                sub_exhibitions: vm.sub_exhibitions,
+                exhibition_id: vm.exhibitions,
+                sub_exhibition_id: vm.sub_exhibitions,
                 name: vm.name,
                 title: vm.title,
                 company: vm.company,

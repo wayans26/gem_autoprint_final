@@ -26,6 +26,7 @@ class exhibitions extends Model
         'team',
         'opening_hours',
         'host',
+        'type',
         'page',
         'path',
         'status',

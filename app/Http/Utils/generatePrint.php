@@ -2,6 +2,7 @@
 
 namespace App\Http\Utils;
 
+use App\Models\registration_visitor;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 use Picqer\Barcode\Renderers\SvgRenderer;
@@ -90,8 +91,9 @@ class generatePrint
         return $data_print;
     }
 
-    public static function PDFPPLB($name, $title, $company, $barcode)
+    public static function PDFPPLB($registration_id) //$name, $title, $company, $barcode
     {
+        $registration = registration_visitor::find($registration_id);
         // $barcodeSvg = (new TypeCode128())->getBarcode($barcode);
         // $renderer = new SvgRenderer();
         // $renderer->setSvgType($renderer::TYPE_SVG_INLINE);
@@ -100,15 +102,15 @@ class generatePrint
             ->size(220)
             ->margin(1)
             ->errorCorrection('H')
-            ->generate($barcode);
+            ->generate($registration->barcode);
         $widthMM = 104.1;
         $heightMM = 76.2;
         $urlQr = "data:image/png;base64," . base64_encode($qrcode);
         // dd($urlQr);
         $pdf = Pdf::loadView('Print.barcode', [
-            'nama'  => Str::upper($name),
-            'job'   => Str::upper($title),
-            'company' => Str::upper($company),
+            'nama'  => Str::upper($registration->name),
+            'job'   => Str::upper($registration->job_title),
+            'company' => Str::upper($registration->ncompanyame),
             'barcodeSvg' => "data:image/png;base64," . base64_encode($qrcode),
         ])->setPaper([
             0,

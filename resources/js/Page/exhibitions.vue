@@ -13,6 +13,7 @@
                             <th>Action</th>
                             <th>Code</th>
                             <th>Name</th>
+                            <th>Type</th>
                             <th>Form</th>
                             <th>Host</th>
                             <th>Path</th>
@@ -70,6 +71,11 @@
                             <label for="input-1">Template Form</label>
                             <v-select class="form-control" placeholder="Select Form" :options="listForm" label="label"
                                 :reduce="option => option.value" v-model="page"></v-select>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-1">Type</label>
+                            <v-select class="form-control" placeholder="Select Form" :options="list_type" label="label"
+                                :reduce="option => option.value" v-model="type"></v-select>
                         </div>
                         <div class="form-group">
                             <label for="input-1">Host</label>
@@ -152,6 +158,11 @@
                                 :reduce="option => option.value" v-model="update.page"></v-select>
                         </div>
                         <div class="form-group">
+                            <label for="input-1">Type</label>
+                            <v-select class="form-control" placeholder="Select Form" :options="list_type" label="label"
+                                :reduce="option => option.value" v-model="update.type"></v-select>
+                        </div>
+                        <div class="form-group">
                             <label for="input-1">Host</label>
                             <Field name="update.host" type="text" class="form-control" id="input-1"
                                 placeholder="inapa.reg-gemindonesia.net" v-model="update.host"></Field>
@@ -216,6 +227,7 @@ export default {
             team: "GEM Indonesia Team",
             opening_hours: "<p>28 July 2026 : 10.00 am - 6.00 pm</p><p>29 July 2026 : 10.00 am - 6.00 pm</p><p>30 July 2026 : 10.00 am - 4.30 pm</p>",
             host: "",
+            type: "reguler",
             page: "",
             path: "",
             update: {
@@ -229,11 +241,22 @@ export default {
                 date: "28 - 30 July 2026",
                 team: "GEM Indonesia Team",
                 opening_hours: "<p>28 July 2026 : 10.00 am - 6.00 pm</p><p>29 July 2026 : 10.00 am - 6.00 pm</p><p>30 July 2026 : 10.00 am - 4.30 pm</p>",
+                type: "",
                 host: "",
                 page: "",
                 path: "",
             },
             listForm,
+            list_type: [
+                {
+                    label: "REGULER",
+                    value: "reguler"
+                },
+                {
+                    label: "VIP",
+                    value: "vip"
+                },
+            ]
         }
     },
     methods: {
@@ -274,6 +297,11 @@ export default {
                     }, {
                         data: 'name',
                         name: 'name'
+                    }, {
+                        data: 'type',
+                        name: 'type',
+                        orderable: false,
+                        searchable: false
                     }, {
                         data: 'page',
                         name: 'page',
@@ -344,6 +372,7 @@ export default {
             frmData.append("all_banner_file", vm.all_banner_file);
             frmData.append("form", vm.page);
             frmData.append("host", vm.host);
+            frmData.append("type", vm.type);
             frmData.append("path", vm.path);
             frmData.append("opening_hours", vm.opening_hours);
 
@@ -400,6 +429,7 @@ export default {
                     vm.update.date = res.data.data.date;
                     vm.update.team = res.data.data.team;
                     vm.update.opening_hours = res.data.data.opening_hours;
+                    vm.update.type = res.data.data.type;
                     vm.update.host = res.data.data.host;
                     vm.update.page = res.data.data.page;
                     vm.update.path = res.data.data.path ? res.data.data.path : null;
@@ -431,6 +461,7 @@ export default {
             frmData.append("all_banner_file", vm.update.all_banner_file);
             frmData.append("form", vm.update.page);
             frmData.append("host", vm.update.host);
+            frmData.append("type", vm.update.type);
             frmData.append("path", vm.update.path);
             frmData.append("opening_hours", vm.update.opening_hours);
 
