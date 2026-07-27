@@ -20,7 +20,7 @@ class exhibitionsController extends Controller
     //
     function getExhibitions(Request $req)
     {
-        $exhibitions = exhibitions::query();
+        $exhibitions = exhibitions::query()->orderBy('status', 'asc')->orderBy('code', 'asc');
 
         return DataTables::of($exhibitions)
             ->filterColumn('code', function ($query, $keyword) {

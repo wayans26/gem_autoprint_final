@@ -29,7 +29,7 @@ class subExhibitionsController extends Controller
             'id',
             'name',
             'status'
-        )->where('exhibitions_id', $req->id_exhibitions);
+        )->where('exhibitions_id', $req->id_exhibitions)->orderBy('status', 'asc');
 
         return DataTables::of($subExhibitions)
             ->addIndexColumn()

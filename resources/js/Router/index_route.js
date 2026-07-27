@@ -98,6 +98,14 @@ const routes = [{
         }
     },
     {
+        path: prefix + '/dashboard/visitor/list/',
+        component: () => import('../Page/dashboard_visitor_list.vue'),
+        name: 'dashboard_visitor_list',
+        meta: {
+            parent: "dashboard_visitor_list",
+        }
+    },
+    {
         path: "/:pathMatch(.*)*",
         name: "notFound",
         component: () => import("../components/notFound.vue"),

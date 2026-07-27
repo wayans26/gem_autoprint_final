@@ -38,6 +38,10 @@ const pageName = [{
         label: "Barcode Config",
         value: "barcode_config"
     },
+    {
+        label: "Dashboard Visitor List",
+        value: "dashboard_visitor_list"
+    },
 ];
 
 export default pageName;
