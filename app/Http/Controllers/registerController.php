@@ -120,8 +120,6 @@ class registerController extends Controller
         ]);
 
 
-        $registerId = $registrasi->id;
-
         activity_history::create([
             'checkin_time' => $checkinTime,
             'checkin_location' => $checkinLocation,
@@ -129,9 +127,9 @@ class registerController extends Controller
             'registration_visitors_id' => $visitor_registrasi->id,
         ]);
 
-        sendEmail::sendEmailRegistration($registrasi->id, $req);
+        sendEmail::sendEmailRegistration($visitor_registrasi->id, $req);
 
-        $data_print = generatePrint::PDFPPLB($req->name, $req->title, $req->company, $barcode);
+        $data_print = generatePrint::PDFPPLB($visitor_registrasi->id);
 
         // dd($data_print);
 
