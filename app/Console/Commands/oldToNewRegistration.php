@@ -120,7 +120,7 @@ class oldToNewRegistration extends Command
                 'country'                                   => $value->Country,
                 'telephone'                                 => $value->Telephone,
                 'mobile_phone'                              => $value->MobilePhone,
-                'fax'                                       => $value->Fax,
+                'fax'                                       => strlen($value->Fax) > 20 ? null : $value->Fax,
                 'email'                                     => $value->Email,
                 'business_type'                             => $value->BusinessType,
                 'job_function'                              => $value->JobFunction,
