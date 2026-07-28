@@ -8,6 +8,14 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="form-group">
+                        <label for="input-1">Status</label>
+                        <v-select class="form-control" placeholder="Select Status" :options="list_status" label="label"
+                            :reduce="option => option.value" v-model="status" :clearable="false"
+                            @option:selected="get_exhibitions"></v-select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
                         <label for="input-1">Exhibitions</label>
                         <v-select class="form-control" placeholder="Select an Exhibitions" :options="list_exhibitions"
                             label="label" :reduce="option => option.value" v-model="exhibition_id"
@@ -22,13 +30,6 @@
                             v-model="sub_exhibition_id" :clearable="false" @option:selected="refresh_table"></v-select>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label for="input-1">Status</label>
-                        <v-select class="form-control" placeholder="Select Status" :options="list_status" label="label"
-                            :reduce="option => option.value" v-model="status" :clearable="false"></v-select>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="card-body">
@@ -39,6 +40,7 @@
                         <th>Exhibition</th>
                         <th>Sub Exhibition</th>
                         <th>Name</th>
+                        <th>Is Printed</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -108,6 +110,10 @@ export default {
                     "columnDefs": [{
                         "width": "2%",
                         "targets": 0
+                    },
+                    {
+                        "width": "2%",
+                        "targets": 4
                     }],
                     columns: [{
                         data: 'DT_RowIndex',
@@ -126,6 +132,10 @@ export default {
                     {
                         data: 'visitor_name',
                         name: 'visitor_name'
+                    },
+                    {
+                        data: 'is_printed',
+                        name: 'is_printed'
                     }
                     ]
                 }
@@ -135,13 +145,14 @@ export default {
             const vm = this;
             this.globalLoader.show = true;
             axios.post("/api/v1/web/exhibition/all/get", {
-
+                status: vm.status
             }, {
                 headers: {
                     token: localStorage.getItem('token'),
                 }
             }).then(res => {
                 if (res.data.status == 1) {
+                    vm.exhibition_id = "all";
                     vm.list_exhibitions = [
                         {
                             label: "All",
@@ -158,7 +169,9 @@ export default {
             }).catch(res => {
                 swalNotif.error("Error Get Exhibitions!");
 
-            });
+            }).finally(function () {
+                vm.globalLoader.show = false;
+            })
         },
         get_sub_exhibitions() {
             const vm = this;
@@ -171,6 +184,7 @@ export default {
                 }
             }).then(res => {
                 if (res.data.status == 1) {
+                    vm.sub_exhibition_id = "all";
                     vm.list_sub_exhibitions = [
                         {
                             label: "All",
