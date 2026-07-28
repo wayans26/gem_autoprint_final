@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\barcodeConfigController;
 use App\Http\Controllers\countryController;
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\exhibitionsController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\menuEditorController;
@@ -140,6 +141,12 @@ Route::prefix($version)->group(function () use ($prefixWeb, $prefixMobile) {
             Route::controller(barcodeConfigController::class)->group(function () {
                 Route::post('/barcode/config/get', 'getBarcodeConfig')->middleware('permission:barcode_config,view');
                 Route::post('/barcode/config/save', 'saveConfig')->middleware('permission:barcode_config,create');
+            });
+
+            Route::controller(dashboardController::class)->group(function () {
+                Route::get('/dashboard/visitor/list/get', 'getListVisitor')->middleware('permission:dashboard_visitor_list,view');
+                Route::post('/exhibition/all/get', 'getExhibition');
+                Route::post('/exhibition/sub/all/get', 'getSubExhibition');
             });
         });
     });
