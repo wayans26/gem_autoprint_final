@@ -204,8 +204,8 @@ export default {
         const vm = this;
         vm.loading = false;
         setTimeout(() => {
-            // vm.get_exhibitions();
-            // vm.get_sub_exhibitions();
+            vm.get_exhibitions();
+            vm.get_sub_exhibitions();
             vm.get_visitor();
         }, 1);
 

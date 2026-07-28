@@ -27,57 +27,53 @@ class dashboardController extends Controller
             return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
         }
 
-        $page = max((int) $req->input('page', 1), 1);
-        $perPage = min(max((int) $req->input('per_page', 50), 1), 25);
-        $cacheKey = 'dashboard-visitor-list:' . hash('sha256', json_encode([
-            'status' => $req->status,
-            'exhibition_id' => $req->exhibition_id,
-            'sub_exhibition_id' => $req->sub_exhibition_id,
-            'page' => $page,
-            'per_page' => $perPage,
-        ]));
-        $visitor = Cache::store('redis')->remember($cacheKey, Carbon::now()->addHours(4), function () use ($req, $page, $perPage) {
-            return registration_visitor::query()
-                ->join('sub_exhibitions', 'sub_exhibitions.id', '=', 'registration_visitors.sub_exhibitions_id')
-                ->join('exhibitions', 'exhibitions.id', '=', 'sub_exhibitions.exhibitions_id')
-                ->select(
-                    'exhibitions.name as exhibition_name',
-                    'sub_exhibitions.name as sub_exhibition_name',
-                    'registration_visitors.name as visitor_name',
-                )
-                ->when($req->status !== 'all', function ($query) use ($req) {
-                    return $query->where('exhibitions.status', $req->status);
-                })
-                ->when($req->exhibition_id !== 'all', function ($query) use ($req) {
-                    return $query->where('exhibitions.id', $req->exhibition_id);
-                })
-                ->when($req->sub_exhibition_id !== 'all', function ($query) use ($req) {
-                    return $query->where('sub_exhibitions.id', $req->sub_exhibition_id);
-                })
-                ->orderBy('registration_visitors.created_at', 'desc')
-                ->toBase()
-                ->paginate(
-                    perPage: $perPage,
-                    page: $page
-                );
-        });
-        // $visitor = registration_visitor::query()
-        //     ->join('sub_exhibitions', 'sub_exhibitions.id', '=', 'registration_visitors.sub_exhibitions_id')
-        //     ->join('exhibitions', 'exhibitions.id', '=', 'sub_exhibitions.exhibitions_id')
-        //     ->select(
-        //         'exhibitions.name as exhibition_name',
-        //         'sub_exhibitions.name as sub_exhibition_name',
-        //         'registration_visitors.name as visitor_name',
-        //     )
-        //     ->when($req->status !== 'all', function ($query) use ($req) {
-        //         return $query->where('exhibitions.status', $req->status);
-        //     })
-        //     ->when($req->exhibition_id !== 'all', function ($query) use ($req) {
-        //         return $query->where('exhibitions.id', $req->exhibition_id);
-        //     })
-        //     ->when($req->sub_exhibition_id !== 'all', function ($query) use ($req) {
-        //         return $query->where('sub_exhibitions.id', $req->sub_exhibition_id);
-        //     });
+        // $page = max((int) $req->input('page', 1), 1);
+        // $perPage = min(max((int) $req->input('per_page', 50), 1), 25);
+        // $cacheKey = 'dashboard-visitor-list:' . hash('sha256', json_encode([
+        //     'status' => $req->status,
+        //     'exhibition_id' => $req->exhibition_id,
+        //     'sub_exhibition_id' => $req->sub_exhibition_id,
+        //     'page' => $page,
+        //     'per_page' => $perPage,
+        // ]));
+        // $visitor = Cache::store('redis')->remember($cacheKey, Carbon::now()->addHours(4), function () use ($req, $page, $perPage) {
+        //     return registration_visitor::query()
+        //         ->join('sub_exhibitions', 'sub_exhibitions.id', '=', 'registration_visitors.sub_exhibitions_id')
+        //         ->join('exhibitions', 'exhibitions.id', '=', 'sub_exhibitions.exhibitions_id')
+        //         ->select(
+        //             'exhibitions.name as exhibition_name',
+        //             'sub_exhibitions.name as sub_exhibition_name',
+        //             'registration_visitors.name as visitor_name',
+        //         )
+        //         ->when($req->status !== 'all', function ($query) use ($req) {
+        //             return $query->where('exhibitions.status', $req->status);
+        //         })
+        //         ->when($req->exhibition_id !== 'all', function ($query) use ($req) {
+        //             return $query->where('exhibitions.id', $req->exhibition_id);
+        //         })
+        //         ->when($req->sub_exhibition_id !== 'all', function ($query) use ($req) {
+        //             return $query->where('sub_exhibitions.id', $req->sub_exhibition_id);
+        //         })
+        //         ->orderBy('registration_visitors.created_at', 'desc')
+        //         ->toBase();
+        // });
+        $visitor = registration_visitor::query()
+            ->join('sub_exhibitions', 'sub_exhibitions.id', '=', 'registration_visitors.sub_exhibitions_id')
+            ->join('exhibitions', 'exhibitions.id', '=', 'sub_exhibitions.exhibitions_id')
+            ->select(
+                'exhibitions.name as exhibition_name',
+                'sub_exhibitions.name as sub_exhibition_name',
+                'registration_visitors.name as visitor_name',
+            )
+            ->when($req->status !== 'all', function ($query) use ($req) {
+                return $query->where('exhibitions.status', $req->status);
+            })
+            ->when($req->exhibition_id !== 'all', function ($query) use ($req) {
+                return $query->where('exhibitions.id', $req->exhibition_id);
+            })
+            ->when($req->sub_exhibition_id !== 'all', function ($query) use ($req) {
+                return $query->where('sub_exhibitions.id', $req->sub_exhibition_id);
+            });
 
         return DataTables::of($visitor)
             ->addIndexColumn()
