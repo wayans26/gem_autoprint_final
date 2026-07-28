@@ -36,7 +36,7 @@ class barcodeConfigController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return responseMessage::responseMessageWithData(0, $validate->errors()->first(), 200);
+            return responseMessage::responseMessage(0, $validate->errors()->first(), 200);
         }
 
         barcode_config::updateOrCreate(
