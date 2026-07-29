@@ -42,6 +42,10 @@ const pageName = [{
         label: "Dashboard Visitor List",
         value: "dashboard_visitor_list"
     },
+    {
+        label: "Dashboard Visitor Chart",
+        value: "dashboard_visitor_chart"
+    },
 ];
 
 export default pageName;
