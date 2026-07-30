@@ -33,7 +33,10 @@
             </div>
         </div>
         <div class="card-body">
-            <h1>Chart</h1>
+            <h1>Visitors Insight</h1>
+            <h1>Visitor Registration</h1>
+            <h1>Target Visitor</h1>
+            <apex-chart type="line" height="350" :options="chartOptions" :series="series" />
         </div>
     </div>
 
@@ -43,8 +46,12 @@
 import axios from 'axios';
 import swalNotif from '../Utils/swalNotif.js';
 import Swal from 'sweetalert2';
+import ApexChart from 'vue3-apexcharts'
 
 export default {
+    components: {
+        apexChart: ApexChart
+    },
     data() {
         return {
             loading: true,
@@ -66,7 +73,19 @@ export default {
                     label: "Disable",
                     value: "0"
                 },
-            ]
+            ],
+            series: [{
+                name: 'Sales',
+                data: [10, 25, 15, 40]
+            }],
+            chartOptions: {
+                chart: {
+                    id: 'sales'
+                },
+                xaxis: {
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr']
+                }
+            }
         }
     },
     methods: {
