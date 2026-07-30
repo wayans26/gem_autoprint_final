@@ -163,6 +163,7 @@ export default {
                             value: item.id
                         }))
                     ]
+                    vm.refresh_table();
                 } else {
                     swalNotif.error(res.data.message);
                 }
@@ -195,6 +196,7 @@ export default {
                             value: item.id
                         }))
                     ];
+                    vm.refresh_table();
 
                 } else {
                     swalNotif.error(res.data.message);
