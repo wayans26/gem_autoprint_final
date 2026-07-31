@@ -79,7 +79,7 @@ Route::get('/registration/banner/exhibitions/{id}', function (Request $req, $id)
 // });
 
 Route::get('/{path?}', function (Request $req, ?string $path = null) {
-    if ($req->host() == "localhost" || $req->host() == "127.0.0.1") {
+    if ($req->host() === env('ROOT_URL', 'localhost')) {
         if ($req->has('token')) {
             $token = personal_token::where('token', $req->token)->first();
             if (empty($token)) {
