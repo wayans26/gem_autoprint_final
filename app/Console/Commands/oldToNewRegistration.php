@@ -64,14 +64,14 @@ class oldToNewRegistration extends Command
                 ]);
             }
         }
-        $temp_ex = exhibitions::where('code', 'Agriculture2025')->first();
-        sub_exhibitions::updateOrCreate([
-            'exhibitions_id'    => $temp_ex->id,
-            'code'              => "Inagreentech",
-        ], [
-            'path'              => "SubExhibitions/Agriculture2025-INAGRITECH.png",
-            'name'              => "INAGRITECH",
-        ]);
+        // $temp_ex = exhibitions::where('code', 'Agriculture2025')->first();
+        // sub_exhibitions::updateOrCreate([
+        //     'exhibitions_id'    => $temp_ex->id,
+        //     'code'              => "Inagreentech",
+        // ], [
+        //     'path'              => "SubExhibitions/Agriculture2025-INAGRITECH.png",
+        //     'name'              => "INAGRITECH",
+        // ]);
 
         $this->info("Finish Sync Exhibition");
 
@@ -82,11 +82,12 @@ class oldToNewRegistration extends Command
             $sub = sub_exhibitions::where('code', $value->SubExhibition)->first();
             if (empty($sub)) {
                 $this->error($value->SubExhibition);
+                $subEx = empty($value->SubExhibition) ? $value->Exhibition : $value->SubExhibition;
                 $ex = exhibitions::updateOrCreate([
-                    'code'          => $value->SubExhibition,
+                    'code'          => $subEx,
                 ], [
-                    'name'          => $value->SubExhibition,
-                    'full_name'     => $value->SubExhibition,
+                    'name'          => $subEx,
+                    'full_name'     => $subEx,
                     'location'      => "JIExpo Kemayoran",
                     'date'          => "28 - 30 July 2025",
                     'team'          => "GEM Indonesia Team",
@@ -99,12 +100,12 @@ class oldToNewRegistration extends Command
 
                 sub_exhibitions::updateOrCreate([
                     'exhibitions_id'    => $ex->id,
-                    'code'              => $value->SubExhibition,
+                    'code'              => $subEx,
                 ], [
                     'path'              => "SubExhibitions/Agriculture2025-INAGRITECH.png",
-                    'name'              => $value->SubExhibition,
+                    'name'              => $subEx,
                 ]);
-                $sub = sub_exhibitions::where('code', $value->SubExhibition)->first();
+                $sub = sub_exhibitions::where('code', $subEx)->first();
             }
             $exhibition = exhibitions::find($sub->exhibitions_id);
             $reg = registration_visitor::updateOrCreate([
