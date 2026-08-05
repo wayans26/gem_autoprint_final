@@ -209,7 +209,7 @@ class exhibitionsController extends Controller
                     'type'          => $req->type,
                     'host'          => $req->host,
                     'opening_hours' => $req->opening_hours,
-                    'path'          => $req->path,
+                    'path'          => $req->path === 'null' || empty($req->path) ? null : $req->path,
                 ]);
             });
             return responseMessage::responseMessage(1, "Success Edit Exhibition", 200);
