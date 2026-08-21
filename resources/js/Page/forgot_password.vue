@@ -1,37 +1,36 @@
 <template>
-    <div class="card card-authentication1 mx-auto my-5">
+    <div class="card card-authentication1 auth-card border-0">
         <div class="card-body">
-            <router-link :to="{ name: 'login' }" class="btn btn-outline-dark btn-sm waves-effect waves-light"> <i
-                    class="fa fa-arrow-left"></i> Back</router-link>
-            <div class="card-content p-2">
-                <div class="text-center">
-                    <img :src="'/logontt.png'" style="width: 50%;" alt="logo icon">
+            <router-link :to="{ name: 'login' }" class="btn btn-outline-secondary btn-sm auth-back">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to sign in
+            </router-link>
+            <div class="card-content">
+                <div class="auth-card__brand text-center">
+                    <img :src="'/logontt.png'" class="auth-logo" alt="Gem Indonesia">
                 </div>
-                <div class="card-title text-uppercase text-center py-3">Reset Password</div>
-                <Form @submit="forgot_password" :validation-schema="validate">
-                    <div class="form-group">
-                        <label for="input-1">Email</label>
-                        <div class="position-relative has-icon-right">
-                            <Field name="email" type="email" class="form-control input-shadow" id="input-1"
-                                placeholder="Email Address" v-model="email">
+                <div class="auth-card__heading text-center">
+                    <span class="auth-card__eyebrow">Account recovery</span>
+                    <h2 id="forgot-password-title" class="card-title">Reset your password</h2>
+                    <p>We will send password reset instructions to your registered email address.</p>
+                </div>
+                <Form @submit="forgot_password" :validation-schema="validate" aria-labelledby="forgot-password-title">
+                    <div class="mb-4">
+                        <label for="input-1" class="form-label">Email</label>
+                        <div class="position-relative auth-input-wrap">
+                            <i class="icon-envelope auth-input-icon" aria-hidden="true"></i>
+                            <Field name="email" type="email" class="form-control input-shadow auth-control" id="input-1"
+                                placeholder="Email Address" v-model="email" autocomplete="email" :disabled="loading">
                             </Field>
-                            <div class="form-control-position">
-                                <i class="icon-user"></i>
-                            </div>
                         </div>
-                        <ErrorMessage style="color: red;" name="email" />
+                        <ErrorMessage class="auth-error" name="email" />
                     </div>
-                    <button type="submit" :disabled="loading" class="
-                                btn btn-primary
-                                shadow-primary
-                                btn-block
-                                waves-effect waves-light
-                            ">
+                    <button type="submit" :disabled="loading" class="btn btn-primary auth-submit w-100"
+                        :aria-busy="loading">
                         <i :class="{
                             'fa fa-spinner fa-spin': loading,
                             'fa fa-sign-in': !loading,
-                        }"></i>
-                        Reset Password
+                        }" aria-hidden="true"></i>
+                        <span>{{ loading ? 'Sending instructions...' : 'Reset Password' }}</span>
                     </button>
                 </Form>
             </div>

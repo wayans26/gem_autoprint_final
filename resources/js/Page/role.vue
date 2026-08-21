@@ -2,8 +2,7 @@
     <div class="card">
         <div class="card-header">
             <bread-crumb></bread-crumb>
-            <h5>Role <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRole"
-                    data-backdrop="static" data-keyboard="false">Add
+            <h5>Role <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRole">Add
                     New Data</button> </h5>
         </div>
         <div class="card-body">
@@ -22,18 +21,16 @@
         </div>
     </div>
 
-    <div class="modal fade" id="addRole">
+    <div class="modal fade" id="addRole" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-lg" style="max-width: 95%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Role</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <Form :validation-schema="validateRole" @submit="addRole">
                     <div class="modal-body" style="max-height: 75vh;overflow-y: scroll;">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Role Name *</label>
                             <Field name="role_name" type="text" class="form-control" id="input-1"
                                 placeholder="Role Name *" v-model="role_name"></Field>
@@ -64,26 +61,26 @@
                                             <td>{{ item.name }}</td>
                                             <td style="text-align: center;">
                                                 <input type="checkbox" :id="item.id" :value="item.allow_view"
-                                                    class="checkbox-custom" v-model="list_sub_menu[index].allow_view" />
+                                                    class="form-check-input checkbox-custom" v-model="list_sub_menu[index].allow_view" />
                                             </td>
                                             <td style="text-align: center;">
                                                 <input type="checkbox" :id="item.id" :value="item.allow_create"
-                                                    class="checkbox-custom"
+                                                    class="form-check-input checkbox-custom"
                                                     v-model="list_sub_menu[index].allow_create" />
                                             </td>
                                             <td style="text-align: center;">
                                                 <input type="checkbox" :id="item.id" :value="item.allow_update"
-                                                    class="checkbox-custom"
+                                                    class="form-check-input checkbox-custom"
                                                     v-model="list_sub_menu[index].allow_update" />
                                             </td>
                                             <td style="text-align: center;">
                                                 <input type="checkbox" :id="item.id" :value="item.allow_delete"
-                                                    class="checkbox-custom"
+                                                    class="form-check-input checkbox-custom"
                                                     v-model="list_sub_menu[index].allow_delete" />
                                             </td>
                                             <td style="text-align: center;">
                                                 <input type="checkbox" :id="item.id" :value="item.allow_print"
-                                                    class="checkbox-custom"
+                                                    class="form-check-input checkbox-custom"
                                                     v-model="list_sub_menu[index].allow_print" />
                                             </td>
                                         </tr>
@@ -93,7 +90,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal"><i
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                 class="fa fa-times"></i>
                             Close</button>
                         <button type="submit" class="btn btn-primary" :disabled="disabled"><i :class="{
@@ -107,18 +104,17 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editRole">
+    <div class="modal fade" id="editRole" tabindex="-1">
         <div class="modal-dialog modal-lg" style="max-width: 95%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Role</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="initValue">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        @click="initValue"></button>
                 </div>
                 <Form :validation-schema="validateRole" @submit="editRole">
                     <div class="modal-body" style="max-height: 75vh;overflow-y: scroll;">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Role Name *</label>
                             <Field :disabled="isRoleDisable" name="role_name" type="text" class="form-control"
                                 id="input-1" placeholder="Role Name *" v-model="role_name"></Field>
@@ -149,27 +145,27 @@
                                             <td>{{ item.name }}</td>
                                             <td style="text-align: center;">
                                                 <input :disabled="isRoleDisable" type="checkbox" :id="item.id"
-                                                    class="checkbox-custom" :value="item.allow_view"
+                                                    class="form-check-input checkbox-custom" :value="item.allow_view"
                                                     v-model="list_sub_menu[index].allow_view" />
                                             </td>
                                             <td style="text-align: center;">
                                                 <input :disabled="isRoleDisable" type="checkbox" :id="item.id"
-                                                    class="checkbox-custom" :value="item.allow_create"
+                                                    class="form-check-input checkbox-custom" :value="item.allow_create"
                                                     v-model="list_sub_menu[index].allow_create" />
                                             </td>
                                             <td style="text-align: center;">
                                                 <input :disabled="isRoleDisable" type="checkbox" :id="item.id"
-                                                    class="checkbox-custom" :value="item.allow_update"
+                                                    class="form-check-input checkbox-custom" :value="item.allow_update"
                                                     v-model="list_sub_menu[index].allow_update" />
                                             </td>
                                             <td style="text-align: center;">
                                                 <input :disabled="isRoleDisable" type="checkbox" :id="item.id"
-                                                    class="checkbox-custom" :value="item.allow_delete"
+                                                    class="form-check-input checkbox-custom" :value="item.allow_delete"
                                                     v-model="list_sub_menu[index].allow_delete" />
                                             </td>
                                             <td style="text-align: center;">
                                                 <input :disabled="isRoleDisable" type="checkbox" :id="item.id"
-                                                    class="checkbox-custom" :value="item.allow_print"
+                                                    class="form-check-input checkbox-custom" :value="item.allow_print"
                                                     v-model="list_sub_menu[index].allow_print" />
                                             </td>
                                         </tr>
@@ -179,7 +175,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal" @click="initValue"><i
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" @click="initValue"><i
                                 class="fa fa-times"></i>
                             Close</button>
                         <button v-if="!isRoleDisable" type="submit" class="btn btn-primary" :disabled="disabled"><i
@@ -277,7 +273,9 @@ export default {
                 if (res.data.status == 1) {
                     vm.refresh_table();
                     vm.initValue();
-                    $("#addRole").modal("hide");
+                    const modalElement = document.getElementById("addRole");
+                    (window.bootstrap.Modal.getInstance(modalElement) ||
+                        window.bootstrap.Modal.getOrCreateInstance(modalElement)).hide();
                     swalNotif.success(res.data.message);
                 } else {
                     swalNotif.error(res.data.message);
@@ -361,7 +359,10 @@ export default {
                         menu_group: item.menu_group
                     }));
 
-                    $("#editRole").modal({ backdrop: 'static', keyboard: false });
+                    window.bootstrap.Modal.getOrCreateInstance(document.getElementById("editRole"), {
+                        backdrop: 'static',
+                        keyboard: false
+                    }).show();
                 }
                 else {
                     notification.notif_error(res.data.message);
@@ -386,7 +387,9 @@ export default {
                 }
             }).then(res => {
                 if (res.data.status == 1) {
-                    $("#editRole").modal("hide");
+                    const modalElement = document.getElementById("editRole");
+                    (window.bootstrap.Modal.getInstance(modalElement) ||
+                        window.bootstrap.Modal.getOrCreateInstance(modalElement)).hide();
                     vm.refresh_table();
                     vm.initValue();
                     swalNotif.success(res.data.message);

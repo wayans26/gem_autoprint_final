@@ -1,8 +1,8 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h5>Exhibitions <button type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#modalAddExhibitions">Add Exibition</button></h5>
+            <h5>Exhibitions <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modalAddExhibitions">Add Exibition</button></h5>
         </div>
         <div class="card-body">
             <div class="table-responsive" id="table_container">
@@ -26,73 +26,71 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalAddExhibitions">
+    <div class="modal fade" id="modalAddExhibitions" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Exhibition</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <Form @submit="add_exhibition">
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Code</label>
                             <Field name="code" type="text" class="form-control" id="input-1" placeholder="inapa2026"
                                 v-model="code"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">NAME</label>
                             <Field name="name" type="text" class="form-control" id="input-1" placeholder="INAPA"
                                 v-model="name"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Full Name</label>
                             <Field name="full_name" type="text" class="form-control" id="input-1"
                                 placeholder="Full Name" v-model="full_name"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Location</label>
                             <Field name="location" type="text" class="form-control" id="input-1" placeholder="Location"
                                 v-model="location"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Date</label>
                             <Field name="date" type="text" class="form-control" id="input-1" placeholder="Date"
                                 v-model="date"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Team</label>
                             <Field name="team" type="text" class="form-control" id="input-1" placeholder="Team"
                                 v-model="team"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Template Form</label>
                             <v-select class="form-control" placeholder="Select Form" :options="listForm" label="label"
                                 :reduce="option => option.value" v-model="page"></v-select>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Type</label>
                             <v-select class="form-control" placeholder="Select Form" :options="list_type" label="label"
                                 :reduce="option => option.value" v-model="type"></v-select>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Host</label>
                             <Field name="host" type="text" class="form-control" id="input-1"
                                 placeholder="inapa.reg-gemindonesia.net" v-model="host"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Path </label>
                             <Field name="path" type="text" class="form-control" id="input-1"
                                 placeholder="Path of Exhibitions like /bushworld -> bushworld" v-model="path"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Banner</label>
                             <input type="file" class="form-control" id="input-1" @change="file_banner($event)">
                         </div>
                         <br>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">All Banner</label>
                             <input type="file" class="form-control" id="input-1" @change="all_banner($event)">
                         </div>
@@ -100,7 +98,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal"><i
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                 class="fa fa-times"></i>
                             Close</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>
@@ -111,74 +109,72 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalEditExhibitions">
+    <div class="modal fade" id="modalEditExhibitions" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Exhibition</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <Form @submit="edit_exhibition">
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Code</label>
                             <Field name="update.code" type="text" class="form-control" id="input-1"
                                 placeholder="inapa2026" v-model="update.code"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">NAME</label>
                             <Field name="update.name" type="text" class="form-control" id="input-1" placeholder="INAPA"
                                 v-model="update.name"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Full Name</label>
                             <Field name="update.full_name" type="text" class="form-control" id="input-1"
                                 placeholder="Full Name" v-model="update.full_name"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Location</label>
                             <Field name="update.location" type="text" class="form-control" id="input-1"
                                 placeholder="Location" v-model="update.location"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Date</label>
                             <Field name="update.date" type="text" class="form-control" id="input-1" placeholder="Date"
                                 v-model="update.date"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Team</label>
                             <Field name="update.team" type="text" class="form-control" id="input-1" placeholder="Team"
                                 v-model="update.team"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Template Form</label>
                             <v-select class="form-control" placeholder="Select Form" :options="listForm" label="label"
                                 :reduce="option => option.value" v-model="update.page"></v-select>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Type</label>
                             <v-select class="form-control" placeholder="Select Form" :options="list_type" label="label"
                                 :reduce="option => option.value" v-model="update.type"></v-select>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Host</label>
                             <Field name="update.host" type="text" class="form-control" id="input-1"
                                 placeholder="inapa.reg-gemindonesia.net" v-model="update.host"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Path </label>
                             <Field name="update.path" type="text" class="form-control" id="input-1"
                                 placeholder="Path of Exhibitions like /bushworld -> bushworld" v-model="update.path">
                             </Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Banner</label>
                             <input type="file" class="form-control" id="input-1" @change="update_file_banner($event)">
                         </div>
                         <br>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">All Banner</label>
                             <input type="file" class="form-control" id="input-1" @change="update_all_banner($event)">
                         </div>
@@ -186,7 +182,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal"><i
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                 class="fa fa-times"></i>
                             Close</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i>
@@ -389,7 +385,9 @@ export default {
                     });
                     vm.refresh_table();
                     vm.init();
-                    $("#modalAddExhibitions").modal("hide");
+                    const modalElement = document.getElementById("modalAddExhibitions");
+                    (window.bootstrap.Modal.getInstance(modalElement) ||
+                        window.bootstrap.Modal.getOrCreateInstance(modalElement)).hide();
                 }
                 else {
                     vm.$swal({
@@ -433,7 +431,10 @@ export default {
                     vm.update.host = res.data.data.host;
                     vm.update.page = res.data.data.page;
                     vm.update.path = res.data.data.path ? res.data.data.path : null;
-                    $("#modalEditExhibitions").modal({ backdrop: 'static', keyboard: false });
+                    window.bootstrap.Modal.getOrCreateInstance(document.getElementById("modalEditExhibitions"), {
+                        backdrop: 'static',
+                        keyboard: false
+                    }).show();
                 } else {
                     swalNotif.error(res.data.message);
                 }
@@ -478,7 +479,9 @@ export default {
                     });
                     vm.refresh_table();
                     vm.init();
-                    $("#modalEditExhibitions").modal("hide");
+                    const modalElement = document.getElementById("modalEditExhibitions");
+                    (window.bootstrap.Modal.getInstance(modalElement) ||
+                        window.bootstrap.Modal.getOrCreateInstance(modalElement)).hide();
                 }
                 else {
                     vm.$swal({

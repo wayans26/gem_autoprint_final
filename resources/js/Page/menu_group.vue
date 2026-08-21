@@ -2,8 +2,8 @@
     <div class="card">
         <div class="card-header">
             <bread-crumb></bread-crumb>
-            <h5>Menu Group <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMenuGroup"
-                    data-backdrop="static" data-keyboard="false">Add
+            <h5>Menu Group <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#addMenuGroup">Add
                     New Data</button> </h5>
         </div>
         <div class="card-body">
@@ -23,30 +23,28 @@
         </div>
     </div>
 
-    <div class="modal fade" id="addMenuGroup">
+    <div class="modal fade" id="addMenuGroup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Menu Group</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <Form :validation-schema="validateRole" @submit="add_menu">
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Name *</label>
                             <Field name="name" type="text" class="form-control" id="input-1" placeholder="Name *"
                                 v-model="name"></Field>
                             <ErrorMessage style="color: red;" name="name" />
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Order No *</label>
                             <Field name="order_no" type="number" class="form-control" id="input-1"
                                 placeholder="Order No *" v-model="order_no"></Field>
                             <ErrorMessage style="color: red;" name="order_no" />
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Icon</label>
                             <v-select class="form-control" placeholder="Select an Icon" :options="listIcons"
                                 label="label" :reduce="option => option.value" v-model="selectedIcon">
@@ -62,7 +60,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal"><i
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                 class="fa fa-times"></i>
                             Close</button>
                         <button type="submit" class="btn btn-primary" :disabled="disabled"><i :class="{
@@ -76,30 +74,29 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editMenuGroup">
+    <div class="modal fade" id="editMenuGroup" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Menu Group</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="initValue">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        @click="initValue"></button>
                 </div>
                 <Form :validation-schema="validateRole" @submit="edit_menu">
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Name *</label>
                             <Field name="name" type="text" class="form-control" id="input-1" placeholder="Name *"
                                 v-model="name"></Field>
                             <ErrorMessage style="color: red;" name="name" />
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Order No *</label>
                             <Field name="order_no" type="number" class="form-control" id="input-1"
                                 placeholder="Order No *" v-model="order_no"></Field>
                             <ErrorMessage style="color: red;" name="order_no" />
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Icon</label>
                             <v-select class="form-control" placeholder="Select an Icon" :options="listIcons"
                                 label="label" :reduce="option => option.value" v-model="selectedIcon">
@@ -115,7 +112,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal" @click="initValue"><i
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" @click="initValue"><i
                                 class="fa fa-times"></i>
                             Close</button>
                         <button type="submit" class="btn btn-primary" :disabled="disabled"><i :class="{
@@ -231,7 +228,9 @@ export default {
                 if (res.data.status == 1) {
                     vm.refresh_table();
                     vm.initValue();
-                    $("#addMenuGroup").modal("hide");
+                    const modalElement = document.getElementById("addMenuGroup");
+                    (window.bootstrap.Modal.getInstance(modalElement) ||
+                        window.bootstrap.Modal.getOrCreateInstance(modalElement)).hide();
                     swalNotif.success(res.data.message);
                 } else {
                     swalNotif.error(res.data.message);
@@ -271,7 +270,10 @@ export default {
                     vm.selectedIcon = res.data.data.icon;
                     vm.id = res.data.data.id;
 
-                    $("#editMenuGroup").modal({ backdrop: 'static', keyboard: false });
+                    window.bootstrap.Modal.getOrCreateInstance(document.getElementById("editMenuGroup"), {
+                        backdrop: 'static',
+                        keyboard: false
+                    }).show();
                 }
                 else {
                     swalNotif.error(res.data.message);
@@ -301,7 +303,9 @@ export default {
                 }
             }).then(res => {
                 if (res.data.status == 1) {
-                    $("#editMenuGroup").modal("hide");
+                    const modalElement = document.getElementById("editMenuGroup");
+                    (window.bootstrap.Modal.getInstance(modalElement) ||
+                        window.bootstrap.Modal.getOrCreateInstance(modalElement)).hide();
                     vm.refresh_table();
                     vm.initValue();
                     swalNotif.success(res.data.message);

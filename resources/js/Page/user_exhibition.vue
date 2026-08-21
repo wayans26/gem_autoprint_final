@@ -20,18 +20,16 @@
         </div>
     </div>
 
-    <div class="modal fade" id="addExhibitionsToUser">
+    <div class="modal fade" id="addExhibitionsToUser" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Assign Exhibitions To User</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form>
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Select Exhibitions</label>
                             <v-select class="form-control" placeholder="Select an Sub Exhibitions"
                                 :options="list_exhibitions" label="label" :reduce="option => option.value"
@@ -39,7 +37,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal"><i
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                 class="fa fa-times"></i>
                             Close</button>
                         <button type="button" @click="assignExhibitionsToUser" class="btn btn-primary"><i :class="{
@@ -160,7 +158,9 @@ export default {
                 if (res.data.status == 1) {
                     vm.selected_exhibitions = "";
                     vm.refresh_table();
-                    $("#addExhibitionsToUser").modal('hide');
+                    const modalElement = document.getElementById("addExhibitionsToUser");
+                    (window.bootstrap.Modal.getInstance(modalElement) ||
+                        window.bootstrap.Modal.getOrCreateInstance(modalElement)).hide();
                     swalNotif.success(res.data.message);
                 }
                 else {
@@ -206,7 +206,10 @@ export default {
             $("#tableUserExhibitions").on('click', '.btnAdd', function () {
                 const id = this.id;
                 vm.iduser = id;
-                $("#addExhibitionsToUser").modal({ backdrop: 'static', keyboard: false });
+                window.bootstrap.Modal.getOrCreateInstance(document.getElementById("addExhibitionsToUser"), {
+                    backdrop: 'static',
+                    keyboard: false
+                }).show();
             });
             $("#tableUserExhibitions").on('click', '.btnExhibitions', function () {
                 const id = this.id;

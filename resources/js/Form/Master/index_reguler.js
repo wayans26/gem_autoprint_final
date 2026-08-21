@@ -1,6 +1,8 @@
 import {
     createApp
 } from 'vue';
+import * as bootstrap from 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from '../Page/master_page.vue'
 import {
     createRouter,
@@ -10,6 +12,7 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import vSelect from 'vue-select'
 import "vue-select/dist/vue-select.css";
+import '../../../css/regular-form-theme.css';
 
 
 const routes = [{
@@ -30,6 +33,9 @@ router.beforeEach((to, from, next) => {
     next()
 });
 const app = createApp(App);
+
+window.bootstrap = bootstrap;
+
 app.use(router);
 app.use(VueSweetalert2);
 app.component('v-select', vSelect);

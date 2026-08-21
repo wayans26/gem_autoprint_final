@@ -3,7 +3,7 @@
         <div class="card-header">
             <bread-crumb></bread-crumb>
             <h5>User Manager
-                <button type="button" class="btn btn-primary" style="float: right;" @click="changePage('add')">Add New
+                <button type="button" class="btn btn-primary float-end" @click="changePage('add')">Add New
                     Data</button>
             </h5>
         </div>
@@ -30,19 +30,19 @@
         <Form :validation-schema="validateRole" @submit="submitForm">
             <div class="card-header">
                 <h5>User Manager</h5>
-                <div style="text-align-last: right;">
+                <div class="text-end">
                     <button type="button" class="btn btn-light" @click="changePage('view')">
                         <i class="fa fa-arrow-left"></i>
                     </button>
                     <button v-if="!isEdit && page === 'add'" type="button"
-                        class="btn btn-outline-danger waves-effect waves-light mr-1" @click="changePage('view')">
+                        class="btn btn-outline-danger waves-effect waves-light me-1" @click="changePage('view')">
                         Cancle
                     </button>
                     <button v-if="isEdit && page === 'edit'" type="button"
-                        class="btn btn-outline-danger waves-effect waves-light mr-1" @click="isEdit = false"> Cancle
+                        class="btn btn-outline-danger waves-effect waves-light me-1" @click="isEdit = false"> Cancle
                     </button>
                     <button v-if="!isEdit && page === 'edit'" type="button"
-                        class="btn btn-success waves-effect waves-light mr-1" @click="isEdit = true">
+                        class="btn btn-success waves-effect waves-light me-1" @click="isEdit = true">
                         Edit Data
                     </button>
                     <button v-if="!isEdit && page === 'edit'" type="button" class="btn btn-primary"
@@ -60,13 +60,13 @@
                     'btn': true,
                     'btn-outline-primary': !isSubActive('general'),
                     'btn-primary': isSubActive('general'),
-                    'ml-1': true
+                    'ms-1': true
                 }" @click="changeSubPage('general')">General</button>
                 <button type="button" :class="{
                     'btn': true,
                     'btn-outline-primary': !isSubActive('role'),
                     'btn-primary': isSubActive('role'),
-                    'ml-1': true
+                    'ms-1': true
                 }" @click="changeSubPage('role')">Access Right</button>
                 <br><br>
                 <div class="card" v-show="subPage === 'general'">
@@ -74,35 +74,35 @@
                         <h5>Profile Details</h5>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label>Username *</label>
                             <Field name="username" type="text" class="form-control" :disabled="!isEdit"
                                 placeholder="Username *" v-model="username">
                             </Field>
                             <ErrorMessage style="color: red;" name="username" />
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label>Full Name *</label>
                             <Field name="fullName" type="text" class="form-control" :disabled="!isEdit"
                                 placeholder="Full Name *" v-model="fullName">
                             </Field>
                             <ErrorMessage style="color: red;" name="fullName" />
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label>Phone Number *</label>
                             <Field name="phoneNumber" type="text" class="form-control" :disabled="!isEdit"
                                 placeholder="Phone Number *" v-model="phoneNumber">
                             </Field>
                             <ErrorMessage style="color: red;" name="phoneNumber" />
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label>Email *</label>
                             <Field name="email" type="text" class="form-control" placeholder="Email *"
                                 :disabled="!isEdit" v-model="email">
                             </Field>
                             <ErrorMessage style="color: red;" name="email" />
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label>Role *</label>
                             <v-select class="form-control" placeholder="Select an Role" :options="listRole"
                                 :disabled="!isEdit" label="label" :reduce="option => option.value"
@@ -137,23 +137,23 @@
                                         <td>{{ item.name }}</td>
                                         <td style="text-align: center;">
                                             <input type="checkbox" :id="item.id" disabled :checked="item.allow_view"
-                                                class="checkbox-custom" />
+                                                class="form-check-input checkbox-custom" />
                                         </td>
                                         <td style="text-align: center;">
                                             <input type="checkbox" :id="item.id" disabled :checked="item.allow_create"
-                                                class="checkbox-custom" />
+                                                class="form-check-input checkbox-custom" />
                                         </td>
                                         <td style="text-align: center;">
                                             <input type="checkbox" :id="item.id" disabled :checked="item.allow_update"
-                                                class="checkbox-custom" />
+                                                class="form-check-input checkbox-custom" />
                                         </td>
                                         <td style="text-align: center;">
                                             <input type="checkbox" :id="item.id" disabled :checked="item.allow_delete"
-                                                class="checkbox-custom" />
+                                                class="form-check-input checkbox-custom" />
                                         </td>
                                         <td style="text-align: center;">
                                             <input type="checkbox" :id="item.id" disabled :checked="item.allow_print"
-                                                class="checkbox-custom" />
+                                                class="form-check-input checkbox-custom" />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -178,21 +178,21 @@
                 </div>
                 <div v-else>
                     <Form :validation-schema="validateResetPassword" @submit="resetPassword">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label>Password *</label>
                             <Field name="password" type="password" class="form-control" placeholder="Password *"
                                 v-model="password">
                             </Field>
                             <ErrorMessage style="color: red;" name="password" />
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label>Confirm Password *</label>
                             <Field name="confirmPassword" type="password" class="form-control"
                                 placeholder="Confirm Password *" v-model="confirmPassword">
                             </Field>
                             <ErrorMessage style="color: red;" name="confirmPassword" />
                         </div>
-                        <button @click="isResetPassword = false" type="button" class="btn btn-light mr-2"
+                        <button @click="isResetPassword = false" type="button" class="btn btn-light me-2"
                             :disabled="disabled"><i :class="{
                                 'fa fa-spinner fa-spin': disabled,
                                 'fa fa-close': !disabled,

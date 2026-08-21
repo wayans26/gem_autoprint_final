@@ -1,6 +1,8 @@
 import {
     createApp
 } from 'vue';
+import * as bootstrap from 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import master from '../Page/index.vue'
 import router from "../Router/index_route.js"
 
@@ -28,6 +30,9 @@ import {
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 import print from 'vue3-print-nb'
+import '../../css/admin-theme.css';
+
+window.bootstrap = bootstrap;
 
 function roleCheck(parent) {
     globalLoader.show = true;

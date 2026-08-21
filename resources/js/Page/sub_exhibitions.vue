@@ -1,8 +1,8 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h5>Data Sub Exhibition <button type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#modalAddSubExhibitions">Tambah Sub Exhibition</button> </h5>
+            <h5>Data Sub Exhibition <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modalAddSubExhibitions">Tambah Sub Exhibition</button> </h5>
         </div>
         <div class="card-body">
             <router-link :to="{ name: 'exhibitions' }" class="btn btn-info"><i class="fa fa-arrow-left"></i>
@@ -26,23 +26,21 @@
 
 
 
-    <div class="modal fade" id="modalAddSubExhibitions">
+    <div class="modal fade" id="modalAddSubExhibitions" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Sub Exhibition</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <Form @submit="add_sub_exhibition">
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Name</label>
                             <Field name="name" type="text" class="form-control" id="input-1" placeholder="Name"
                                 v-model="name"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Banner</label>
                             <input type="file" class="form-control" id="input-1" @change="file_banner_change($event)">
                         </div>
@@ -50,7 +48,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal"><i
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                 class="fa fa-times"></i>
                             Close</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>
@@ -61,23 +59,21 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalEditSubExhibitions">
+    <div class="modal fade" id="modalEditSubExhibitions" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Sub Exhibition</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <Form @submit="edit_sub_exhibition">
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Name</label>
                             <Field name="update.name" type="text" class="form-control" id="input-1" placeholder="Name"
                                 v-model="update.name"></Field>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="input-1">Banner</label>
                             <input type="file" class="form-control" id="input-1"
                                 @change="update_file_banner_change($event)">
@@ -86,7 +82,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-inverse-primary" data-dismiss="modal"><i
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i
                                 class="fa fa-times"></i>
                             Close</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>
@@ -214,7 +210,9 @@ export default {
                     });
                     vm.refresh_table();
                     vm.init();
-                    $("#modalAddSubExhibitions").modal("hide");
+                    const modalElement = document.getElementById("modalAddSubExhibitions");
+                    (window.bootstrap.Modal.getInstance(modalElement) ||
+                        window.bootstrap.Modal.getOrCreateInstance(modalElement)).hide();
                 }
                 else {
                     vm.$swal({
@@ -256,7 +254,9 @@ export default {
                     });
                     vm.refresh_table();
                     vm.init();
-                    $("#modalEditSubExhibitions").modal("hide");
+                    const modalElement = document.getElementById("modalEditSubExhibitions");
+                    (window.bootstrap.Modal.getInstance(modalElement) ||
+                        window.bootstrap.Modal.getOrCreateInstance(modalElement)).hide();
                 }
                 else {
                     vm.$swal({
@@ -291,11 +291,10 @@ export default {
                     vm.update.id = res.data.data.id;
                     vm.update.name = res.data.data.name;
 
-                    $("#modalEditSubExhibitions").modal({
+                    window.bootstrap.Modal.getOrCreateInstance(document.getElementById("modalEditSubExhibitions"), {
                         backdrop: 'static',
-                        keyboard: false,
-                        show: true
-                    });
+                        keyboard: false
+                    }).show();
                 }
                 else {
                     vm.$swal({

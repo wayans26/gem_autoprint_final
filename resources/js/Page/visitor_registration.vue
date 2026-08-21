@@ -10,19 +10,19 @@
         <div class="card-body" v-show="hasExhibitions && printer_name">
             <Form :validation-schema="validate" @submit="registrasi">
                 <div v-show="connected">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="input-1">Exhibitions</label>
                         <v-select class="form-control" placeholder="Select an Exhibitions" :options="list_exhibitions"
                             label="label" :reduce="option => option.value" v-model="exhibitions"
                             @option:selected="getSubExhibitions" :clearable="false"></v-select>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="input-1">Sub Exhibitions</label>
                         <v-select class="form-control" placeholder="Select an Sub Exhibitions"
                             :options="list_sub_exhibitions" label="label" :reduce="option => option.value"
                             v-model="sub_exhibitions" :clearable="false"></v-select>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="name">Name *</label>
                         <Field name="name" v-slot="{ field }" v-model="name">
                             <input v-bind="field" ref="name_visitor" class="form-control" id="name"
@@ -30,48 +30,48 @@
                         </Field>
                         <ErrorMessage style="color: red;" name="name" />
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="title">Title *</label>
                         <Field name="title" type="text" class="form-control" id="title" placeholder="Title *"
                             v-model="title">
                         </Field>
                         <ErrorMessage style="color: red;" name="title" />
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="company">Company *</label>
                         <Field name="company" type="text" class="form-control" id="company" placeholder="Company *"
                             v-model="company">
                         </Field>
                         <ErrorMessage style="color: red;" name="company" />
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="email">Email *</label>
                         <Field name="email" type="text" class="form-control" id="email" placeholder="Email *"
                             v-model="email">
                         </Field>
                         <ErrorMessage style="color: red;" name="email" />
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="phone">Phone *</label>
                         <Field name="phone" type="text" class="form-control" id="phone" placeholder="Phone *"
                             v-model="phone">
                         </Field>
                         <ErrorMessage style="color: red;" name="phone" />
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="input-1">Country</label>
                         <v-select class="form-control" placeholder="Select an Country" :options="list_country"
                             label="label" :reduce="option => option.value" v-model="country"
                             :clearable="false"></v-select>
                     </div>
                 </div>
-                <p class="text-mute">{{ status }} | {{ printer_name }}</p>
-                <!-- <button type="button" class="btn btn-primary ml-1" @click="launchQzTray" v-show="!connected">Launch
+                <p class="text-muted">{{ status }} | {{ printer_name }}</p>
+                <!-- <button type="button" class="btn btn-primary ms-1" @click="launchQzTray" v-show="!connected">Launch
                     Printer</button> -->
-                <button type="button" class="btn btn-primary ml-1" @click="connectQzTray" v-show="!connected">Connect
+                <button type="button" class="btn btn-primary ms-1" @click="connectQzTray" v-show="!connected">Connect
                     Printer</button>
-                <button type="submit" class="btn btn-primary ml-1" v-show="connected">Register</button>
-                <!-- <button type="submit" class="btn btn-primary ml-1" @click="testPrint">Test Print</button> -->
+                <button type="submit" class="btn btn-primary ms-1" v-show="connected">Register</button>
+                <!-- <button type="submit" class="btn btn-primary ms-1" @click="testPrint">Test Print</button> -->
             </form>
         </div>
     </div>

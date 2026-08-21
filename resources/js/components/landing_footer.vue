@@ -1,8 +1,11 @@
 <template>
-    <footer class="footer" style="margin-bottom: 8px">
-        <div class="container">
-            <div class="text-center">
-                &copy; Copyright <strong><span>Gem Indonesia</span></strong>.
+    <footer class="footer">
+        <div class="container-fluid footer-inner">
+            <div>
+                &copy; Copyright <strong><span>Gem Indonesia</span></strong>
+            </div>
+            <div class="footer-product">
+                Visitor Registration System
             </div>
         </div>
     </footer>

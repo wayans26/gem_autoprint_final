@@ -12,18 +12,18 @@
                     v-model="barcode" autofocus :disabled="disabled || !connected">
                 </input>
                 <br>
-                <p class="text-mute">{{ status }} | {{ printer_name }}</p>
+                <p class="text-muted">{{ status }} | {{ printer_name }}</p>
                 <p class="text-muted mb-2">
                     Scanner: {{ scannerStatus }}
                     <span v-if="scannerError"> | {{ scannerError }}</span>
                 </p>
-                <button type="button" class="btn btn-primary ml-1" @click="launchQzTray" v-show="!connected">Launch
+                <button type="button" class="btn btn-primary ms-1" @click="launchQzTray" v-show="!connected">Launch
                     Printer</button>
-                <button type="button" class="btn btn-primary ml-1" @click="connectQzTray" v-show="!connected">Connect
+                <button type="button" class="btn btn-primary ms-1" @click="connectQzTray" v-show="!connected">Connect
                     Printer</button>
-                <button type="button" class="btn btn-primary ml-1" @click="connectScanner"
+                <button type="button" class="btn btn-primary ms-1" @click="connectScanner"
                     v-show="!scannerConnected">Connect Scanner</button>
-                <!-- <button type="button" class="btn btn-primary ml-1" v-show="connected" :disabled="disabled">Test
+                <!-- <button type="button" class="btn btn-primary ms-1" v-show="connected" :disabled="disabled">Test
                     Print</button> -->
             </form>
         </div>

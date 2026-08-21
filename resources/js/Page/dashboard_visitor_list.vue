@@ -7,7 +7,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="input-1">Status</label>
                         <v-select class="form-control" placeholder="Select Status" :options="list_status" label="label"
                             :reduce="option => option.value" v-model="status" :clearable="false"
@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="input-1">Exhibitions</label>
                         <v-select class="form-control" placeholder="Select an Exhibitions" :options="list_exhibitions"
                             label="label" :reduce="option => option.value" v-model="exhibition_id"
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="input-1">Sub Exhibitions</label>
                         <v-select class="form-control" placeholder="Select an Sub Exhibitions"
                             :options="list_sub_exhibitions" label="label" :reduce="option => option.value"
@@ -33,18 +33,20 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-bordered" style="width: 100%" id="tableVisitor" v-if="!loading">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Exhibition</th>
-                        <th>Sub Exhibition</th>
-                        <th>Name</th>
-                        <th>Is Printed</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-bordered" style="width: 100%" id="tableVisitor" v-if="!loading">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Exhibition</th>
+                            <th>Sub Exhibition</th>
+                            <th>Name</th>
+                            <th>Is Printed</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 

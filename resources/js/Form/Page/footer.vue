@@ -1,11 +1,23 @@
 <template>
-    <footer class="footer" style="margin-bottom: 8px">
-        <div class="container">
-            <div class="text-center">
-                &copy; Copyright <a href="https://gem-indonesia.net/"><strong><span>PT Global Expo
-                            Management</span></strong></a>.
-                <br />
-            </div>
+    <footer class="registration-footer">
+        <div class="container registration-footer__inner">
+            <p class="mb-0">
+                &copy; {{ current_year }}
+                <a href="https://gem-indonesia.net/" target="_blank" rel="noopener noreferrer">
+                    PT Global Expo Management
+                </a>
+            </p>
+            <p class="mb-0 registration-footer__note">Professional exhibition services</p>
         </div>
     </footer>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            current_year: new Date().getFullYear(),
+        };
+    },
+};
+</script>

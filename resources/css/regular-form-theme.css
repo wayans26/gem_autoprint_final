@@ -1,0 +1,1021 @@
+:root,
+[data-bs-theme="light"] {
+    --registration-primary: #3159b8;
+    --registration-primary-hover: #27499e;
+    --registration-primary-soft: #edf3ff;
+    --registration-accent: #0e7490;
+    --registration-page-bg: #f4f7fb;
+    --registration-surface: #ffffff;
+    --registration-surface-muted: #f8faff;
+    --registration-text: #172033;
+    --registration-heading: #111827;
+    --registration-muted: #66738a;
+    --registration-border: #dce3ef;
+    --registration-border-strong: #c8d2e2;
+    --registration-input-bg: #ffffff;
+    --registration-danger: #c9364f;
+    --registration-success: #16825d;
+    --registration-overlay: rgb(244 247 251 / 78%);
+    --registration-shadow-sm: 0 2px 8px rgb(30 48 87 / 6%);
+    --registration-shadow: 0 20px 60px rgb(30 48 87 / 12%);
+    --registration-shadow-lg: 0 28px 80px rgb(30 48 87 / 18%);
+    --registration-radius-sm: .625rem;
+    --registration-radius: .875rem;
+    --registration-radius-lg: 1.125rem;
+    --bs-primary: #3159b8;
+    --bs-primary-rgb: 49, 89, 184;
+    --bs-body-color: #172033;
+    --bs-body-bg: #f4f7fb;
+    --bs-border-color: #dce3ef;
+    color-scheme: light;
+}
+
+[data-bs-theme="dark"] {
+    --registration-primary: #86a8ff;
+    --registration-primary-hover: #a2bbff;
+    --registration-primary-soft: #1d2b49;
+    --registration-accent: #67d3ed;
+    --registration-page-bg: #0b1220;
+    --registration-surface: #121c2f;
+    --registration-surface-muted: #18243a;
+    --registration-text: #e8eef9;
+    --registration-heading: #f6f8fc;
+    --registration-muted: #a6b2c7;
+    --registration-border: #2a3850;
+    --registration-border-strong: #3a4963;
+    --registration-input-bg: #0f192a;
+    --registration-danger: #ff8fa3;
+    --registration-success: #69d6a9;
+    --registration-overlay: rgb(5 10 20 / 82%);
+    --registration-shadow-sm: 0 2px 10px rgb(0 0 0 / 20%);
+    --registration-shadow: 0 22px 65px rgb(0 0 0 / 30%);
+    --registration-shadow-lg: 0 30px 90px rgb(0 0 0 / 42%);
+    --bs-primary: #86a8ff;
+    --bs-primary-rgb: 134, 168, 255;
+    --bs-body-color: #e8eef9;
+    --bs-body-bg: #0b1220;
+    --bs-secondary-color: #a6b2c7;
+    --bs-border-color: #2a3850;
+    color-scheme: dark;
+}
+
+html,
+body,
+#app {
+    min-height: 100%;
+}
+
+html {
+    min-width: 320px;
+    scroll-behavior: smooth;
+    background: var(--registration-page-bg);
+}
+
+body.regular-form-page {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    background: var(--registration-page-bg);
+    color: var(--registration-text);
+    font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: .9375rem;
+    letter-spacing: normal;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color 180ms ease, color 180ms ease;
+}
+
+.regular-form-page *,
+.regular-form-page *::before,
+.regular-form-page *::after {
+    box-sizing: border-box;
+}
+
+.regular-form-page input::-webkit-outer-spin-button,
+.regular-form-page input::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.regular-form-page input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.regular-form-page a {
+    color: var(--registration-primary);
+    text-decoration: none;
+}
+
+.regular-form-page a:hover {
+    color: var(--registration-primary-hover);
+}
+
+.regular-form-page h1,
+.regular-form-page h2,
+.regular-form-page h3,
+.regular-form-page h4,
+.regular-form-page h5,
+.regular-form-page h6 {
+    color: var(--registration-heading);
+    letter-spacing: -.02em;
+}
+
+.regular-form-shell {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background: var(--registration-page-bg);
+}
+
+/* Header */
+.registration-header {
+    position: sticky;
+    z-index: 1030;
+    top: 0;
+    flex: 0 0 auto;
+    border-bottom: 1px solid var(--registration-border);
+    background: color-mix(in srgb, var(--registration-surface) 94%, transparent);
+    box-shadow: var(--registration-shadow-sm);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.registration-navbar {
+    min-height: 72px;
+    padding: .65rem 0;
+}
+
+.registration-navbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.registration-brand {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: .8rem;
+}
+
+.registration-brand__mark {
+    display: inline-flex;
+    width: 50px;
+    height: 50px;
+    flex: 0 0 50px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: .3rem;
+    border: 1px solid var(--registration-border);
+    border-radius: .8rem;
+    background: #ffffff;
+    box-shadow: var(--registration-shadow-sm);
+}
+
+.registration-brand__mark img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.registration-brand__copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    line-height: 1.25;
+}
+
+.registration-brand__copy strong {
+    overflow: hidden;
+    color: var(--registration-heading);
+    font-size: 1rem;
+    font-weight: 750;
+    letter-spacing: -.01em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.registration-brand__copy small {
+    margin-top: .2rem;
+    overflow: hidden;
+    color: var(--registration-muted);
+    font-size: .75rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.registration-header__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: .75rem;
+}
+
+.registration-secure {
+    align-items: center;
+    gap: .4rem;
+    color: var(--registration-success);
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+.registration-theme-toggle {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: .55rem .85rem;
+    color: var(--registration-text);
+    border: 1px solid var(--registration-border);
+    border-radius: .7rem;
+    outline: none;
+    background: var(--registration-surface-muted);
+    font: inherit;
+    font-size: .8rem;
+    font-weight: 700;
+    box-shadow: none;
+    transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease,
+        transform 150ms ease, box-shadow 150ms ease;
+}
+
+.registration-theme-toggle:hover {
+    color: var(--registration-primary);
+    border-color: var(--registration-primary);
+    background: var(--registration-primary-soft);
+    transform: translateY(-1px);
+}
+
+.registration-theme-toggle:focus-visible {
+    border-color: var(--registration-primary);
+    box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--registration-primary) 20%, transparent);
+}
+
+.registration-theme-toggle i {
+    width: 1rem;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Page layout */
+.registration-main {
+    position: relative;
+    isolation: isolate;
+    flex: 1 1 auto;
+    overflow: hidden;
+    padding: clamp(1.5rem, 4vw, 3.5rem) 0;
+}
+
+.registration-main::before,
+.registration-main::after {
+    position: absolute;
+    z-index: -1;
+    width: 26rem;
+    height: 26rem;
+    border-radius: 50%;
+    background: var(--registration-primary-soft);
+    content: "";
+    filter: blur(1px);
+    opacity: .72;
+}
+
+.registration-main::before {
+    top: -17rem;
+    right: -12rem;
+}
+
+.registration-main::after {
+    bottom: -19rem;
+    left: -14rem;
+    opacity: .45;
+}
+
+.registration-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1160px;
+}
+
+.registration-page {
+    width: 100%;
+}
+
+.registration-card {
+    width: 100%;
+    max-width: 1060px !important;
+    overflow: visible;
+    color: var(--registration-text);
+    border: 1px solid var(--registration-border);
+    border-radius: var(--registration-radius-lg);
+    background: var(--registration-surface);
+    box-shadow: var(--registration-shadow);
+}
+
+.registration-banner {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 120px;
+    border-bottom: 1px solid var(--registration-border);
+    border-radius: calc(var(--registration-radius-lg) - 1px) calc(var(--registration-radius-lg) - 1px) 0 0;
+    background: var(--registration-surface-muted);
+    object-fit: cover;
+}
+
+.registration-card .card-body {
+    color: var(--registration-text);
+    background: var(--registration-surface);
+}
+
+.registration-form {
+    background: var(--registration-surface);
+    border-radius: 0 0 var(--registration-radius-lg) var(--registration-radius-lg);
+}
+
+.registration-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--registration-border);
+}
+
+.registration-section-heading {
+    max-width: 720px;
+    margin-bottom: 1.75rem;
+}
+
+.registration-section-heading--compact {
+    margin-bottom: 1.5rem;
+}
+
+.registration-section-heading h1,
+.registration-section-heading h2 {
+    margin: 0;
+    color: var(--registration-heading);
+    font-weight: 750;
+    line-height: 1.2;
+}
+
+.registration-section-heading h1 {
+    font-size: clamp(1.55rem, 3vw, 2.05rem);
+}
+
+.registration-section-heading h2 {
+    font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+}
+
+.registration-section-heading p {
+    margin: .65rem 0 0;
+    color: var(--registration-muted);
+    line-height: 1.65;
+}
+
+.registration-eyebrow {
+    display: inline-flex;
+    margin-bottom: .65rem;
+    color: var(--registration-primary);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+/* Form controls */
+.registration-field,
+.registration-form .form-group {
+    position: relative;
+}
+
+.registration-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.registration-form .form-label,
+.registration-form .form-group > label {
+    margin-bottom: .5rem;
+    color: var(--registration-heading);
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+.registration-form .form-control,
+.registration-form .form-select {
+    min-height: 48px;
+    padding: .7rem .85rem;
+    color: var(--registration-text);
+    border: 1px solid var(--registration-border-strong);
+    border-radius: var(--registration-radius-sm);
+    background-color: var(--registration-input-bg);
+    font-size: .9rem;
+    line-height: 1.45;
+    box-shadow: none;
+    transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.registration-form textarea.form-control {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.registration-form .form-control::placeholder {
+    color: color-mix(in srgb, var(--registration-muted) 82%, transparent);
+    opacity: 1;
+}
+
+.registration-form .form-control:hover,
+.registration-form .form-select:hover {
+    border-color: color-mix(in srgb, var(--registration-primary) 56%, var(--registration-border));
+}
+
+.registration-form .form-control:focus,
+.registration-form .form-select:focus {
+    color: var(--registration-text);
+    border-color: var(--registration-primary);
+    background-color: var(--registration-input-bg);
+    box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--registration-primary) 18%, transparent);
+}
+
+.registration-form .form-control:disabled,
+.registration-form .form-control[readonly],
+.registration-form .form-select:disabled {
+    color: var(--registration-muted);
+    border-color: var(--registration-border);
+    background: var(--registration-surface-muted);
+    opacity: .75;
+}
+
+.registration-form .row {
+    --bs-gutter-x: 1.25rem;
+}
+
+.registration-error,
+.registration-form [role="alert"] {
+    display: block;
+    margin-top: .4rem;
+    color: var(--registration-danger) !important;
+    font-size: .78rem;
+    font-weight: 650;
+    line-height: 1.4;
+}
+
+/* Vue Select */
+.registration-form .v-select {
+    width: 100%;
+    color: var(--registration-text);
+    font-size: .9rem;
+}
+
+.registration-form .vs__dropdown-toggle {
+    min-height: 48px;
+    padding: .25rem .35rem .25rem .6rem;
+    color: var(--registration-text);
+    border: 1px solid var(--registration-border-strong);
+    border-radius: var(--registration-radius-sm);
+    background: var(--registration-input-bg);
+    box-shadow: none;
+    transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.registration-form .v-select:hover .vs__dropdown-toggle {
+    border-color: color-mix(in srgb, var(--registration-primary) 56%, var(--registration-border));
+}
+
+.registration-form .v-select.vs--open .vs__dropdown-toggle,
+.registration-form .v-select:focus-within .vs__dropdown-toggle {
+    border-color: var(--registration-primary);
+    box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--registration-primary) 18%, transparent);
+}
+
+.registration-form .vs__selected-options {
+    min-width: 0;
+    align-items: center;
+    padding: 0;
+}
+
+.registration-form .vs__selected,
+.registration-form .vs__search,
+.registration-form .vs__search:focus {
+    margin: 0;
+    padding: .35rem .15rem;
+    color: var(--registration-text);
+    border: 0;
+    background: transparent;
+    line-height: 1.4;
+}
+
+.registration-form .vs__search::placeholder {
+    color: color-mix(in srgb, var(--registration-muted) 82%, transparent);
+    opacity: 1;
+}
+
+.registration-form .vs__actions {
+    padding: 0 .35rem 0 .4rem;
+}
+
+.registration-form .vs__open-indicator,
+.registration-form .vs__clear {
+    fill: var(--registration-muted);
+}
+
+.registration-form .vs__dropdown-menu {
+    z-index: 1055;
+    margin-top: .35rem;
+    overflow: hidden auto;
+    color: var(--registration-text);
+    border: 1px solid var(--registration-border);
+    border-radius: var(--registration-radius-sm);
+    background: var(--registration-surface);
+    box-shadow: var(--registration-shadow);
+}
+
+.registration-form .vs__dropdown-option {
+    padding: .7rem .85rem;
+    color: var(--registration-text);
+    line-height: 1.35;
+    white-space: normal;
+}
+
+.registration-form .vs__dropdown-option--highlight {
+    color: var(--registration-primary);
+    background: var(--registration-primary-soft);
+}
+
+.registration-form .vs__dropdown-option--selected {
+    color: var(--registration-heading);
+    background: var(--registration-surface-muted);
+    font-weight: 700;
+}
+
+.registration-form .vs--disabled .vs__dropdown-toggle,
+.registration-form .vs--disabled .vs__search,
+.registration-form .vs--disabled .vs__open-indicator {
+    background: var(--registration-surface-muted);
+}
+
+/* Invitation preference */
+.registration-radio-group {
+    margin-top: .5rem;
+    padding: 1.1rem 1.2rem;
+    border: 1px solid var(--registration-border);
+    border-radius: var(--registration-radius);
+    background: var(--registration-surface-muted);
+}
+
+.registration-radio-group .form-check-input {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: .15rem;
+    border-color: var(--registration-border-strong);
+    background-color: var(--registration-input-bg);
+    box-shadow: none;
+}
+
+.registration-radio-group .form-check-input:checked {
+    border-color: var(--registration-primary);
+    background-color: var(--registration-primary);
+}
+
+.registration-radio-group .form-check-input:focus {
+    border-color: var(--registration-primary);
+    box-shadow: 0 0 0 .22rem color-mix(in srgb, var(--registration-primary) 18%, transparent);
+}
+
+.registration-radio-group .form-check-label {
+    color: var(--registration-text);
+    line-height: 1.5;
+}
+
+.registration-address-options {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-left: 3px solid var(--registration-primary);
+    border-radius: 0 var(--registration-radius-sm) var(--registration-radius-sm) 0;
+    background: var(--registration-surface);
+}
+
+/* Submit panel */
+.registration-submit {
+    padding: 1.5rem clamp(1.5rem, 4vw, 3rem);
+    color: var(--registration-text);
+    border-top: 1px solid var(--registration-border);
+    border-radius: 0 0 calc(var(--registration-radius-lg) - 1px) calc(var(--registration-radius-lg) - 1px);
+    background: var(--registration-surface-muted);
+}
+
+.registration-submit h5 {
+    margin-bottom: .35rem;
+    font-size: 1rem;
+    font-weight: 750;
+}
+
+.registration-submit p {
+    margin: 0 0 1rem;
+    color: var(--registration-muted);
+    line-height: 1.55;
+}
+
+.registration-submit .btn-primary {
+    min-width: 150px;
+    min-height: 48px;
+    padding: .7rem 1.2rem;
+    border-color: var(--registration-primary);
+    border-radius: var(--registration-radius-sm);
+    background: var(--registration-primary);
+    color: #ffffff;
+    font-size: .9rem;
+    font-weight: 750;
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--registration-primary) 25%, transparent);
+    transition: border-color 150ms ease, background-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+[data-bs-theme="dark"] .registration-submit .btn-primary {
+    color: #081226;
+}
+
+.registration-submit .btn-primary:hover,
+.registration-submit .btn-primary:focus {
+    border-color: var(--registration-primary-hover);
+    background: var(--registration-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 13px 28px color-mix(in srgb, var(--registration-primary) 30%, transparent);
+}
+
+.registration-submit .btn-primary:focus-visible {
+    box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--registration-primary) 25%, transparent),
+        0 13px 28px color-mix(in srgb, var(--registration-primary) 30%, transparent);
+}
+
+.registration-submit .btn-primary:disabled {
+    border-color: var(--registration-border-strong);
+    background: var(--registration-border-strong);
+    color: var(--registration-muted);
+    box-shadow: none;
+    transform: none;
+    opacity: .72;
+}
+
+/* Bootstrap modal */
+.registration-modal .modal-content,
+.regular-form-page .modal-content {
+    overflow: hidden;
+    color: var(--registration-text);
+    border: 1px solid var(--registration-border);
+    border-radius: var(--registration-radius-lg);
+    background: var(--registration-surface);
+    box-shadow: var(--registration-shadow-lg);
+}
+
+.registration-modal .modal-header,
+.regular-form-page .modal-header {
+    padding: 1.2rem 1.35rem;
+    border-bottom-color: var(--registration-border);
+    background: var(--registration-surface);
+}
+
+.registration-modal .modal-title,
+.regular-form-page .modal-title {
+    color: var(--registration-heading);
+    font-size: 1.05rem;
+    font-weight: 750;
+}
+
+.registration-modal .modal-body,
+.regular-form-page .modal-body {
+    padding: 1.35rem;
+    color: var(--registration-text);
+    background: var(--registration-surface);
+    line-height: 1.65;
+}
+
+.registration-modal .modal-body p:last-child,
+.regular-form-page .modal-body p:last-child {
+    margin-bottom: 0;
+}
+
+.registration-success-icon {
+    display: flex;
+    width: 64px;
+    height: 64px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    color: var(--registration-success);
+    border: 1px solid color-mix(in srgb, var(--registration-success) 32%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--registration-success) 12%, var(--registration-surface));
+    font-size: 1.65rem;
+}
+
+.registration-notice {
+    padding: .75rem .9rem;
+    color: var(--registration-danger);
+    border-left: 3px solid var(--registration-danger);
+    border-radius: 0 var(--registration-radius-sm) var(--registration-radius-sm) 0;
+    background: color-mix(in srgb, var(--registration-danger) 9%, var(--registration-surface));
+    font-size: .875rem;
+    font-weight: 650;
+}
+
+.registration-language-switch {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: .35rem;
+    margin-top: .5rem;
+    padding: .55rem .85rem;
+    border: 1px solid var(--registration-border);
+    border-radius: var(--registration-radius-sm);
+    background: var(--registration-surface-muted);
+}
+
+.registration-language-switch .form-check-input {
+    width: 2.5rem;
+    height: 1.35rem;
+    margin-top: 0;
+    border-color: var(--registration-border-strong);
+    background-color: var(--registration-input-bg);
+    box-shadow: none;
+}
+
+.registration-language-switch .form-check-input:checked {
+    border-color: var(--registration-primary);
+    background-color: var(--registration-primary);
+}
+
+.registration-language-switch .form-check-input:focus {
+    border-color: var(--registration-primary);
+    box-shadow: 0 0 0 .22rem color-mix(in srgb, var(--registration-primary) 18%, transparent);
+}
+
+.registration-language-switch .form-check-label {
+    min-width: 64px;
+    color: var(--registration-heading);
+    font-size: .8rem;
+    font-weight: 700;
+}
+
+.registration-modal .modal-footer,
+.regular-form-page .modal-footer {
+    padding: 1rem 1.35rem;
+    border-top-color: var(--registration-border);
+    background: var(--registration-surface-muted);
+}
+
+.regular-form-page .modal-backdrop.show {
+    opacity: .58;
+}
+
+[data-bs-theme="dark"] .regular-form-page .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.regular-form-page .btn-inverse-primary,
+.regular-form-page .btn-outline-primary {
+    color: var(--registration-primary);
+    border-color: var(--registration-primary);
+    background: transparent;
+}
+
+.regular-form-page .btn-inverse-primary:hover,
+.regular-form-page .btn-outline-primary:hover {
+    color: #ffffff;
+    background: var(--registration-primary);
+}
+
+/* Loading state */
+.regular-form-page .loader-container {
+    position: fixed;
+    z-index: 1090;
+    inset: 0;
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    place-items: center;
+    color: var(--registration-text);
+    background: var(--registration-overlay);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.regular-form-page .loader {
+    width: 54px;
+    height: 54px;
+    border: 4px solid color-mix(in srgb, var(--registration-primary) 18%, transparent);
+    border-top-color: var(--registration-primary);
+    border-radius: 50%;
+    animation: registration-spin .8s linear infinite;
+}
+
+@keyframes registration-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Footer and back-to-top */
+.registration-footer {
+    flex: 0 0 auto;
+    padding: 1.15rem 0;
+    color: var(--registration-muted);
+    border-top: 1px solid var(--registration-border);
+    background: var(--registration-surface);
+    font-size: .78rem;
+}
+
+.registration-footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.registration-footer a {
+    color: var(--registration-heading);
+    font-weight: 700;
+}
+
+.registration-footer a:hover {
+    color: var(--registration-primary);
+}
+
+.registration-footer__note {
+    color: var(--registration-muted);
+}
+
+.regular-form-page .back-to-top {
+    position: fixed;
+    z-index: 1020;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    border: 0;
+    border-radius: .75rem;
+    outline: none;
+    background: var(--registration-primary);
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--registration-primary) 30%, transparent);
+    transition: background-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+[data-bs-theme="dark"] .regular-form-page .back-to-top {
+    color: #081226;
+}
+
+.regular-form-page .back-to-top:hover {
+    background: var(--registration-primary-hover);
+    transform: translateY(-2px);
+}
+
+.regular-form-page .back-to-top:focus-visible {
+    box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--registration-primary) 25%, transparent),
+        0 12px 28px color-mix(in srgb, var(--registration-primary) 30%, transparent);
+}
+
+.regular-form-page .disabledbutton {
+    pointer-events: none;
+    opacity: .45;
+}
+
+.regular-form-page .swal2-container {
+    z-index: 1100;
+}
+
+[data-bs-theme="dark"] .regular-form-page .swal2-popup {
+    color: var(--registration-text);
+    background: var(--registration-surface);
+}
+
+@media (max-width: 767.98px) {
+    .registration-navbar {
+        min-height: 64px;
+        padding: .5rem 0;
+    }
+
+    .registration-brand {
+        gap: .65rem;
+    }
+
+    .registration-brand__mark {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
+        border-radius: .7rem;
+    }
+
+    .registration-brand__copy strong {
+        font-size: .9rem;
+    }
+
+    .registration-brand__copy small {
+        font-size: .68rem;
+    }
+
+    .registration-main {
+        padding: 1.25rem 0 2rem;
+    }
+
+    .registration-content {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    .registration-card {
+        border-radius: var(--registration-radius);
+        box-shadow: 0 14px 38px rgb(30 48 87 / 10%);
+    }
+
+    .registration-banner {
+        min-height: 88px;
+        border-radius: calc(var(--registration-radius) - 1px) calc(var(--registration-radius) - 1px) 0 0;
+    }
+
+    .registration-card .card-body {
+        padding: 1.35rem !important;
+    }
+
+    .registration-section {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+    }
+
+    .registration-section-heading {
+        margin-bottom: 1.35rem;
+    }
+
+    .registration-form .row {
+        --bs-gutter-x: .75rem;
+    }
+
+    .registration-submit {
+        padding: 1.35rem;
+    }
+
+    .registration-radio-group {
+        padding: 1rem;
+    }
+
+    .registration-footer__inner {
+        flex-direction: column;
+        gap: .3rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .registration-navbar__inner {
+        gap: .65rem;
+    }
+
+    .registration-brand__copy small {
+        display: none;
+    }
+
+    .registration-theme-toggle {
+        width: 42px;
+        min-height: 42px;
+        padding: 0;
+    }
+
+    .registration-submit .btn-primary {
+        width: 100%;
+    }
+
+    .registration-radio-group .form-check-inline {
+        margin-right: 1.25rem;
+    }
+
+    .regular-form-page .modal-dialog {
+        margin: .75rem;
+    }
+
+    .regular-form-page .back-to-top {
+        right: .9rem;
+        bottom: .9rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .regular-form-page *,
+    .regular-form-page *::before,
+    .regular-form-page *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}

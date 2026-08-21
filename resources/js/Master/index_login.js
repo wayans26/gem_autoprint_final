@@ -1,6 +1,9 @@
 import {
     createApp
 } from 'vue';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import * as bootstrap from 'bootstrap';
+import '../../css/login-theme.css';
 import master from '../Page/index_login.vue'
 import router from "../Router/login_route";
 import VueSweetalert2 from 'vue-sweetalert2';
@@ -10,6 +13,8 @@ import {
 } from 'vue';
 
 const app = createApp(master);
+
+window.bootstrap = bootstrap;
 
 const globalLoader = app.config.globalProperties.globalLoader = reactive({
     show: true

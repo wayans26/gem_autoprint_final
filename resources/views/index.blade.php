@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -8,14 +8,34 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <title>Visitor Registration</title>
 
+    <script>
+        (function () {
+            let theme = 'light';
+
+            try {
+                const saved_theme = localStorage.getItem('theme');
+
+                if (saved_theme === 'light' || saved_theme === 'dark') {
+                    theme = saved_theme;
+                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    theme = 'dark';
+                }
+            } catch (error) {
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    theme = 'dark';
+                }
+            }
+
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.style.colorScheme = theme;
+        })();
+    </script>
+
     <script src="{{ asset('rukada/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('rukada/js/popper.min.js') }}"></script>
-    <script src="{{ asset('rukada/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('rukada/plugins/bootstrap-datatable/js/jquery.dataTablesNew.min.js') }}"></script>
     <script src="{{ asset('rukada/plugins/bootstrap-datatable/js/dataTables.rowGroup.min.js') }}"></script>
-    <script src="{{ asset('rukada/plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('rukada/plugins/bootstrap-datatable/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('rukada/plugins/bootstrap-datatable/js/buttons.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('rukada/plugins/alerts-boxes/js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('rukada/plugins/alerts-boxes/js/sweet-alert-script.js') }}"></script>
     <script src="{{ asset('rukada/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
@@ -29,15 +49,10 @@
     {{-- Css --}}
     <link href="{{ asset('rukada/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('rukada/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('rukada/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('rukada/css/animate.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('rukada/css/icons.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('rukada/css/sidebar-menu.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('rukada/css/app-style.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('rukada/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
-        type="text/css">
-    <link href="{{ asset('rukada/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
-        type="text/css">
     <!--material datepicker css-->
     <link rel="stylesheet"
         href="{{ asset('rukada/plugins/material-datepicker/css/bootstrap-material-datetimepicker.min.css') }}">
@@ -215,6 +230,7 @@
         }
     </style>
 
+    @vite('resources/js/Master/index.js')
 
 </head>
 
@@ -226,12 +242,8 @@
     </div>
 
     <script src="https://apis.google.com/js/platform.js" async="" gapi_processed="true"></script>
-    @vite('resources/js/Master/index.js')
-
     <script src="{{ asset('rukada/plugins/simplebar/js/simplebar.js') }}"></script>
     <script src="{{ asset('rukada/js/waves.js') }}"></script>
-    <script src="{{ asset('rukada/js/sidebar-menu.js') }}"></script>
-    <script src="{{ asset('rukada/js/app-script.js') }}"></script>
     <!--notification js -->
     <script src="{{ asset('rukada/plugins/notifications/js/lobibox.min.js') }}"></script>
     <script src="{{ asset('rukada/plugins/notifications/js/notifications.min.js') }}"></script>

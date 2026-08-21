@@ -71,22 +71,27 @@
 }
 </style>
 <template>
-    <div class="loader-container" v-if="globalLoader.show">
+    <div class="loader-container" v-if="globalLoader.show" role="status" aria-live="polite">
         <div class="loader"></div>
+        <span class="visually-hidden">Loading...</span>
     </div>
-    <div id="wrapper" style="user-select: text;">
+    <div id="wrapper" :class="{ 'admin-shell': this.$route.name !== 'notFound' }" style="user-select: text;">
         <landing-navigation v-if="this.$route.name !== 'notFound'"></landing-navigation>
         <landing-header v-if="this.$route.name !== 'notFound'"></landing-header>
-        <div :class="{ 'content-wrapper': this.$route.name !== 'notFound' }" style="min-height: 99vh">
-            <div :class="{ 'container-fluid': this.$route.name !== 'notFound' }">
+        <main :class="{ 'content-wrapper': this.$route.name !== 'notFound' }">
+            <div :class="{ 'container-fluid admin-content-container': this.$route.name !== 'notFound' }">
                 <router-view>
                 </router-view>
             </div>
-        </div>
+        </main>
 
-        <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i>
-        </a>
+        <button type="button" class="back-to-top" :class="{ 'is-visible': show_back_to_top }"
+            aria-label="Back to top" @click="scroll_to_top">
+            <i class="fa fa-angle-up"></i>
+        </button>
         <landing-footer v-if="this.$route.name !== 'notFound'"></landing-footer>
+        <button v-if="this.$route.name !== 'notFound'" type="button" class="sidebar-backdrop"
+            aria-label="Close navigation" @click="close_sidebar"></button>
     </div>
 </template>
 
@@ -101,6 +106,11 @@ export default {
         landingHeader,
         landingFooter,
         landingNavigation,
+    },
+    data() {
+        return {
+            show_back_to_top: false,
+        };
     },
     methods: {
         check_login() {
@@ -131,10 +141,27 @@ export default {
                     });
                 }
             });
+        },
+        handle_scroll() {
+            this.show_back_to_top = window.scrollY > 300;
+        },
+        scroll_to_top() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        },
+        close_sidebar() {
+            document.getElementById('wrapper')?.classList.remove('toggled');
         }
     },
     mounted() {
         // this.check_login();
+        window.addEventListener('scroll', this.handle_scroll, { passive: true });
+        this.handle_scroll();
+    },
+    beforeUnmount() {
+        window.removeEventListener('scroll', this.handle_scroll);
     }
 };
 </script>

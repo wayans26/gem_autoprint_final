@@ -1,51 +1,55 @@
 <template>
-    <div class="card card-authentication1 mx-auto my-5">
-        <div class="card-body mb-5"">
-            <div class=" card-content p-2">
-            <div class="text-center">
-                <img :src="'/logontt.png'" style="width: 80%;" alt="logo icon">
-            </div>
-            <div class="card-title text-uppercase text-center py-3">Sign In</div>
-            <form method="post" @submit="login">
-                <div class="form-group">
-                    <label for="exampleInputUsername" class="">Username</label>
-                    <div class="position-relative has-icon-right">
-                        <input type="text" id="exampleInputUsername" class="form-control input-shadow"
-                            placeholder="Enter Username" required v-model="username">
-                        <div class="form-control-position">
-                            <i class="icon-user"></i>
+    <div class="card card-authentication1 auth-card border-0">
+        <div class="card-body">
+            <div class="card-content">
+                <div class="auth-card__brand text-center">
+                    <img :src="'/logontt.png'" class="auth-logo" alt="Gem Indonesia">
+                </div>
+                <div class="auth-card__heading text-center">
+                    <span class="auth-card__eyebrow">Welcome back</span>
+                    <h2 id="login-title" class="card-title">Sign in to your account</h2>
+                    <p>Enter your account details to continue.</p>
+                </div>
+                <form method="post" @submit="login" aria-labelledby="login-title">
+                    <div class="mb-3">
+                        <label for="exampleInputUsername" class="form-label">Username</label>
+                        <div class="position-relative auth-input-wrap">
+                            <i class="icon-user auth-input-icon" aria-hidden="true"></i>
+                            <input type="text" id="exampleInputUsername" class="form-control input-shadow auth-control"
+                                placeholder="Enter Username" required v-model="username" autocomplete="username"
+                                :disabled="loading">
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword" class="">Password</label>
-                    <div class="position-relative has-icon-right">
-                        <input type="password" id="exampleInputPassword" class="form-control input-shadow"
-                            placeholder="Enter Password" required v-model="password">
-                        <div class="form-control-position">
-                            <i class="icon-lock"></i>
+                    <div class="mb-2">
+                        <label for="exampleInputPassword" class="form-label">Password</label>
+                        <div class="position-relative auth-input-wrap">
+                            <i class="icon-lock auth-input-icon" aria-hidden="true"></i>
+                            <input type="password" id="exampleInputPassword" class="form-control input-shadow auth-control"
+                                placeholder="Enter Password" required v-model="password" autocomplete="current-password"
+                                :disabled="loading">
                         </div>
                     </div>
-                </div>
-                <!-- <router-link style="float: right;" :to="{ name: 'forgot_password' }"> Forgot Password</router-link> -->
-                <br>
-                <br>
-                <button type="submit" :disabled="loading" class="
-                                    btn btn-primary
-                                    shadow-primary
-                                    btn-block
-                                    waves-effect waves-light
-                                ">
-                    <i :class="{
-                        'fa fa-spinner fa-spin': loading,
-                        'fa fa-sign-in': !loading,
-                    }"></i>
-                    Login
-                </button>
 
-            </form>
+                    <div class="text-end mb-4">
+                        <router-link class="auth-link" :to="{ name: 'forgot_password' }">Forgot Password?</router-link>
+                    </div>
+
+                    <button type="submit" :disabled="loading" class="btn btn-primary auth-submit w-100"
+                        :aria-busy="loading">
+                        <i :class="{
+                            'fa fa-spinner fa-spin': loading,
+                            'fa fa-sign-in': !loading,
+                        }" aria-hidden="true"></i>
+                        <span>{{ loading ? 'Signing in...' : 'Login' }}</span>
+                    </button>
+                </form>
+
+                <div class="auth-card__security text-center">
+                    <i class="fa fa-shield" aria-hidden="true"></i>
+                    Authorized users only
+                </div>
+            </div>
         </div>
-    </div>
     </div>
 </template>
 

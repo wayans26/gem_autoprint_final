@@ -6,52 +6,52 @@
         </div>
         <Form @submit="save_config">
             <div class="card-body">
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="input-1">Qr Size *</label>
                     <Field name="qr_size" type="text" class="form-control" id="input-1" placeholder="Qr Size *"
                         v-model="qr_size"></Field>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="input-1">Qr Margin *</label>
                     <Field name="qr_margin" type="text" class="form-control" id="input-1" placeholder="Qr Margin *"
                         v-model="qr_margin"></Field>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="input-1">Error Correction * (L/M/Q/H)</label>
                     <Field name="error_correction" type="text" class="form-control" id="input-1"
                         placeholder="Error Correction *" v-model="error_correction"></Field>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="input-1">Paper Width *</label>
                     <Field name="paper_width" type="text" class="form-control" id="input-1" placeholder="Paper Width *"
                         v-model="paper_width"></Field>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="input-1">Paper Height *</label>
                     <Field name="paper_height" type="text" class="form-control" id="input-1"
                         placeholder="Paper Height *" v-model="paper_height"></Field>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="input-1">Qr Position Bottom *</label>
                     <Field name="qr_position_bottom" type="text" class="form-control" id="input-1"
                         placeholder="Qr Position Bottom *" v-model="qr_position_bottom"></Field>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="input-1">Safe Area Bottom *</label>
                     <Field name="safe_area_bottom" type="text" class="form-control" id="input-1"
                         placeholder="Safe Area Bottom *" v-model="safe_area_bottom"></Field>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="input-1">Safe Area Top *</label>
                     <Field name="safe_area_top" type="text" class="form-control" id="input-1"
                         placeholder="Safe Area Top *" v-model="safe_area_top"></Field>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="input-1">Safe Area Right *</label>
                     <Field name="safe_area_right" type="text" class="form-control" id="input-1"
                         placeholder="Safe Area Right *" v-model="safe_area_right"></Field>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="input-1">Safe Area Left *</label>
                     <Field name="safe_area_left" type="text" class="form-control" id="input-1"
                         placeholder="Safe Area Left *" v-model="safe_area_left"></Field>
@@ -63,7 +63,7 @@
                     'fa fa-edit': !disabled,
                 }"></i>
                     Save</button>
-                <button type="button" class="btn btn-secondary ml-1" @click="reset_config">
+                <button type="button" class="btn btn-secondary ms-1" @click="reset_config">
                     Reset Config</button>
             </div>
         </Form>
