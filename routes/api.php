@@ -9,6 +9,7 @@ use App\Http\Controllers\menuEditorController;
 use App\Http\Controllers\menuGroupController;
 use App\Http\Controllers\qzController;
 use App\Http\Controllers\registerController;
+use App\Http\Controllers\reportController;
 use App\Http\Controllers\roleController;
 use App\Http\Controllers\subExhibitionsController;
 use App\Http\Controllers\userExhibitionController;
@@ -145,8 +146,16 @@ Route::prefix($version)->group(function () use ($prefixWeb, $prefixMobile) {
 
             Route::controller(dashboardController::class)->group(function () {
                 Route::get('/dashboard/visitor/list/get', 'getListVisitor')->middleware('permission:dashboard_visitor_list,view');
+                Route::post('/dashboard/visitor/chart/get', 'getVisitorChart')->middleware('permission:dashboard_visitor_chart,view');
+                Route::get('/dashboard/visitor/chart/list/get', 'getVisitorChartList')->middleware('permission:dashboard_visitor_chart,view');
+                Route::get('/dashboard/visitor/export/fields/get', 'getVisitorExportFields')->middleware('permission:dashboard_visitor_chart,print');
+                Route::post('/dashboard/visitor/export/request', 'requestVisitorExport')->middleware('permission:dashboard_visitor_chart,print');
                 Route::post('/exhibition/all/get', 'getExhibition');
                 Route::post('/exhibition/sub/all/get', 'getSubExhibition');
+            });
+
+            Route::controller(reportController::class)->group(function () {
+                Route::get('/report/list/get', 'getReportList')->middleware('permission:dashboard_visitor_chart,view');
             });
         });
     });

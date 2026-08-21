@@ -78,6 +78,10 @@ Route::get('/registration/banner/exhibitions/{id}', function (Request $req, $id)
 //     return view('coming_soon');
 // });
 
+Route::controller(reportController::class)->group(function () {
+    Route::get('/report/download/{id}', 'downloadFile');
+});
+
 Route::get('/{path?}', function (Request $req, ?string $path = null) {
     if ($req->host() === env('ROOT_URL', 'localhost')) {
         if ($req->has('token')) {
