@@ -12,6 +12,8 @@ export default defineConfig({
                 'resources/js/Master/index_login.js',
                 // template Page
                 'resources/js/Form/Master/index_reguler.js',
+                'resources/js/Form/Master/index_vip.js',
+                'resources/js/Form/Master/index_busworld.js',
             ],
             refresh: true,
         }),

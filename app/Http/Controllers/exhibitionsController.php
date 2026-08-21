@@ -157,7 +157,14 @@ class exhibitionsController extends Controller
             return responseMessage::responseMessage(0, "Exhibition not found", 200);
         } else {
             if ($exhibition->page != $req->form) {
-                return responseMessage::responseMessage(0, "Active Exhibitions With Different Form Not Allowed", 200);
+                $exhibitionCount = exhibitions::where([
+                    'page'  => $req->form,
+                    'status' => 1,
+                    'host'  => $req->host
+                ])->count();
+                if ($exhibitionCount > 1) {
+                    return responseMessage::responseMessage(0, "Active Exhibitions With Different Form Not Allowed", 200);
+                }
             }
 
             if ($exhibition->code !== $req->code) {

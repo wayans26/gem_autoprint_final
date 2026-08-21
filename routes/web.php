@@ -112,7 +112,6 @@ Route::get('/{path?}', function (Request $req, ?string $path = null) {
         if (empty($custom_exhibition)) {
             return view('coming_soon');
         }
-
         return view('Form.index_' . $custom_exhibition->page);
     }
     // every page must start wirh index_

@@ -17,8 +17,8 @@ import '../../../css/regular-form-theme.css';
 
 const routes = [{
     path: '/:pathMatch(.*)*',
-    component: () => import('../Page/reguler.vue'),
-    name: 'reguler',
+    component: () => import('../Page/bushworld.vue'),
+    name: 'busworld',
     meta: {
         title: 'PT Global Expo Management'
     }
