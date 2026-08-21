@@ -155,9 +155,9 @@ export default {
                         orderable: false,
                         searchable: false,
                         render: function (data, type, row) {
-                            console.log(type);
-                            console.log(row.can_download);
                             if (type !== 'display' || !row.can_download) {
+                                console.log(type);
+                                console.log(row.can_download);
                                 return '-';
                             }
 
