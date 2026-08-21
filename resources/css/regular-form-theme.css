@@ -723,42 +723,87 @@ body.regular-form-page {
     font-weight: 650;
 }
 
-.registration-language-switch {
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
-    gap: .35rem;
-    margin-top: .5rem;
-    padding: .55rem .85rem;
-    border: 1px solid var(--registration-border);
-    border-radius: var(--registration-radius-sm);
+.registration-regulation-header {
     background: var(--registration-surface-muted);
 }
 
-.registration-language-switch .form-check-input {
-    width: 2.5rem;
-    height: 1.35rem;
-    margin-top: 0;
+.registration-regulation-heading {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+}
+
+.registration-regulation-heading__icon {
+    display: inline-flex;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    align-items: center;
+    justify-content: center;
+    color: var(--registration-primary);
+    border: 1px solid color-mix(in srgb, var(--registration-primary) 28%, transparent);
+    border-radius: var(--registration-radius-sm);
+    background: var(--registration-primary-soft);
+    font-size: 1.2rem;
+}
+
+.registration-regulation-heading__eyebrow {
+    display: block;
+    margin-bottom: .15rem;
+    color: var(--registration-muted);
+    font-size: .7rem;
+    font-weight: 750;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.registration-language-switch {
+    display: inline-grid;
+    grid-template-columns: repeat(2, minmax(84px, 1fr));
+    margin-top: .75rem;
+    padding: 0;
+    overflow: hidden;
+    appearance: none;
+    color: var(--registration-text);
+    border: 1px solid var(--registration-border);
+    border-radius: var(--registration-radius-sm);
+    background: var(--registration-input-bg);
+    box-shadow: var(--registration-shadow-sm);
+    cursor: pointer;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.registration-language-switch:hover {
     border-color: var(--registration-border-strong);
-    background-color: var(--registration-input-bg);
-    box-shadow: none;
 }
 
-.registration-language-switch .form-check-input:checked {
+.registration-language-switch:focus-visible {
     border-color: var(--registration-primary);
-    background-color: var(--registration-primary);
-}
-
-.registration-language-switch .form-check-input:focus {
-    border-color: var(--registration-primary);
+    outline: 0;
     box-shadow: 0 0 0 .22rem color-mix(in srgb, var(--registration-primary) 18%, transparent);
 }
 
-.registration-language-switch .form-check-label {
-    min-width: 64px;
-    color: var(--registration-heading);
+.registration-language-switch__option {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem .75rem;
+    color: var(--registration-muted);
+    background: transparent;
     font-size: .8rem;
     font-weight: 700;
+    transition: color 150ms ease, background-color 150ms ease;
+}
+
+.registration-language-switch__option--english.is-active {
+    color: #fff;
+    background: var(--registration-danger);
+}
+
+.registration-language-switch__option--indonesia.is-active {
+    color: #fff;
+    background: var(--registration-success);
 }
 
 .registration-modal .modal-footer,

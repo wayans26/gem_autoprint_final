@@ -272,16 +272,14 @@
                         <div class="registration-radio-group">
                             <p class="form-label mb-2">*Would like to receive the invitation for next year event?</p>
                             <div class="form-check form-check-inline">
-                            <Field v-model="form.is_received_invitation_next" type="radio"
-                                class="form-check-input" id="IsReceivedInvitationNextYes"
-                                name="IsReceivedInvitationNext" value="1" checked>
-                            </Field>
+                                <Field v-model="form.is_received_invitation_next" type="radio" class="form-check-input"
+                                    id="IsReceivedInvitationNextYes" name="IsReceivedInvitationNext" value="1" checked>
+                                </Field>
                                 <label class="form-check-label" for="IsReceivedInvitationNextYes">Yes</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <Field v-model="form.is_received_invitation_next" type="radio"
-                                    class="form-check-input" id="IsReceivedInvitationNextNo"
-                                    name="IsReceivedInvitationNext" value="0">
+                                <Field v-model="form.is_received_invitation_next" type="radio" class="form-check-input"
+                                    id="IsReceivedInvitationNextNo" name="IsReceivedInvitationNext" value="0">
                                 </Field>
                                 <label class="form-check-label" for="IsReceivedInvitationNextNo">No</label>
                             </div>
@@ -309,8 +307,7 @@
                                     <div class="position-relative">
                                         <Field name="ReceivedInvitationNextAddress" class="form-control"
                                             placeholder="*Other Address" v-model="form.recived_invitation_address" />
-                                        <ErrorMessage class="registration-error"
-                                            name="ReceivedInvitationNextAddress" />
+                                        <ErrorMessage class="registration-error" name="ReceivedInvitationNextAddress" />
                                     </div>
                                 </div>
                             </div>
@@ -332,82 +329,91 @@
         </div>
     </div>
 
-    <div class="modal fade registration-modal" id="modalInfo" tabindex="-1" aria-labelledby="modalInfoLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalInfoLabel">Registration Success</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="registration-success-icon" aria-hidden="true">
-                        <i class="fa fa-check"></i>
+    <Teleport to="body">
+        <div class="modal fade registration-modal" id="modalInfo" tabindex="-1" aria-labelledby="modalInfoLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalInfoLabel">Registration Success</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <h5 class="text-center">Thank you for your registration.</h5>
-                    <p>An email has been sent to you.
-                        Please print or show the confirmation email to registration desk to redeem a visitor's
-                        badge.
-                        Please check your inbox / spam folder to received the confirmation email.</p>
-                    <p class="registration-notice">If you have not receive the confirmation letter, please contact our
-                        staff
-                        :</p>
+                    <div class="modal-body">
+                        <div class="registration-success-icon" aria-hidden="true">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <h5 class="text-center">Thank you for your registration.</h5>
+                        <p>An email has been sent to you.
+                            Please print or show the confirmation email to registration desk to redeem a visitor's
+                            badge.
+                            Please check your inbox / spam folder to received the confirmation email.</p>
+                        <p class="registration-notice">If you have not receive the confirmation letter, please contact our
+                            staff
+                            :</p>
 
-                    <a href="mailto:auto.info@gem-indonesia.net">auto.info@gem-indonesia.net</a>
-                    <br><br>
-                    <p class="registration-notice">We look forward to welcoming you at NAMA_EVENT</p>
-                    <p>GEM Indonesia Team</p>
-                </div>
-                <div class="modal-footer">
-                    <button @click="refresh_page" type="button" class="btn btn-primary"><i
-                            class="fa fa-times"></i>
-                        Close</button>
+                        <a href="mailto:auto.info@gem-indonesia.net">auto.info@gem-indonesia.net</a>
+                        <br><br>
+                        <p class="registration-notice">We look forward to welcoming you at {{ exhibition_detail.name }}</p>
+                        <p>GEM Indonesia Team</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button @click="refresh_page" type="button" class="btn btn-primary"><i class="fa fa-times"></i>
+                            Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade registration-modal" id="modalWarning" tabindex="-1"
-        aria-labelledby="modalWarningLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="visually-hidden" id="modalWarningLabel">Visitor regulation</h5>
-                    <img :src="'/regulation.png'" class="img-fluid w-100" alt="Visitor regulation">
-                </div>
-                <div class="modal-body">
-                    <ol v-if="language">
-                        <li>Children under 18 years old are not allowed to enter the exhibition halls.</li>
-                        <li>Business attire are mandatory. Short pants and slippers/sandals are not allowed to enter
-                            the exhibition halls.</li>
-                        <li>No firearms or weapons are allowed to enter the exhibition halls.</li>
-                        <li>Visitors are not allowed to take photographs/video recording of the products in display
-                            without any permission from the exhibitors.</li>
-                    </ol>
-                    <ol v-else>
-                        <li>Anak-anak di bawah 18 tahun tidak diperbolehkan masuk ke dalam exhibition hall.</li>
-                        <li>Seluruh pengunjung diharuskan berpakaian rapi/formal. Celana pendek dan sandal tidak
-                            diperbolehkan.</li>
-                        <li>Dilarang membawa senjata api dan senjata tajam ke dalam exhibition hall.</li>
-                        <li>Pengunjung tidak diperbolehkan mengambil gambar atau video produk display tanpa seizin
-                            exhibitor yang bersangkutan.</li>
-                    </ol>
-                    <div class="form-check form-switch registration-language-switch">
-                        <input type="checkbox" class="form-check-input" role="switch" id="language"
-                            v-model="language">
-                        <label class="form-check-label" for="language">
-                            {{ language ? 'English' : 'Indonesia' }}
-                        </label>
+        <div class="modal fade registration-modal" id="modalWarning" tabindex="-1" aria-labelledby="modalWarningLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header registration-regulation-header">
+                        <div class="registration-regulation-heading">
+                            <span class="registration-regulation-heading__icon" aria-hidden="true">
+                                <i class="fa fa-shield"></i>
+                            </span>
+                            <div>
+                                <span class="registration-regulation-heading__eyebrow">Visitor guidance</span>
+                                <h5 class="modal-title" id="modalWarningLabel">Visitor Regulation</h5>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal"><i
-                            class="zmdi zmdi-check"></i>
-                        Agree</button>
+                    <div class="modal-body">
+                        <ol v-if="language">
+                            <li>Children under 18 years old are not allowed to enter the exhibition halls.</li>
+                            <li>Business attire are mandatory. Short pants and slippers/sandals are not allowed to enter
+                                the exhibition halls.</li>
+                            <li>No firearms or weapons are allowed to enter the exhibition halls.</li>
+                            <li>Visitors are not allowed to take photographs/video recording of the products in display
+                                without any permission from the exhibitors.</li>
+                        </ol>
+                        <ol v-else>
+                            <li>Anak-anak di bawah 18 tahun tidak diperbolehkan masuk ke dalam exhibition hall.</li>
+                            <li>Seluruh pengunjung diharuskan berpakaian rapi/formal. Celana pendek dan sandal tidak
+                                diperbolehkan.</li>
+                            <li>Dilarang membawa senjata api dan senjata tajam ke dalam exhibition hall.</li>
+                            <li>Pengunjung tidak diperbolehkan mengambil gambar atau video produk display tanpa seizin
+                                exhibitor yang bersangkutan.</li>
+                        </ol>
+                        <button type="button" class="registration-language-switch" role="switch"
+                            :aria-checked="language" :aria-label="language ? 'Language: English' : 'Language: Indonesia'"
+                            @click="change_language">
+                            <span class="registration-language-switch__option registration-language-switch__option--english"
+                                :class="{ 'is-active': language }">English</span>
+                            <span class="registration-language-switch__option registration-language-switch__option--indonesia"
+                                :class="{ 'is-active': !language }">Indonesia</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal"><i
+                                class="zmdi zmdi-check"></i>
+                            Agree</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </Teleport>
 
 </template>
 
@@ -842,10 +848,11 @@ export default {
     mounted() {
         this.get_exhibitions();
         this.get_country();
-        // window.bootstrap.Modal.getOrCreateInstance(document.getElementById("modalWarning"), {
-        //     backdrop: 'static',
-        //     keyboard: false
-        // }).show();
+        window.bootstrap.Modal.getOrCreateInstance(document.getElementById("modalWarning"), {
+            backdrop: 'static',
+            keyboard: false
+        }).show();
+        // $("#modalWarning").modal({ backdrop: 'static', keyboard: false });
         $('html, body').animate({ scrollTop: 0 }, 'fast');
 
     }
