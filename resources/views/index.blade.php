@@ -9,7 +9,7 @@
     <title>Visitor Registration</title>
 
     <script>
-        (function () {
+        (function() {
             let theme = 'light';
 
             try {
