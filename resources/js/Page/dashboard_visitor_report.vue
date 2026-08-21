@@ -158,6 +158,7 @@ export default {
                             if (type !== 'display' || !row.can_download) {
                                 console.log(type);
                                 console.log(row.can_download);
+                                return type !== 'display' || !row.can_download;
                                 return 'AAAAAAAAA';
                             }
 
