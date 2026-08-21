@@ -156,10 +156,7 @@ export default {
                         searchable: false,
                         render: function (data, type, row) {
                             if (type !== 'display' || !row.can_download) {
-                                console.log(type);
-                                console.log(row.can_download);
-                                return row.can_download;
-                                return 'AAAAAAAAA';
+                                return '-';
                             }
 
 

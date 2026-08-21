@@ -51,9 +51,12 @@ class reportController extends Controller
                 return sizeof($row->selected_fields ?? []);
             })
             ->addColumn('can_download', function ($row) {
-                return $row->status === report_file::STATUS_COMPLETED &&
-                    !empty($row->path) &&
-                    Storage::exists($row->path);
+                return Storage::exists($row->path);
+                // return $row->status === report_file::STATUS_COMPLETED && !empty($row->path) && Storage::exists($row->path);
+                // return $row->status === report_file::STATUS_COMPLETED && !empty($row->path) && Storage::exists($row->path);
+                // return $row->status === report_file::STATUS_COMPLETED &&
+                //     !empty($row->path) &&
+                //     Storage::exists($row->path);
             })
             ->removeColumn('path')
             ->make(true);
