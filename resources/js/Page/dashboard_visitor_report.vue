@@ -158,6 +158,9 @@ export default {
                             if (type !== 'display' || !row.can_download) {
                                 return '-';
                             }
+                            console.log(type);
+                            console.log(row.can_download);
+
 
                             return '<a class="btn btn-primary btn-sm" href="/report/download/' + Number(data) +
                                 '"><i class="fa fa-download"></i> Download</a>';
