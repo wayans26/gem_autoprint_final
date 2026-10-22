@@ -44,6 +44,7 @@ class registration_visitor_export extends DefaultValueBinder implements FromQuer
     ];
 
     protected const BOOLEAN_FIELDS = [
+        'wants_business_matchmaking',
         'is_received_invitation_next',
         'is_received_invitation_next_address_same',
         'is_printed',

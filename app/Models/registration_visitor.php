@@ -35,6 +35,7 @@ class registration_visitor extends Model
         'purchasing_role_other',
         'event_find',
         'event_find_other',
+        'wants_business_matchmaking',
         'is_received_invitation_next',
         'is_received_invitation_next_address_same',
         'received_invitation_next_address',

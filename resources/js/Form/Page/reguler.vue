@@ -312,6 +312,29 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="registration-radio-group" role="radiogroup"
+                            aria-labelledby="WantsBusinessMatchmakingLabel">
+                            <p class="form-label mb-2" id="WantsBusinessMatchmakingLabel">*Would you like to participate
+                                in our Business Matchmaking program during the show?</p>
+                            <div class="form-check form-check-inline">
+                                <Field v-model="form.wants_business_matchmaking" type="radio" class="form-check-input"
+                                    id="WantsBusinessMatchmakingYes" name="WantsBusinessMatchmaking" value="1"
+                                    aria-describedby="WantsBusinessMatchmakingError">
+                                </Field>
+                                <label class="form-check-label" for="WantsBusinessMatchmakingYes">Yes, I am
+                                    interested</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <Field v-model="form.wants_business_matchmaking" type="radio" class="form-check-input"
+                                    id="WantsBusinessMatchmakingNo" name="WantsBusinessMatchmaking" value="0"
+                                    aria-describedby="WantsBusinessMatchmakingError">
+                                </Field>
+                                <label class="form-check-label" for="WantsBusinessMatchmakingNo">No, not at this
+                                    time</label>
+                            </div>
+                            <ErrorMessage class="registration-error" name="WantsBusinessMatchmaking"
+                                id="WantsBusinessMatchmakingError" />
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer registration-submit" v-show="sub_exhibition_id">
@@ -347,13 +370,15 @@
                             Please print or show the confirmation email to registration desk to redeem a visitor's
                             badge.
                             Please check your inbox / spam folder to received the confirmation email.</p>
-                        <p class="registration-notice">If you have not receive the confirmation letter, please contact our
+                        <p class="registration-notice">If you have not receive the confirmation letter, please contact
+                            our
                             staff
                             :</p>
 
                         <a href="mailto:auto.info@gem-indonesia.net">auto.info@gem-indonesia.net</a>
                         <br><br>
-                        <p class="registration-notice">We look forward to welcoming you at {{ exhibition_detail.name }}</p>
+                        <p class="registration-notice">We look forward to welcoming you at {{ exhibition_detail.name }}
+                        </p>
                         <p>GEM Indonesia Team</p>
                     </div>
                     <div class="modal-footer">
@@ -397,11 +422,14 @@
                                 exhibitor yang bersangkutan.</li>
                         </ol>
                         <button type="button" class="registration-language-switch" role="switch"
-                            :aria-checked="language" :aria-label="language ? 'Language: English' : 'Language: Indonesia'"
+                            :aria-checked="language"
+                            :aria-label="language ? 'Language: English' : 'Language: Indonesia'"
                             @click="change_language">
-                            <span class="registration-language-switch__option registration-language-switch__option--english"
+                            <span
+                                class="registration-language-switch__option registration-language-switch__option--english"
                                 :class="{ 'is-active': language }">English</span>
-                            <span class="registration-language-switch__option registration-language-switch__option--indonesia"
+                            <span
+                                class="registration-language-switch__option registration-language-switch__option--indonesia"
                                 :class="{ 'is-active': !language }">Indonesia</span>
                         </button>
                     </div>
@@ -468,6 +496,7 @@ export default {
                 other_purchasing_role: "",
                 event_find: "",
                 other_event_find: "",
+                wants_business_matchmaking: "",
                 is_received_invitation_next: "1",
                 is_received_invitation_next_same_address: "1",
                 recived_invitation_address: "",
@@ -638,6 +667,9 @@ export default {
                 mobilephone: yup.string().required("Mobile Phone Can't Be Empty!"),
                 email: yup.string().required("Email Can't Be Empty!").email("Invalid Email"),
                 type_of_business: yup.string().required("Type of Business Can't Be Empty!"),
+                WantsBusinessMatchmaking: yup.string()
+                    .required("Please confirm your Business Matchmaking participation.")
+                    .oneOf(["1", "0"], "Please confirm your Business Matchmaking participation."),
                 ReceivedInvitationNextAddress: yup.string().when('IsReceivedInvitationNextAddressSame', {
                     is: "0",
                     then: validate_role => validate_role.email("Invalid Email").required("Email Can't Be Empty!"),
@@ -680,6 +712,7 @@ export default {
                 purchasing_role_other: this.form.other_purchasing_role,
                 event_find: this.form.event_find,
                 event_find_other: this.form.other_event_find,
+                wants_business_matchmaking: this.form.wants_business_matchmaking,
                 is_received_invitation_next: this.form.is_received_invitation_next,
                 is_received_invitation_next_address_same: this.form.is_received_invitation_next_same_address,
                 received_invitation_next_address: this.form.recived_invitation_address,
