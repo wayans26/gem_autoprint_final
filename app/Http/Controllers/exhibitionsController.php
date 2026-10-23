@@ -136,8 +136,8 @@ class exhibitionsController extends Controller
             'code'              => 'required',
             'name'              => 'required',
             'full_name'         => 'required',
-            'banner_file'       => 'required|mimes:png,jpg,jpeg',
-            'all_banner_file'   => 'required|mimes:png,jpg,jpeg',
+            'banner_file'       => 'nullable|file|mimes:png,jpg,jpeg',
+            'all_banner_file'   => 'nullable|file|mimes:png,jpg,jpeg',
             'location'          => 'required',
             'date'              => 'required',
             'team'              => 'required',
@@ -176,39 +176,10 @@ class exhibitionsController extends Controller
 
         try {
             DB::transaction(function () use ($req, $exhibition) {
-                $banner_extension = $req->banner_file->getClientOriginalExtension();
-                $banner_name = "Banner_" . $req->code . $req->name . '.' . makeid::createId(10) . "." . $banner_extension;
-                $banner_path = Storage::disk('local')->putFileAs("Exhibitions", $req->banner_file, $banner_name);
-
-                $all_banner_extension = $req->all_banner_file->getClientOriginalExtension();
-                $all_banner_name = "all_" . $req->code . $req->name . '.' . makeid::createId(10) . "." . $all_banner_extension;
-                $all_banner_path = Storage::disk('local')->putFileAs("Exhibitions", $req->all_banner_file, $all_banner_name);
-
-                $idBanner = makeid::createUuid();
-                $idAllBanner = makeid::createUuid();
-
-                file::create([
-                    'id'    => $idBanner,
-                    'path'  => $banner_path,
-                    'name'  => $banner_name,
-                    'type'  => "image",
-                    'extension' => $banner_extension,
-                ]);
-
-                file::create([
-                    'id'    => $idAllBanner,
-                    'path'  => $all_banner_path,
-                    'name'  => $all_banner_name,
-                    'type'  => "image",
-                    'extension' => $all_banner_extension,
-                ]);
-
-                $exhibition->update([
+                $data = [
                     'code'          => $req->code,
                     'name'          => $req->name,
                     'full_name'     => $req->full_name,
-                    'banner_file'   => $idBanner,
-                    'all_banner'    => $idAllBanner,
                     'location'      => $req->location,
                     'date'          => $req->date,
                     'team'          => $req->team,
@@ -217,7 +188,49 @@ class exhibitionsController extends Controller
                     'host'          => $req->host,
                     'opening_hours' => $req->opening_hours,
                     'path'          => $req->path === 'null' || empty($req->path) ? null : $req->path,
-                ]);
+                ];
+
+                if ($req->hasFile('banner_file')) {
+                    $banner_extension = $req->banner_file->getClientOriginalExtension();
+                    $banner_name = "Banner_" . $req->code . $req->name . '.' . makeid::createId(10) . "." . $banner_extension;
+                    $banner_path = Storage::disk('local')->putFileAs("Exhibitions", $req->banner_file, $banner_name);
+
+                    if ($banner_path === false) {
+                        throw new \RuntimeException("Failed to store Exhibition Banner");
+                    }
+
+                    $idBanner = makeid::createUuid();
+                    file::create([
+                        'id'    => $idBanner,
+                        'path'  => $banner_path,
+                        'name'  => $banner_name,
+                        'type'  => "image",
+                        'extension' => $banner_extension,
+                    ]);
+                    $data['banner_file'] = $idBanner;
+                }
+
+                if ($req->hasFile('all_banner_file')) {
+                    $all_banner_extension = $req->all_banner_file->getClientOriginalExtension();
+                    $all_banner_name = "all_" . $req->code . $req->name . '.' . makeid::createId(10) . "." . $all_banner_extension;
+                    $all_banner_path = Storage::disk('local')->putFileAs("Exhibitions", $req->all_banner_file, $all_banner_name);
+
+                    if ($all_banner_path === false) {
+                        throw new \RuntimeException("Failed to store Exhibition All Banner");
+                    }
+
+                    $idAllBanner = makeid::createUuid();
+                    file::create([
+                        'id'    => $idAllBanner,
+                        'path'  => $all_banner_path,
+                        'name'  => $all_banner_name,
+                        'type'  => "image",
+                        'extension' => $all_banner_extension,
+                    ]);
+                    $data['all_banner'] = $idAllBanner;
+                }
+
+                $exhibition->update($data);
             });
             return responseMessage::responseMessage(1, "Success Edit Exhibition", 200);
         } catch (\Throwable $th) {

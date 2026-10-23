@@ -171,12 +171,14 @@
                         </div>
                         <div class="mb-3">
                             <label for="input-1">Banner</label>
-                            <input type="file" class="form-control" id="input-1" @change="update_file_banner($event)">
+                            <input type="file" class="form-control" id="input-1" ref="edit_banner_file"
+                                @change="update_file_banner($event)">
                         </div>
                         <br>
                         <div class="mb-3">
                             <label for="input-1">All Banner</label>
-                            <input type="file" class="form-control" id="input-1" @change="update_all_banner($event)">
+                            <input type="file" class="form-control" id="input-1" ref="edit_all_banner_file"
+                                @change="update_all_banner($event)">
                         </div>
                         <quill-editor v-model:content="opening_hours" contentType="html" theme="snow"></quill-editor>
 
@@ -410,6 +412,10 @@ export default {
         get_exhibition_byid(id) {
             const vm = this;
             this.globalLoader.show = true;
+            this.update.banner_file = null;
+            this.update.all_banner_file = null;
+            this.$refs.edit_banner_file.value = "";
+            this.$refs.edit_all_banner_file.value = "";
 
             axios.post("/api/v1/web/exhibitions/get/id", {
                 id: id
@@ -458,8 +464,12 @@ export default {
             frmData.append("location", vm.update.location);
             frmData.append("date", vm.update.date);
             frmData.append("team", vm.update.team);
-            frmData.append("banner_file", vm.update.banner_file);
-            frmData.append("all_banner_file", vm.update.all_banner_file);
+            if (vm.update.banner_file instanceof File) {
+                frmData.append("banner_file", vm.update.banner_file);
+            }
+            if (vm.update.all_banner_file instanceof File) {
+                frmData.append("all_banner_file", vm.update.all_banner_file);
+            }
             frmData.append("form", vm.update.page);
             frmData.append("host", vm.update.host);
             frmData.append("type", vm.update.type);
