@@ -1,19 +1,17 @@
-import {
-    defineConfig
-} from 'vite';
-import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue';
+import { defineConfig } from "vite";
+import laravel from "laravel-vite-plugin";
+import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/js/Master/index.js',
-                'resources/js/Master/index_login.js',
+                "resources/js/Master/index.js",
+                "resources/js/Master/index_login.js",
                 // template Page
-                'resources/js/Form/Master/index_reguler.js',
-                'resources/js/Form/Master/index_vip.js',
-                'resources/js/Form/Master/index_busworld.js',
+                "resources/js/Form/Master/index_reguler.js",
+                "resources/js/Form/Master/index_vip.js",
+                "resources/js/Form/Master/index_busworld.js",
             ],
             refresh: true,
         }),
@@ -28,31 +26,30 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            vue: 'vue/dist/vue.esm-bundler.js',
+            vue: "vue/dist/vue.esm-bundler.js",
         },
     },
     build: {
-        target: 'esnext',
+        target: "esnext",
         sourcemap: false,
         cssCodeSplit: true,
         rollupOptions: {
             output: {
+                entryFileNames: "assets/[hash].js",
+                chunkFileNames: "assets/[hash].js",
+                assetFileNames: "assets/[hash][extname]",
                 manualChunks: {
-                    // if (id.includes('node_modules')) {
-                    //     return id.toString().split('node_modules/')[1].split('/')[0].toString();
-                    // };
-                    // if (
-                    //     id.includes('resurces/js/Page/welcome.vue') ||
-                    //     id.includes('resurces/js/Page/asset_register.vue') ||
-                    //     id.includes('resurces/js/Page/asset_register_add.vue') ||
-                    //     id.includes('resurces/js/Page/asset_register_edit.vue')
-                    // ) {
-                    //     return 'asset_register';
-                    // }
                     vue: ["vue", "vue-router"],
                     sweetalert: ["sweetalert2"],
                     apexcharts: ["apexcharts", "vue3-apexcharts"],
-                    vendor: ['js-file-download', 'vue3-carousel', '@chenfengyuan/vue-barcode', 'lodash.debounce', 'yup', 'vee-validate']
+                    vendor: [
+                        "js-file-download",
+                        "vue3-carousel",
+                        "@chenfengyuan/vue-barcode",
+                        "lodash.debounce",
+                        "yup",
+                        "vee-validate",
+                    ],
                 },
             },
         },
