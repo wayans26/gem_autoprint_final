@@ -5,7 +5,7 @@
             <span class="visually-hidden">Loading...</span>
         </div>
         <div class="card registration-card mx-auto">
-            <img class="card-img-top registration-banner"
+            <img v-if="exhibition_detail.banner_file" class="card-img-top registration-banner"
                 :src="'/registration/banner/exhibitions/' + exhibition_detail.banner_file" alt="Exhibition banner">
             <Form class="registration-form" @submit="register" :validation-schema="validate_role">
                 <div class="card-body p-4 p-lg-5">
@@ -462,6 +462,8 @@ export default {
             temp_id_exhibition: "",
             language: true,
             loading: false,
+            loading_requests: 0,
+            sub_exhibition_request_id: 0,
             exhibition_detail: {
                 banner_file: '',
                 date: '',
@@ -679,14 +681,25 @@ export default {
         };
     },
     methods: {
+        show_loader() {
+            this.loading_requests += 1;
+            this.loading = true;
+        },
+        hide_loader() {
+            this.loading_requests = Math.max(0, this.loading_requests - 1);
+            this.loading = this.loading_requests > 0;
+        },
         register() {
             const vm = this;
+            if (this.loading) {
+                return;
+            }
             if (!this.validate_select()) {
-                swalNotif.info("Pelase Fill All Required Field!");
+                swalNotif.info("Please fill all required fields.");
                 return;
             }
 
-            this.loading = true;
+            this.show_loader();
 
             axios.post("/api/v1/web/registration/visitor", {
                 exhibition_id: this.exhibition_id,
@@ -733,31 +746,34 @@ export default {
                     text: "Registration Failed",
                 });
             }).finally(() => {
-                this.loading = false;
+                this.hide_loader();
             });
 
         },
         get_exhibitions() {
-            this.loading = true;
             const vm = this;
-            axios.get("api/v1/web/registration/exhibition/get").then(res => {
-                if (res.data.status == 1) {
-                    vm.list_exhibitions = res.data.data.exhibition_list.map(item => ({
+            const path = decodeURIComponent(this.$route.path).replace(/^\/+|\/+$/g, '');
+            this.show_loader();
+            axios.get("/api/v1/web/registration/exhibition/get", {
+                params: path ? { path: path } : {},
+            }).then(res => {
+                if (res.data.status == 1 && res.data.data) {
+                    const exhibition_list = res.data.data.exhibition_list;
+                    const exhibition_detail = res.data.data.exhibition_detail || {};
+                    vm.list_exhibitions = Array.isArray(exhibition_list) ? exhibition_list.map(item => ({
                         label: item.name,
                         value: item.id,
                         banner_file: item.banner_file
-                    }));
+                    })) : [];
                     vm.exhibition_detail = {
-                        banner_file: res.data.data.exhibition_detail.all_banner,
-                        date: res.data.data.exhibition_detail.date,
-                        full_name: res.data.data.exhibition_detail.full_name,
-                        name: res.data.data.exhibition_detail.name,
-                        location: res.data.data.exhibition_detail.location,
-                        team: res.data.data.exhibition_detail.team,
-                    }
-
-                }
-                else {
+                        banner_file: exhibition_detail.all_banner || '',
+                        date: exhibition_detail.date || '',
+                        full_name: exhibition_detail.full_name || '',
+                        name: exhibition_detail.name || '',
+                        location: exhibition_detail.location || '',
+                        team: exhibition_detail.team || '',
+                    };
+                } else {
                     vm.$swal({
                         icon: "error",
                         title: "Error",
@@ -771,33 +787,48 @@ export default {
                     text: "Error Get Exhibition",
                 });
             }).finally(() => {
-                this.loading = false;
+                this.hide_loader();
             });
         },
         on_exhibitions_select(event) {
             const vm = this;
-            this.loading = true;
+            const request_id = ++this.sub_exhibition_request_id;
+            this.show_loader();
             this.exhibition_detail.banner_file = event.banner_file;
             this.sub_exhibition_id = "";
+            this.list_sub_exhibitions = [];
 
-            axios.post("api/v1/web/registration/sub/exhibition/get", {
+            axios.post("/api/v1/web/registration/sub/exhibition/get", {
                 id: event.value
             }).then(res => {
-                this.list_sub_exhibitions = res.data.data.map(item => ({
-                    label: item.name,
-                    value: item.id,
-                    banner_file: item.file_banner
-                }));
-            }).catch(res => {
-                vm.$swal({
-                    icon: "error",
-                    title: "Error",
-                    text: "Error Get Sub Exhibition",
-                });
-            }).finally(() => {
-                this.loading = false;
-            });
+                if (request_id !== vm.sub_exhibition_request_id) {
+                    return;
+                }
 
+                if (res.data.status == 1 && Array.isArray(res.data.data)) {
+                    vm.list_sub_exhibitions = res.data.data.map(item => ({
+                        label: item.name,
+                        value: item.id,
+                        banner_file: item.file_banner
+                    }));
+                } else {
+                    vm.$swal({
+                        icon: "error",
+                        title: "Error",
+                        text: "Error Get Sub Exhibition",
+                    });
+                }
+            }).catch(res => {
+                if (request_id === vm.sub_exhibition_request_id) {
+                    vm.$swal({
+                        icon: "error",
+                        title: "Error",
+                        text: "Error Get Sub Exhibition",
+                    });
+                }
+            }).finally(() => {
+                this.hide_loader();
+            });
         },
         change_language() {
             this.language = !this.language;
@@ -806,10 +837,10 @@ export default {
             this.$router.go();
         },
         get_country() {
-            this.loading = true;
+            this.show_loader();
             const vm = this;
             axios.get("/api/v1/web/registration/country/get").then(res => {
-                if (res.data.status == 1) {
+                if (res.data.status == 1 && Array.isArray(res.data.data)) {
                     this.form_data.list_country = res.data.data.map(item => ({
                         label: item.country_name,
                         label_code: `(${item.dial_code}) ${item.country_name}`,
@@ -830,10 +861,13 @@ export default {
                     text: "Error Get Country",
                 });
             }).finally(() => {
-                this.loading = false;
+                this.hide_loader();
             });
         },
         validate_select() {
+            if (!String(this.exhibition_id ?? '').trim() || !String(this.sub_exhibition_id ?? '').trim()) {
+                return false;
+            }
             if (!String(this.form.title ?? '').trim()) {
                 return false;
             }
@@ -885,7 +919,6 @@ export default {
             backdrop: 'static',
             keyboard: false
         }).show();
-        // $("#modalWarning").modal({ backdrop: 'static', keyboard: false });
         $('html, body').animate({ scrollTop: 0 }, 'fast');
 
     }

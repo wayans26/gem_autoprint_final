@@ -5,7 +5,7 @@
             <span class="visually-hidden">Loading...</span>
         </div>
         <div class="card registration-card mx-auto">
-            <img class="card-img-top registration-banner"
+            <img v-if="exhibition_detail.banner_file" class="card-img-top registration-banner"
                 :src="'/registration/banner/exhibitions/' + exhibition_detail.banner_file" alt="Exhibition banner">
             <Form class="registration-form" @submit="register" :validation-schema="validate_role">
                 <div class="card-body p-4 p-lg-5">
@@ -103,6 +103,7 @@
                                     <div class="position-relative">
                                         <Field name="telepon" class="form-control" placeholder="Telephone"
                                             v-model="form.telepon" />
+                                        <ErrorMessage class="registration-error" name="telepon" />
                                     </div>
                                 </div>
                             </div>
@@ -111,6 +112,7 @@
                                     <label class="form-label">Fax</label>
                                     <div class="position-relative">
                                         <Field name="fax" class="form-control" placeholder="Fax" v-model="form.fax" />
+                                        <ErrorMessage class="registration-error" name="fax" />
                                     </div>
                                 </div>
                             </div>
@@ -123,12 +125,11 @@
                                         label="label_code" :reduce="option => option.value" v-model="form.dial_code"
                                         :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
-                                        v-show="!String(this.form.dial_code ?? '').trim()">Mobile Phone Dial Code Can't
-                                        Be Empty!</span>
+                                        v-show="!String(this.form.dial_code ?? '').trim()">Mobile Phone Dial Code Can't Be Empty!</span>
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="position-relative">
-                                        <Field name="mobilephone" type="number" class="form-control"
+                                        <Field name="mobilephone" type="tel" inputmode="numeric" class="form-control"
                                             placeholder="*Mobile Phone (81xxx) *please fill the phone number properly"
                                             v-model="form.mobile_phone" />
                                         <ErrorMessage class="registration-error" name="mobilephone" />
@@ -160,8 +161,7 @@
                                         label="label" :reduce="option => option.value" v-model="form.job_function"
                                         :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
-                                        v-show="!String(this.form.job_function ?? '').trim()">Job Function Can't Be
-                                        Empty!</span>
+                                        v-show="!String(this.form.job_function ?? '').trim()">Job Function Can't Be Empty!</span>
                                 </div>
                             </div>
                             <div class="col-lg-6" v-if="form.job_function === 'Other'">
@@ -170,9 +170,7 @@
                                     <div class="position-relative">
                                         <Field name="other_job_function" class="form-control"
                                             placeholder="Other Job Function *" v-model="form.other_job_function" />
-                                        <span role="alert" class="registration-error"
-                                            v-show="!String(this.form.other_job_function ?? '').trim()">Other Job
-                                            Function Can't Be Empty!</span>
+                                        <ErrorMessage class="registration-error" name="other_job_function" />
                                     </div>
                                 </div>
                             </div>
@@ -186,8 +184,7 @@
                                         :reduce="option => option.value" v-model="form.purpose_visit"
                                         :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
-                                        v-show="!String(this.form.purpose_visit ?? '').trim()">Purpose Visit Can't Be
-                                        Empty!</span>
+                                        v-show="!String(this.form.purpose_visit ?? '').trim()">Purpose Visit Can't Be Empty!</span>
                                 </div>
                             </div>
                             <div class="col-lg-6" v-if="form.purpose_visit === 'Other'">
@@ -196,9 +193,7 @@
                                     <div class="position-relative">
                                         <Field name="other_purpose_visit" class="form-control"
                                             placeholder="*Other Purpose of Visit" v-model="form.other_purpose_visit" />
-                                        <span role="alert" class="registration-error"
-                                            v-show="!String(this.form.other_purpose_visit ?? '').trim()">Other Purpose
-                                            Visit Can't Be Empty!</span>
+                                        <ErrorMessage class="registration-error" name="other_purpose_visit" />
                                     </div>
                                 </div>
                             </div>
@@ -212,8 +207,7 @@
                                         :reduce="option => option.value" v-model="form.purchasing_role"
                                         :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
-                                        v-show="!String(this.form.purchasing_role ?? '').trim()">Purchasing Role Can't
-                                        Be Empty!</span>
+                                        v-show="!String(this.form.purchasing_role ?? '').trim()">Purchasing Role Can't Be Empty!</span>
                                 </div>
                             </div>
                             <div class="col-lg-6" v-if="form.purchasing_role === 'Other'">
@@ -223,9 +217,7 @@
                                         <Field name="other_purchasing_role" class="form-control"
                                             placeholder="*Other Purchasing Roles"
                                             v-model="form.other_purchasing_role" />
-                                        <span role="alert" class="registration-error"
-                                            v-show="!String(this.form.other_purchasing_role ?? '').trim()">Other
-                                            Purchasing Role Can't Be Empty!</span>
+                                        <ErrorMessage class="registration-error" name="other_purchasing_role" />
                                     </div>
                                 </div>
                             </div>
@@ -233,15 +225,13 @@
                         <div class="row g-3">
                             <div class="col-lg-6">
                                 <div class="registration-field mb-3">
-                                    <label for="input-1" class="form-label">How did you find out about this event?
-                                        *</label>
+                                    <label for="input-1" class="form-label">How did you find out about this event? *</label>
                                     <v-select placeholder="Select one of the following"
                                         :options="form_data.list_event_find" label="label"
                                         :reduce="option => option.value" v-model="form.event_find"
                                         :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
-                                        v-show="!String(this.form.event_find ?? '').trim()">Event Find Can't Be
-                                        Empty!</span>
+                                        v-show="!String(this.form.event_find ?? '').trim()">Event Find Can't Be Empty!</span>
                                 </div>
                             </div>
                             <div class="col-lg-6" v-if="form.event_find === 'Other'">
@@ -251,9 +241,7 @@
                                         <Field name="other_event_find" class="form-control"
                                             placeholder="*How did you find out about this event?"
                                             v-model="form.other_event_find" />
-                                        <span role="alert" class="registration-error"
-                                            v-show="!String(this.form.other_event_find ?? '').trim()">Other Event Find
-                                            Can't Be Empty!</span>
+                                        <ErrorMessage class="registration-error" name="other_event_find" />
                                     </div>
                                 </div>
                             </div>
@@ -289,18 +277,39 @@
                                         class="form-check-input" id="IsReceivedInvitationNextAddressSameNo"
                                         name="IsReceivedInvitationNextAddressSame" value="0">
                                     </Field>
-                                    <label class="form-check-label" for="IsReceivedInvitationNextAddressSameNo">Other
-                                        Address</label>
+                                    <label class="form-check-label" for="IsReceivedInvitationNextAddressSameNo">Other Address</label>
                                 </div>
+                                <ErrorMessage class="registration-error" name="IsReceivedInvitationNextAddressSame" />
                                 <div v-if="form.is_received_invitation_next_same_address === '0'"
                                     class="registration-field mt-3">
                                     <div class="position-relative">
-                                        <Field name="ReceivedInvitationNextAddress" class="form-control"
-                                            placeholder="*Other Address" v-model="form.recived_invitation_address" />
+                                        <label class="form-label" for="ReceivedInvitationNextEmail">Email for next year's invitation *</label>
+                                        <Field name="ReceivedInvitationNextAddress" type="email" id="ReceivedInvitationNextEmail" class="form-control"
+                                            placeholder="Email for next year's invitation *" v-model="form.recived_invitation_address" />
                                         <ErrorMessage class="registration-error" name="ReceivedInvitationNextAddress" />
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="registration-radio-group" role="radiogroup"
+                            aria-labelledby="WantsBusinessMatchmakingLabel">
+                            <p class="form-label mb-2" id="WantsBusinessMatchmakingLabel">*Would you like to participate in our Business Matchmaking program during the show?</p>
+                            <div class="form-check form-check-inline">
+                                <Field v-model="form.wants_business_matchmaking" type="radio" class="form-check-input"
+                                    id="WantsBusinessMatchmakingYes" name="WantsBusinessMatchmaking" value="1"
+                                    aria-describedby="WantsBusinessMatchmakingError">
+                                </Field>
+                                <label class="form-check-label" for="WantsBusinessMatchmakingYes">Yes, I am interested</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <Field v-model="form.wants_business_matchmaking" type="radio" class="form-check-input"
+                                    id="WantsBusinessMatchmakingNo" name="WantsBusinessMatchmaking" value="0"
+                                    aria-describedby="WantsBusinessMatchmakingError">
+                                </Field>
+                                <label class="form-check-label" for="WantsBusinessMatchmakingNo">No, not at this time</label>
+                            </div>
+                            <ErrorMessage class="registration-error" name="WantsBusinessMatchmaking"
+                                id="WantsBusinessMatchmakingError" />
                         </div>
                     </div>
                 </div>
@@ -429,6 +438,8 @@ export default {
             temp_id_exhibition: "",
             language: true,
             loading: false,
+            loading_requests: 0,
+            sub_exhibition_request_id: 0,
             exhibition_detail: {
                 banner_file: '',
                 date: '',
@@ -462,6 +473,7 @@ export default {
                 other_purchasing_role: "",
                 event_find: "",
                 other_event_find: "",
+                wants_business_matchmaking: "",
                 is_received_invitation_next: "1",
                 is_received_invitation_next_same_address: "1",
                 recived_invitation_address: "",
@@ -602,34 +614,70 @@ export default {
                 ],
             },
             validate_role: yup.object({
-                name: yup.string().required("Name Can't Be Empty!"),
-                company: yup.string().required("Company Can't Be Empty!"),
-                job_title: yup.string().required("Job Title Can't Be Empty!"),
-                address: yup.string().required("Address Can't Be Empty!"),
-                city: yup.string().required("City Can't Be Empty!"),
-                mobilephone: yup.string().required("Mobile Phone Can't Be Empty!"),
-                email: yup.string().required("Email Can't Be Empty!").email("Invalid Email"),
-                type_of_business: yup.string().required("Type of Business Can't Be Empty!"),
+                name: yup.string().trim().required("Name Can't Be Empty!"),
+                company: yup.string().trim().required("Company Can't Be Empty!"),
+                job_title: yup.string().trim().required("Job Title Can't Be Empty!"),
+                address: yup.string().trim().required("Address Can't Be Empty!"),
+                city: yup.string().trim().required("City Can't Be Empty!"),
+                telepon: yup.string().trim().test('telephone', 'Invalid Telephone', value =>
+                    !value || (/^\+?[\d\s().-]+$/.test(value) && /\d/.test(value))),
+                fax: yup.string().trim().test('fax', 'Invalid Fax', value =>
+                    !value || (/^\+?[\d\s().-]+$/.test(value) && /\d/.test(value))),
+                mobilephone: yup.string().trim().required("Mobile Phone Can't Be Empty!")
+                    .matches(/^\d+$/, "Invalid Mobile Phone"),
+                email: yup.string().trim().required("Email Can't Be Empty!").email("Invalid Email"),
+                type_of_business: yup.string().trim().required("Type of Business Can't Be Empty!"),
+                other_job_function: yup.string().trim().test('required-other', "Other Job Function Can't Be Empty!",
+                    value => this.form.job_function !== 'Other' || !!value),
+                other_purpose_visit: yup.string().trim().test('required-other', "Other Purpose Visit Can't Be Empty!",
+                    value => this.form.purpose_visit !== 'Other' || !!value),
+                other_purchasing_role: yup.string().trim().test('required-other', "Other Purchasing Role Can't Be Empty!",
+                    value => this.form.purchasing_role !== 'Other' || !!value),
+                other_event_find: yup.string().trim().test('required-other', "Other Event Find Can't Be Empty!",
+                    value => this.form.event_find !== 'Other' || !!value),
+                IsReceivedInvitationNext: yup.string()
+                    .required("Please choose whether to receive next year's invitation.")
+                    .oneOf(["1", "0"], "Please choose whether to receive next year's invitation."),
+                IsReceivedInvitationNextAddressSame: yup.string().when('IsReceivedInvitationNext', {
+                    is: "1",
+                    then: validate_role => validate_role.required("Please choose an invitation address option.")
+                        .oneOf(["1", "0"], "Please choose an invitation address option."),
+                }),
                 ReceivedInvitationNextAddress: yup.string().when([
                     'IsReceivedInvitationNext',
                     'IsReceivedInvitationNextAddressSame'
                 ], {
                     is: (is_received, is_same_address) => is_received === "1" && is_same_address === "0",
-                    then: validate_role => validate_role.required("Address Can't Be Empty!"),
+                    then: validate_role => validate_role.trim().required("Invitation Email Can't Be Empty!")
+                        .email("Invalid Email").max(255, "Invitation Email Must Not Exceed 255 Characters"),
                 }),
+                WantsBusinessMatchmaking: yup.string()
+                    .required("Please confirm your Business Matchmaking participation.")
+                    .oneOf(["1", "0"], "Please confirm your Business Matchmaking participation."),
             })
 
         };
     },
     methods: {
+        show_loader() {
+            this.loading_requests += 1;
+            this.loading = true;
+        },
+        hide_loader() {
+            this.loading_requests = Math.max(0, this.loading_requests - 1);
+            this.loading = this.loading_requests > 0;
+        },
         register() {
             const vm = this;
+            if (this.loading) {
+                return;
+            }
             if (!this.validate_select()) {
-                swalNotif.info("Pelase Fill All Required Field!");
+                swalNotif.info("Please fill all required fields.");
                 return;
             }
 
-            this.loading = true;
+            this.show_loader();
 
             axios.post("/api/v1/web/registration/visitor", {
                 exhibition_id: this.exhibition_id,
@@ -655,6 +703,7 @@ export default {
                 purchasing_role_other: this.form.other_purchasing_role,
                 event_find: this.form.event_find,
                 event_find_other: this.form.other_event_find,
+                wants_business_matchmaking: this.form.wants_business_matchmaking,
                 is_received_invitation_next: this.form.is_received_invitation_next,
                 is_received_invitation_next_address_same: this.form.is_received_invitation_next_same_address,
                 received_invitation_next_address: this.form.recived_invitation_address,
@@ -675,31 +724,34 @@ export default {
                     text: "Registration Failed",
                 });
             }).finally(() => {
-                this.loading = false;
+                this.hide_loader();
             });
 
         },
         get_exhibitions() {
-            this.loading = true;
             const vm = this;
-            axios.get("/api/v1/web/registration/exhibition/get").then(res => {
-                if (res.data.status == 1) {
-                    vm.list_exhibitions = res.data.data.exhibition_list.map(item => ({
+            const path = decodeURIComponent(this.$route.path).replace(/^\/+|\/+$/g, '');
+            this.show_loader();
+            axios.get("/api/v1/web/registration/exhibition/get", {
+                params: path ? { path: path } : {},
+            }).then(res => {
+                if (res.data.status == 1 && res.data.data) {
+                    const exhibition_list = res.data.data.exhibition_list;
+                    const exhibition_detail = res.data.data.exhibition_detail || {};
+                    vm.list_exhibitions = Array.isArray(exhibition_list) ? exhibition_list.map(item => ({
                         label: item.name,
                         value: item.id,
                         banner_file: item.banner_file
-                    }));
+                    })) : [];
                     vm.exhibition_detail = {
-                        banner_file: res.data.data.exhibition_detail.all_banner,
-                        date: res.data.data.exhibition_detail.date,
-                        full_name: res.data.data.exhibition_detail.full_name,
-                        name: res.data.data.exhibition_detail.name,
-                        location: res.data.data.exhibition_detail.location,
-                        team: res.data.data.exhibition_detail.team,
-                    }
-
-                }
-                else {
+                        banner_file: exhibition_detail.all_banner || '',
+                        date: exhibition_detail.date || '',
+                        full_name: exhibition_detail.full_name || '',
+                        name: exhibition_detail.name || '',
+                        location: exhibition_detail.location || '',
+                        team: exhibition_detail.team || '',
+                    };
+                } else {
                     vm.$swal({
                         icon: "error",
                         title: "Error",
@@ -713,33 +765,48 @@ export default {
                     text: "Error Get Exhibition",
                 });
             }).finally(() => {
-                this.loading = false;
+                this.hide_loader();
             });
         },
         on_exhibitions_select(event) {
             const vm = this;
-            this.loading = true;
+            const request_id = ++this.sub_exhibition_request_id;
+            this.show_loader();
             this.exhibition_detail.banner_file = event.banner_file;
             this.sub_exhibition_id = "";
+            this.list_sub_exhibitions = [];
 
             axios.post("/api/v1/web/registration/sub/exhibition/get", {
                 id: event.value
             }).then(res => {
-                this.list_sub_exhibitions = res.data.data.map(item => ({
-                    label: item.name,
-                    value: item.id,
-                    banner_file: item.file_banner
-                }));
-            }).catch(res => {
-                vm.$swal({
-                    icon: "error",
-                    title: "Error",
-                    text: "Error Get Sub Exhibition",
-                });
-            }).finally(() => {
-                this.loading = false;
-            });
+                if (request_id !== vm.sub_exhibition_request_id) {
+                    return;
+                }
 
+                if (res.data.status == 1 && Array.isArray(res.data.data)) {
+                    vm.list_sub_exhibitions = res.data.data.map(item => ({
+                        label: item.name,
+                        value: item.id,
+                        banner_file: item.file_banner
+                    }));
+                } else {
+                    vm.$swal({
+                        icon: "error",
+                        title: "Error",
+                        text: "Error Get Sub Exhibition",
+                    });
+                }
+            }).catch(res => {
+                if (request_id === vm.sub_exhibition_request_id) {
+                    vm.$swal({
+                        icon: "error",
+                        title: "Error",
+                        text: "Error Get Sub Exhibition",
+                    });
+                }
+            }).finally(() => {
+                this.hide_loader();
+            });
         },
         change_language() {
             this.language = !this.language;
@@ -748,10 +815,10 @@ export default {
             this.$router.go();
         },
         get_country() {
-            this.loading = true;
+            this.show_loader();
             const vm = this;
             axios.get("/api/v1/web/registration/country/get").then(res => {
-                if (res.data.status == 1) {
+                if (res.data.status == 1 && Array.isArray(res.data.data)) {
                     this.form_data.list_country = res.data.data.map(item => ({
                         label: item.country_name,
                         label_code: `(${item.dial_code}) ${item.country_name}`,
@@ -772,7 +839,7 @@ export default {
                     text: "Error Get Country",
                 });
             }).finally(() => {
-                this.loading = false;
+                this.hide_loader();
             });
         },
         validate_select() {
