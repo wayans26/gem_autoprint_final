@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\HtmlString;
 use Mockery;
 use RuntimeException;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -136,6 +137,18 @@ class RegistrationEmailTest extends TestCase
         $this->assertSame('GEM Indonesia', $message->getFrom()[0]->getName());
     }
 
+    public function test_array_transport_accepts_a_plain_string_png_result(): void
+    {
+        $this->mock_png_generation($this->png_fixture());
+        $sent = Mail::mailer('array')->to('recipient@example.test')->send(new email_registration(33));
+        $message = $sent->getOriginalMessage();
+        $parts = $message->getAttachments();
+
+        $this->assertCount(1, $parts);
+        $this->assertSame($this->png_fixture(), $parts[0]->getBody());
+        $this->assertStringContainsString('cid:' . $parts[0]->getContentId(), $message->getHtmlBody());
+    }
+
     public function test_missing_registration_fails_before_qr_generation(): void
     {
         QrCode::shouldReceive('format')->never();
@@ -155,9 +168,12 @@ class RegistrationEmailTest extends TestCase
         (new email_registration(33))->build();
     }
 
-    public function test_missing_vip_template_is_not_replaced_with_regular(): void
+    public function test_missing_template_is_not_replaced_with_regular(): void
     {
-        DB::connection('mysql')->table('exhibitions')->where('id', 11)->update(['page' => 'vip']);
+        // Use a nonexistent template fixture so this remains valid when VIP is available.
+        // Legacy implementation — retained for reference; inactive.
+        // DB::connection('mysql')->table('exhibitions')->where('id', 11)->update(['page' => 'vip']);
+        DB::connection('mysql')->table('exhibitions')->where('id', 11)->update(['page' => 'missing_registration_email_template']);
         QrCode::shouldReceive('format')->never();
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Registration email template is not available');
@@ -168,6 +184,15 @@ class RegistrationEmailTest extends TestCase
     public function test_empty_generation_result_fails_without_a_remote_fallback(): void
     {
         $this->mock_png_generation('');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Failed to generate');
+
+        (new email_registration(33))->build();
+    }
+
+    public function test_empty_html_string_generation_result_fails_before_embedding(): void
+    {
+        $this->mock_png_generation(new HtmlString(''));
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Failed to generate');
 
@@ -229,6 +254,7 @@ class RegistrationEmailTest extends TestCase
         $mail = new email_registration(33);
         $mail->build();
 
+        $this->assertIsString($mail->viewData['qr_png']);
         $image = getimagesizefromstring($mail->viewData['qr_png']);
         $this->assertSame(IMAGETYPE_PNG, $image[2]);
         $this->assertSame(300, $image[0]);
@@ -242,8 +268,12 @@ class RegistrationEmailTest extends TestCase
         $generator->shouldReceive('size')->once()->with(300)->andReturnSelf();
         $generator->shouldReceive('margin')->once()->with(4)->andReturnSelf();
         $generator->shouldReceive('errorCorrection')->once()->with('M')->andReturnSelf();
+        // Match Simple QrCode's HtmlString return type when running under Laravel.
+        // Legacy implementation — retained for reference; inactive.
+        // $generator->shouldReceive('generate')->once()->with('0000123456789')
+        //     ->andReturn($png ?? $this->png_fixture());
         $generator->shouldReceive('generate')->once()->with('0000123456789')
-            ->andReturn($png ?? $this->png_fixture());
+            ->andReturn($png ?? new HtmlString($this->png_fixture()));
     }
 
     protected function png_fixture(): string

@@ -71,10 +71,18 @@ class email_registration extends Mailable
 
         // Generated only during delivery; no PNG is serialized in the initial queue payload.
         // BaconQrCode 2.x measures this margin in QR modules, not pixels.
-        $qr_png = QrCode::format('png')
+        // Legacy implementation — retained for reference; inactive.
+        // $qr_png = QrCode::format('png')
+        //     ->size(300)
+        //     ->margin(4)
+        //     ->errorCorrection('M')
+        //     ->generate((string) $registration_data->barcode);
+
+        // Simple QrCode returns HtmlString under Laravel; MIME requires raw PNG bytes.
+        $qr_png = (string) QrCode::format('png')
             ->size(300)
             ->margin(4)
-            ->errorCorrection('M')
+            ->errorCorrection('H')
             ->generate((string) $registration_data->barcode);
 
         if (empty($qr_png)) {
