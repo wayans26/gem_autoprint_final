@@ -11,6 +11,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use RuntimeException;
 
 class email_registration extends Mailable
 {
@@ -21,7 +23,15 @@ class email_registration extends Mailable
      */
     public $registration_id;
     public $url;
-    public function __construct($registration_id, $url)
+    // Legacy implementation — retained for reference; inactive.
+    // public function __construct($registration_id, $url)
+    // {
+    //     //
+    //     $this->registration_id = $registration_id;
+    //     $this->url = $url;
+    // }
+
+    public function __construct($registration_id, $url = null)
     {
         //
         $this->registration_id = $registration_id;
@@ -45,14 +55,46 @@ class email_registration extends Mailable
                 'registration_visitors.city',
                 'registration_visitors.country',
                 'registration_visitors.email',
+                'registration_visitors.barcode',
             )
             ->where('registration_visitors.id', $this->registration_id)->first();
+
+        if (empty($registration_data)) {
+            throw new RuntimeException('Registration data not found for confirmation email.');
+        }
+        if (trim((string) $registration_data->barcode) === '') {
+            throw new RuntimeException('Registration barcode is missing for confirmation email.');
+        }
+        if (!view()->exists('Email.' . $registration_data->page)) {
+            throw new RuntimeException('Registration email template is not available.');
+        }
+
+        // Generated only during delivery; no PNG is serialized in the initial queue payload.
+        // BaconQrCode 2.x measures this margin in QR modules, not pixels.
+        $qr_png = QrCode::format('png')
+            ->size(300)
+            ->margin(4)
+            ->errorCorrection('M')
+            ->generate((string) $registration_data->barcode);
+
+        if (empty($qr_png)) {
+            throw new RuntimeException('Failed to generate the registration email QR code.');
+        }
+
+        // Legacy implementation — retained for reference; inactive.
+        // return $this->subject($registration_data->full_name . "(" . $registration_data->date . ")")
+        //     ->from("no.reply@reg-gemindonesia.net", "GEM Indonesia")
+        //     ->view('Email.' . $registration_data->page, [
+        //         'data'              => $registration_data,
+        //         'url'               => $this->url
+        //     ]);
 
         return $this->subject($registration_data->full_name . "(" . $registration_data->date . ")")
             ->from("no.reply@reg-gemindonesia.net", "GEM Indonesia")
             ->view('Email.' . $registration_data->page, [
                 'data'              => $registration_data,
-                'url'               => $this->url
+                'url'               => $this->url,
+                'qr_png'            => $qr_png,
             ]);
     }
 }

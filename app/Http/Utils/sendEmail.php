@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use RuntimeException;
 
 class sendEmail
 {
@@ -15,10 +16,15 @@ class sendEmail
     {
         $registration = registration_visitor::find($registration_id);
 
-        $path = "Barcode/" . $registration->name . "-" . $registration->barcode . ".png";
-        $imageContent = file_get_contents("https://api.qrserver.com/v1/create-qr-code/?size=200x200&qzone=4&data=" . $registration->barcode);
-        $save = File::put(public_path($path), $imageContent);
-        $url = "https://" . $req->host() . '/' . $path;
+        if (empty($registration)) {
+            throw new RuntimeException('Registration not found for confirmation email.');
+        }
+
+        // Legacy implementation — retained for reference; inactive.
+        // $path = "Barcode/" . $registration->name . "-" . $registration->barcode . ".png";
+        // $imageContent = file_get_contents("https://api.qrserver.com/v1/create-qr-code/?size=200x200&qzone=4&data=" . $registration->barcode);
+        // $save = File::put(public_path($path), $imageContent);
+        // $url = "https://" . $req->host() . '/' . $path;
 
         // $dataToSend = array(
         //     'url'               => $url,
@@ -40,7 +46,11 @@ class sendEmail
         //     'idsubexhibitions'  => $subexhibitions->idsubexhibitions
         // );
 
-        Mail::to($registration->email)->queue(new email_registration($registration->id, $url));
-        Mail::to("pt.globalexpomanagement@gmail.com")->queue(new email_registration($registration->id, $url));
+        // Legacy implementation — retained for reference; inactive.
+        // Mail::to($registration->email)->queue(new email_registration($registration->id, $url));
+        // Mail::to("pt.globalexpomanagement@gmail.com")->queue(new email_registration($registration->id, $url));
+
+        Mail::to($registration->email)->queue(new email_registration($registration->id));
+        Mail::to("pt.globalexpomanagement@gmail.com")->queue(new email_registration($registration->id));
     }
 }
