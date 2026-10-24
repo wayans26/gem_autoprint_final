@@ -112,8 +112,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" @click="initValue"><i
-                                class="fa fa-times"></i>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            @click="initValue"><i class="fa fa-times"></i>
                             Close</button>
                         <button type="submit" class="btn btn-primary" :disabled="disabled"><i :class="{
                             'fa fa-spinner fa-spin': disabled,

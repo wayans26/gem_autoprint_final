@@ -683,7 +683,7 @@ h6 {
 }
 
 .modal-content {
-    overflow: hidden;
+    overflow: visible;
     border: 1px solid var(--admin-border);
     border-radius: var(--admin-radius-lg);
     box-shadow: var(--admin-shadow-lg);
@@ -698,6 +698,16 @@ h6 {
 
 .modal-body {
     padding: 1.25rem;
+}
+
+.modal-header {
+    border-top-left-radius: var(--admin-radius-lg);
+    border-top-right-radius: var(--admin-radius-lg);
+}
+
+.modal-footer {
+    border-bottom-left-radius: var(--admin-radius-lg);
+    border-bottom-right-radius: var(--admin-radius-lg);
 }
 
 .modal-title {
@@ -1142,6 +1152,23 @@ table.dataTable.display tbody tr:hover {
     background: var(--admin-surface);
     border-color: var(--admin-border);
     box-shadow: var(--admin-shadow-md);
+}
+
+.modal .v-select.vs--open {
+    z-index: 1060;
+}
+
+.modal .vs__dropdown-menu {
+    max-height: min(350px, 40vh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--admin-border);
+    border-radius: var(--admin-radius-sm);
+}
+
+.modal .vs__dropdown-option {
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .vs__dropdown-option {
