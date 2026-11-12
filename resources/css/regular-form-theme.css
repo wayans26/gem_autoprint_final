@@ -274,6 +274,11 @@ body.regular-form-page {
     padding: clamp(1.5rem, 4vw, 3.5rem) 0;
 }
 
+.registration-main:has(.registration-event-select.vs--open) {
+    overflow-x: clip;
+    overflow-y: visible;
+}
+
 .registration-main::before,
 .registration-main::after {
     position: absolute;
@@ -467,6 +472,10 @@ body.regular-form-page {
     line-height: 1.4;
 }
 
+.registration-visitor-details:disabled .registration-error {
+    display: none;
+}
+
 /* Vue Select */
 .registration-form .v-select {
     width: 100%;
@@ -535,6 +544,16 @@ body.regular-form-page {
     border-radius: var(--registration-radius-sm);
     background: var(--registration-surface);
     box-shadow: var(--registration-shadow);
+}
+
+.registration-form .registration-event-select.vs--open {
+    z-index: 2;
+}
+
+.registration-form .registration-event-select .vs__dropdown-menu {
+    max-height: min(18rem, 40vh);
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
 }
 
 .registration-form .vs__dropdown-option {

@@ -7,7 +7,8 @@
         <div class="card registration-card mx-auto">
             <img v-if="exhibition_detail.banner_file" class="card-img-top registration-banner"
                 :src="'/registration/banner/exhibitions/' + exhibition_detail.banner_file" alt="Exhibition banner">
-            <Form class="registration-form" @submit="register" :validation-schema="validate_role">
+            <Form class="registration-form" @submit="register" @submit.capture="guard_registration_submit"
+                :validation-schema="validate_role">
                 <div class="card-body p-4 p-lg-5">
                     <div class="registration-section-heading">
                         <span class="registration-eyebrow">Visitor registration</span>
@@ -16,19 +17,28 @@
                     </div>
                     <div class="registration-field mb-3">
                         <label for="input-1" class="form-label">Exhibition *</label>
-                        <v-select placeholder="Select a Exhibition" :options="list_exhibitions" label="label"
-                            :reduce="option => option.value" v-model="exhibition_id" :clearable="false"
-                            @option:selected="on_exhibitions_select"></v-select>
+                        <v-select class="registration-event-select" placeholder="Select a Exhibition"
+                            :options="list_exhibitions" label="label" :reduce="option => option.value"
+                            v-model="exhibition_id"></v-select>
                     </div>
-                    <div class="registration-field mb-3" v-show="exhibition_id">
+                    <div class="registration-field mb-3" v-show="selected_exhibition">
                         <label for="input-1" class="form-label">Sub Exhibition *</label>
-                        <v-select placeholder="Select a Sub Exhibition" :options="list_sub_exhibitions" label="label"
-                            :reduce="option => option.value" v-model="sub_exhibition_id" :clearable="false"></v-select>
+                        <v-select class="registration-event-select" placeholder="Select a Sub Exhibition"
+                            :options="list_sub_exhibitions" label="label" :reduce="option => option.value"
+                            v-model="sub_exhibition_id" :disabled="!list_sub_exhibitions.length"
+                            :clearable="false"></v-select>
                     </div>
-                    <div v-show="sub_exhibition_id" class="registration-section">
+                    <div role="status">
+                        <p v-if="!registration_ready" class="alert alert-info mb-0">
+                            {{ selected_exhibition ? 'Please select a Sub Exhibition to continue.' :
+                                'Please select an Exhibition and Sub Exhibition to continue.' }}
+                        </p>
+                    </div>
+                    <fieldset class="registration-section registration-visitor-details" :disabled="!registration_ready"
+                        aria-labelledby="regular-visitor-details-heading">
                         <div class="registration-section-heading registration-section-heading--compact">
                             <span class="registration-eyebrow">Visitor details</span>
-                            <h2>Tell us about yourself</h2>
+                            <h2 id="regular-visitor-details-heading">Tell us about yourself</h2>
                             <p>Fields marked with an asterisk (*) are required.</p>
                         </div>
                         <!-- <div> -->
@@ -38,7 +48,7 @@
                                     <label for="input-1" class="form-label">Title *</label>
                                     <v-select placeholder="Select a Title" :options="form_data.title" label="label"
                                         :reduce="option => option.value" v-model="form.title"
-                                        :clearable="false"></v-select>
+                                        :disabled="!registration_ready" :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
                                         v-show="!String(this.form.title ?? '').trim()">Title Can't Be Empty!</span>
                                 </div>
@@ -100,7 +110,7 @@
                                     <label for="input-1" class="form-label">Country *</label>
                                     <v-select placeholder="Select a Country" :options="form_data.list_country"
                                         label="label" :reduce="option => option.value" v-model="form.country"
-                                        :clearable="false"></v-select>
+                                        :disabled="!registration_ready" :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
                                         v-show="!String(this.form.country ?? '').trim()">Country Can't Be Empty!</span>
                                 </div>
@@ -131,7 +141,7 @@
                                 <div class="col-lg-4">
                                     <v-select placeholder="Select a Country" :options="form_data.list_country"
                                         label="label_code" :reduce="option => option.value" v-model="form.dial_code"
-                                        :clearable="false"></v-select>
+                                        :disabled="!registration_ready" :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
                                         v-show="!String(this.form.dial_code ?? '').trim()">Mobile Phone Dial Code Can't
                                         Be Empty!</span>
@@ -168,7 +178,7 @@
                                     <label for="input-1" class="form-label">Job Function *</label>
                                     <v-select placeholder="Select a Job Function" :options="form_data.list_job_function"
                                         label="label" :reduce="option => option.value" v-model="form.job_function"
-                                        :clearable="false"></v-select>
+                                        :disabled="!registration_ready" :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
                                         v-show="!String(this.form.job_function ?? '').trim()">Job Function Can't Be
                                         Empty!</span>
@@ -194,7 +204,7 @@
                                     <v-select placeholder="Select a Purpose of Visit"
                                         :options="form_data.list_purpose_visit" label="label"
                                         :reduce="option => option.value" v-model="form.purpose_visit"
-                                        :clearable="false"></v-select>
+                                        :disabled="!registration_ready" :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
                                         v-show="!String(this.form.purpose_visit ?? '').trim()">Purpose Visit Can't Be
                                         Empty!</span>
@@ -220,7 +230,7 @@
                                     <v-select name="purchasing_role" placeholder="Select a Purchasing Role"
                                         :options="form_data.list_purchasing_role" label="label"
                                         :reduce="option => option.value" v-model="form.purchasing_role"
-                                        :clearable="false"></v-select>
+                                        :disabled="!registration_ready" :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
                                         v-show="!String(this.form.purchasing_role ?? '').trim()">Purchasing Role Can't
                                         Be Empty!</span>
@@ -248,7 +258,7 @@
                                     <v-select placeholder="Select one of the following"
                                         :options="form_data.list_event_find" label="label"
                                         :reduce="option => option.value" v-model="form.event_find"
-                                        :clearable="false"></v-select>
+                                        :disabled="!registration_ready" :clearable="false"></v-select>
                                     <span role="alert" class="registration-error"
                                         v-show="!String(this.form.event_find ?? '').trim()">Event Find Can't Be
                                         Empty!</span>
@@ -335,12 +345,12 @@
                             <ErrorMessage class="registration-error" name="WantsBusinessMatchmaking"
                                 id="WantsBusinessMatchmakingError" />
                         </div>
-                    </div>
+                    </fieldset>
                 </div>
-                <div class="card-footer registration-submit" v-show="sub_exhibition_id">
+                <div class="card-footer registration-submit">
                     <h5>Press continue to complete registration</h5>
                     <p>If you are ready to complete registration, please click the continue button below.</p>
-                    <button type="submit" :disabled="loading" class="btn btn-primary btn-lg">
+                    <button type="submit" :disabled="!registration_ready || loading" class="btn btn-primary btn-lg">
                         <i :class="{
                             'fa fa-spinner fa-spin': loading,
                             'fa fa-sign-in': !loading,
@@ -464,6 +474,7 @@ export default {
             loading: false,
             loading_requests: 0,
             sub_exhibition_request_id: 0,
+            default_banner_file: '',
             exhibition_detail: {
                 banner_file: '',
                 date: '',
@@ -680,6 +691,23 @@ export default {
 
         };
     },
+    computed: {
+        selected_exhibition() {
+            return this.list_exhibitions.find(option => option.value === this.exhibition_id);
+        },
+        registration_ready() {
+            return Boolean(this.selected_exhibition) &&
+                this.list_sub_exhibitions.some(option => option.value === this.sub_exhibition_id);
+        }
+    },
+    watch: {
+        exhibition_id: {
+            flush: 'sync',
+            handler() {
+                this.on_exhibitions_select(this.selected_exhibition);
+            }
+        }
+    },
     methods: {
         show_loader() {
             this.loading_requests += 1;
@@ -689,9 +717,15 @@ export default {
             this.loading_requests = Math.max(0, this.loading_requests - 1);
             this.loading = this.loading_requests > 0;
         },
+        guard_registration_submit(event) {
+            if (!this.registration_ready || this.loading) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            }
+        },
         register() {
             const vm = this;
-            if (this.loading) {
+            if (!this.registration_ready || this.loading) {
                 return;
             }
             if (!this.validate_select()) {
@@ -765,8 +799,9 @@ export default {
                         value: item.id,
                         banner_file: item.banner_file
                     })) : [];
+                    vm.default_banner_file = exhibition_detail.all_banner || '';
                     vm.exhibition_detail = {
-                        banner_file: exhibition_detail.all_banner || '',
+                        banner_file: vm.default_banner_file,
                         date: exhibition_detail.date || '',
                         full_name: exhibition_detail.full_name || '',
                         name: exhibition_detail.name || '',
@@ -793,10 +828,14 @@ export default {
         on_exhibitions_select(event) {
             const vm = this;
             const request_id = ++this.sub_exhibition_request_id;
-            this.show_loader();
-            this.exhibition_detail.banner_file = event.banner_file;
             this.sub_exhibition_id = "";
             this.list_sub_exhibitions = [];
+            this.exhibition_detail.banner_file = event ? event.banner_file : this.default_banner_file;
+            if (!event) {
+                return;
+            }
+
+            this.show_loader();
 
             axios.post("/api/v1/web/registration/sub/exhibition/get", {
                 id: event.value
@@ -865,7 +904,7 @@ export default {
             });
         },
         validate_select() {
-            if (!String(this.exhibition_id ?? '').trim() || !String(this.sub_exhibition_id ?? '').trim()) {
+            if (!this.registration_ready) {
                 return false;
             }
             if (!String(this.form.title ?? '').trim()) {
