@@ -21,7 +21,7 @@
                             :options="list_exhibitions" label="label" :reduce="option => option.value"
                             v-model="exhibition_id"></v-select>
                     </div>
-                    <div class="registration-field mb-3" v-show="selected_exhibition">
+                    <div v-sub-exhibition-menu class="registration-field mb-3" v-show="selected_exhibition">
                         <label for="input-1" class="form-label">Sub Exhibition *</label>
                         <v-select class="registration-event-select" placeholder="Select a Sub Exhibition"
                             :options="list_sub_exhibitions" label="label" :reduce="option => option.value"
@@ -437,8 +437,12 @@ import axios from "axios";
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 import swalNotif from "../../Utils/swalNotif";
+import subExhibitionMenu from '../Utils/subExhibitionMenu.js';
 
 export default {
+    directives: {
+        subExhibitionMenu
+    },
     components: {
         Form,
         Field,

@@ -556,6 +556,14 @@ body.regular-form-page {
     overscroll-behavior-y: contain;
 }
 
+.registration-form .registration-sub-exhibition-up .registration-event-select .vs__dropdown-menu {
+    top: auto;
+    bottom: calc(100% - var(--vs-border-width));
+    max-height: min(18rem, 40vh, var(--sub-exhibition-menu-available-height));
+    margin-top: 0;
+    margin-bottom: .35rem;
+}
+
 .registration-form .vs__dropdown-option {
     padding: .7rem .85rem;
     color: var(--registration-text);
