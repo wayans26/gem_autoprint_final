@@ -34,7 +34,8 @@
                                 'Please select an Exhibition and Sub Exhibition to continue.' }}
                         </p>
                     </div>
-                    <fieldset class="registration-section registration-visitor-details" :disabled="!registration_ready"
+                    <fieldset v-show="registration_ready" class="registration-section registration-visitor-details"
+                        :disabled="!registration_ready"
                         aria-labelledby="vip-visitor-details-heading">
                         <div class="registration-section-heading registration-section-heading--compact">
                             <span class="registration-eyebrow">Visitor details</span>
@@ -333,7 +334,7 @@
                         </div>
                     </fieldset>
                 </div>
-                <div class="card-footer registration-submit">
+                <div v-show="registration_ready" class="card-footer registration-submit">
                     <h5>Press continue to complete registration</h5>
                     <p>If you are ready to complete registration, please click the continue button below.</p>
                     <button type="submit" :disabled="!registration_ready || loading" class="btn btn-primary btn-lg">
